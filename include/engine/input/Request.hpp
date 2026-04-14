@@ -11,16 +11,14 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 #include <SFML/Graphics/Rect.hpp>
-#include <initializer_list>
 #include <vector>
 
 #include <engine/input/Action.hpp>
 
-class State;
 
 class Request {
     friend class InputManager; // More of a Boss that is it of a friend LOL
-    friend class State;
+    friend class Layer;
 
     struct msBinding {
         const sf::Rect<int>* bounds;

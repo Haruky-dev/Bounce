@@ -59,7 +59,7 @@ json Json::getVal( const str& key ) {
     }
 }
 
-int Json::getInt( const str& key ) {
+int Json::Int( const str& key ) {
     auto val = Json::getVal( key );
 
     if (val.is_number())
@@ -68,7 +68,7 @@ int Json::getInt( const str& key ) {
     throw std::runtime_error("Invalid Value [T=int] Found for key=" + key);
 }
 
-float Json::getFloat( const str& key ) {
+float Json::Float( const str& key ) {
     auto val = Json::getVal( key );
 
     if (val.is_number())
@@ -77,7 +77,7 @@ float Json::getFloat( const str& key ) {
     throw std::runtime_error("Invalid Value [T=float] Found for key=" + key);
 }
 
-bool Json::getBool( const str& key ) {
+bool Json::Bool( const str& key ) {
     auto val = Json::getVal( key );
 
     if (val.is_boolean())
@@ -86,7 +86,7 @@ bool Json::getBool( const str& key ) {
     throw std::runtime_error("Invalid Value [T=bool] Found for key=" + key);
 }
 
-str Json::getString( const str& key ) {
+str Json::String( const str& key ) {
     auto val = Json::getVal( key );
 
     if (val.is_string())

@@ -1,15 +1,14 @@
-#include <engine/states/GameOver.hpp>
+#include <engine/layers/EndLayer.hpp>
 
 #include <tools/Tool.hpp>
-#include <engine/State.hpp>
 
 #include <iostream>
 
 
-GameOver::GameOver() : State() {}
+EndLayer::EndLayer() : Layer() {}
 
-void GameOver::Load() {
-    std::cout << "[GameOver] Loading..\n";
+void EndLayer::Load() {
+    std::cout << "[EndLayer] Loading..\n";
 
     this->accTime = sf::Time::Zero;
 
@@ -20,7 +19,7 @@ void GameOver::Load() {
     this->bg.setOrigin( {this->bg.getRadius(), this->bg.getRadius()} );
     this->bg.setPosition( Tool::W_CTR );
 
-    std::cout << "[GameOver] Loaded!\n";
+    std::cout << "[EndLayer] Loaded!\n";
 
     this->setRequest({
         { sf::Keyboard::Key::Enter, Action::dropOverlap },
@@ -28,7 +27,7 @@ void GameOver::Load() {
     });
 }
 
-void GameOver::Update( sf::Time& dt ) {
+void EndLayer::Update( sf::Time& dt ) {
     accTime+=dt;
 
     if (accTime.asSeconds() >= 2.f) {
@@ -38,9 +37,8 @@ void GameOver::Update( sf::Time& dt ) {
     }
 }
 
-void GameOver::Render( sf::RenderWindow& win ) const {
-    win.setTitle("Game Over!");
-    win.draw( bg );
-}
+void EndLayer::Render( sf::RenderWindow& win ) const { win.draw( bg ); }
 
-State::Type GameOver::getType() const { return State::Type::GameOver; }
+void EndLayer::exit() { Tool::P1_SCORE = Tool::P2_SCORE = 0; }
+
+Layer::Type EndLayer::getType() const { return Layer::Type::GameOver; }

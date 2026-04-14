@@ -2,22 +2,23 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <engine/State.hpp>
+#include <engine/Layer.hpp>
 
 
-class Pause : public State {
+class EndLayer : public Layer {
     private:
-        sf::RectangleShape bg;
+        sf::CircleShape bg;
         sf::Time accTime;
 
     public:
-        Pause();
+        EndLayer();
         
         void Load() override;
         void Update( sf::Time& dt ) override;
         void Render( sf::RenderWindow& win ) const override;
 
-        State::Type getType() const override;
+        void exit() override;
+        Layer::Type getType() const override;
 
-        ~Pause() = default;
+        ~EndLayer() = default;
 };

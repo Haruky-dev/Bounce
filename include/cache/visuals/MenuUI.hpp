@@ -3,38 +3,48 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
-#include <string>
-#include <optional>
+#include <array>
 
+#include <cache/TextureCache.hpp>
+#include <cache/visuals/BaseUI.hpp>
 #include <engine/features/Progressive.hpp>
-#include <engine/State.hpp>
-#include <engine/input/Action.hpp>
 #include <tools/Tool.hpp>
 
 #define BTN_COUNT 3
 
-class MenuUI {
+
+class MenuUI : public BaseUI {
+    friend class MenuLayer;
+
     private:
-        MenuUI() = default;
-        ~MenuUI() = default;
+        // const int BTN_COUNT = 3;
+        std::array<sf::Sprite, BTN_COUNT> btns;
+        std::array<sf::Rect<int>, BTN_COUNT> bounds;
+    
+        sf::Sprite bg;
+        sf::Text author;
+        sf::Text version;
 
-        MenuUI( const MenuUI& ) = delete;
-        MenuUI( const MenuUI&& ) = delete;
-
-        MenuUI& operator=( const MenuUI& ) = delete;
-        MenuUI& operator=( const MenuUI&& ) = delete;
-
-        std::optional<sf::Sprite> bg;
-        std::optional<sf::Sprite> btns[BTN_COUNT];
-
-        sf::Rect<int> b_bounds[BTN_COUNT];
-
-    public:
-        static MenuUI& getInst();
-
-        void Load( Progressive& );
-
-        const sf::Sprite& get( const std::string& id, const int i=-1 ) const;
-
+    private:
         const sf::Rect<int>& btnBound( const int id ) const;
+
+        constexpr int nBtns() const { return BTN_COUNT; }
+    
+    protected:
+        // helper initializer for 'btns' (std::array<sf::Sprite>)
+        static std::array< sf::Sprite, BTN_COUNT > makeBtns() {
+            TextureCache& inst = TextureCache::inst();
+
+            return {
+                sf::Sprite( inst.get("mm/btn/play") ),
+                sf::Sprite( inst.get("mm/btn/set") ),
+                sf::Sprite( inst.get("mm/btn/q") )
+            };
+        }
+    
+    public:
+        MenuUI();
+        ~MenuUI() = default;
+        
+        void configure( Progressive& ) override;
 };

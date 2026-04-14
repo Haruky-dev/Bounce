@@ -1,8 +1,8 @@
 cmake_minimum_required( VERSION 3.26 )
 
-project(bounce VERSION 1.0.0 LANGUAGES CXX)
+project(bounce VERSION 0.90.0 LANGUAGES CXX)
 
-set( CMAKE_CXX_STANDARD 20 )
+set( CMAKE_CXX_STANDARD 23 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 set( CMAKE_CXX_EXTENSIONS OFF )
 set( CMAKE_EXPORT_COMPILE_COMMANDS ON )
@@ -14,27 +14,33 @@ add_executable( ${PROJECT_NAME}
     src/main.cpp
 
     src/entities/Ball.cpp
-    src/entities/Player.cpp
+    src/entities/Human.cpp
+    src/entities/Computer.cpp
 
     src/tools/Tool.cpp
     src/tools/Math.cpp
     src/tools/Json.cpp
     src/tools/FrameRate.cpp
+    src/tools/Collision.cpp
 
+    src/cache/FontCache.cpp
     src/cache/SoundCache.cpp
     src/cache/TextureCache.cpp
     src/cache/visuals/MenuUI.cpp
-    src/cache/visuals/PlayUI.cpp
-    src/cache/visuals/SettingUI.cpp
+    src/cache/visuals/GameUI.cpp
+    src/cache/visuals/PauseUI.cpp
+    src/cache/visuals/SetUI.cpp
     
-    src/engine/StateManager.cpp
-    src/engine/states/Play.cpp
-    src/engine/states/Quit.cpp
-    src/engine/states/Pause.cpp
-    src/engine/states/Loading.cpp
-    src/engine/states/Setting.cpp    
-    src/engine/states/MainMenu.cpp
-    src/engine/states/GameOver.cpp
+    src/engine/Manager.cpp
+    src/engine/layers/LoadLayer.cpp
+    src/engine/layers/MenuLayer.cpp
+    src/engine/layers/GameLayer.cpp
+    src/engine/layers/PauseLayer.cpp
+    src/engine/layers/SetLayer.cpp    
+    src/engine/layers/EndLayer.cpp
+    # src/engine/layers/Quit.cpp
+    src/engine/features/Motion.cpp
+    src/engine/features/Transition.cpp
     src/engine/input/InputManager.cpp
 )
 

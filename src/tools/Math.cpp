@@ -2,9 +2,20 @@
 
 #include <math.h>
 
+int Math::randi( const int min, const int max ) {
+    std::uniform_int_distribution<int> dist( min, max );
+    
+    return dist( Math::randEngine() );
+}
+float Math::randf( const float min, const float max ) {
+    std::uniform_real_distribution<float> dist( min, max );
+    
+    return dist( Math::randEngine() );
+}
+
 sf::Vector2f Math::Normalize( const sf::Vector2f& A ) {
     const double M = std::sqrt( (A.x * A.x  +   A.y * A.y) ); // Magnitude
-    
+
     if (M <= 0.00f) return sf::Vector2f( 0.f, 0.f );
 
     sf::Vector2f UnitVect(A.x / M, A.y / M);
@@ -14,16 +25,6 @@ sf::Vector2f Math::Normalize( const sf::Vector2f& A ) {
 
 const double Math::Dot( const sf::Vector2f& A, const sf::Vector2f& B ) {
     return static_cast<double>( A.x * B.x  +  A.y * B.y );
-}
-
-void Math::Reflect( sf::Vector2f& vect, Tool::Sides side ) {
-    sf::Vector2f n = Math::Normalize(Tool::Norms.at(side));
-
-    if (n.x == 0.f && n.y == 0.f) return;
-
-    const double dotProd = Math::Dot( vect, n );
-    vect.x = vect.x - 2.f * dotProd * n.x;
-    vect.y = vect.y - 2.f * dotProd * n.y;
 }
 
 double Math::Lerp( const double A, const double B, const double t ) {
@@ -46,4 +47,14 @@ double Math::easeOut( const double x ) {
 double Math::easeInOut( const double x ) {
     return (x < 0.5f)? 4.f * x * x * x :
         1 - ( (-2.f * x + 2)*(-2.f * x + 2)*(-2.f * x + 2) ) /2.f;
+}
+
+bool Math::isBetween( const float val, const float min, const float max ) { return ( val >= min ) && ( val <= max ); }
+bool Math::isBetween( const int val, const int min, const int max ) { return ( val >= min ) && ( val <= max ); }
+
+
+std::mt19937& Math::randEngine() {
+    static std::mt19937 eng(std::random_device{}());
+
+    return eng;
 }

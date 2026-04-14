@@ -1,19 +1,20 @@
-#include <engine/states/Loading.hpp>
+#include <engine/layers/LoadLayer.hpp>
 
 #include <tools/Json.hpp>
 
+#include <cache/FontCache.hpp>
 #include <cache/SoundCache.hpp>
 #include <cache/TextureCache.hpp>
 
-#include <cache/visuals/MenuUI.hpp>
-#include <cache/visuals/PlayUI.hpp>
-#include <cache/visuals/SettingUI.hpp>
-
+#include <engine/Layer.hpp>
+#include <cache/UICache.hpp>
 
 using namespace std::literals::chrono_literals;
+class MenuUI; class GameUI; class SetUI; class PauseUI;
 
-Loading::Loading() : State(), fnt(), txt(fnt), progTxt(fnt) {
-    if (!(fnt.openFromFile("assets/RasterForge.ttf")))
+
+LoadLayer::LoadLayer() : Layer(), fnt(), txt(fnt), progTxt(fnt) {
+    if (!(fnt.openFromFile("assets/fonts/RasterForge.ttf")))
         throw std::runtime_error("UNABLE TO LOAD [FONT] in Loading State!");
 
     txt.setFont(fnt);
@@ -35,33 +36,33 @@ Loading::Loading() : State(), fnt(), txt(fnt), progTxt(fnt) {
 
     bg.setSize(sf::Vector2f(720.f, 480.f));
     bg.setFillColor(sf::Color::Black);
-
 }
 
-void Loading::Load() {
+void LoadLayer::Load() {
     try {
         loader = std::thread([this]() {
             
             // create OpenGL/SFML context
             sf::Context ctx;
-            
+
             Json::reLoad();
-            TextureCache::getInst().Load( *this );
-            SoundCache::getInst().Load( *this );
-            
-            MenuUI::getInst().Load( *this );
-            PlayUI::getInst().Load( *this );
-            SettingUI::getInst().Load( *this );
+            TextureCache::inst().Load( *this );
+            SoundCache::Load( *this );
+            FontCache::Load( *this );
+
+            UICache::inst().build<MenuUI>( *this );
+            UICache::inst().build<SetUI>( *this );
+            UICache::inst().build<PauseUI>( *this );
+            UICache::inst().build<GameUI>( *this );
 
             loadDone.store(true);
-
         });
     } catch (...) {
         throw std::runtime_error("Loading Thread Failed\n");   
     }
 }
 
-void Loading::Update(sf::Time &dt) {
+void LoadLayer::Update(sf::Time &dt) {
     progTxt.setString(
         std::to_string(
             static_cast<int>( (currUnit.load() / static_cast<float>(loadCost.load()) ) * 100.0f )
@@ -76,22 +77,22 @@ void Loading::Update(sf::Time &dt) {
     progTxt.setPosition({360.f, 240});
 }
 
-void Loading::Render(sf::RenderWindow &win) const {
+void LoadLayer::Render(sf::RenderWindow &win) const {
     win.draw(bg);
     win.draw(txt);
     win.draw(progTxt);
 }
 
-Action Loading::feature() const {
+Action LoadLayer::feature() const {
     if ( this->loadDone.load() )
         return Action::raiseMain;
     
     return Action::None;
 }
 
-State::Type Loading::getType() const { return State::Type::Loading; }
+Layer::Type LoadLayer::getType() const { return Layer::Type::Loading; }
 
-Loading::~Loading() {
+LoadLayer::~LoadLayer() {
     if (loader.joinable())
         loader.join();
 }

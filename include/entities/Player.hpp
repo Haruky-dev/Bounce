@@ -1,30 +1,41 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/System/Time.hpp>
 
-class Ball;
+#include <tools/Tool.hpp>
+#include <tools/Math.hpp>
+
 
 class Player : public sf::Drawable {
-    private:
+    friend class GameLayer;
+
+    protected:
         sf::Sprite bar;
         float speed;
-        float accTime;
-
-        int score;
-        int AIspeed;
+        float b_speed; // additional ball speed on reflecting
+        int direction;
         
     protected:
-        virtual void draw( sf::RenderTarget& target, sf::RenderStates states ) const override;
-        
+        explicit Player( const sf::Sprite& spr, const bool id )
+        : id(id), direction(0), bar(spr)
+            {
+                this->bar.setOrigin( this->bar.getLocalBounds().getCenter() );
+        }
+
+        virtual void draw( sf::RenderTarget& target, sf::RenderStates states ) const override {     target.draw( this->bar, states ); }
+
     public:
-    
-        int id;
-        Player( const sf::Sprite& spr, bool side );
-            // side; 0: for Human control, 1: for AIs
+        bool id; // 0: human, 1: computer
 
-        void UpdateState( sf::Time& dt);
-        void UpdateAI( sf::Time& dt, Ball& ball );
+    public:
+        // virtual void update() = 0;
 
-        sf::FloatRect getBounds() const;
-        sf::Vector2f getPos() const;
+        virtual bool ready() {
+            return Math::isBetween(
+                this->bar.getPosition().y, Tool::HEIGHT / 3.0f, 2.0f/3.0f * Tool::HEIGHT
+            );
+        }
+        virtual sf::Rect<float> bounds() { return this->bar.getGlobalBounds(); } // return this->hitBox;
+        virtual sf::Vector2<float> position() { return this->bounds().position; }
 };

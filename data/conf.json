@@ -2,32 +2,146 @@
     "win": {
         "W": 720,
         "H": 480,
+        "edge": 5.0,
         "title": "PingPong Game :)"
     },
 
     "setting": {
-        "maxScore": 2,
-        "fps_t": 1.0,
-        
-        "mode": "M"
+        "maxScore": 9,
+        "maxCD": 3,
+        "mode": "M",
+
+        "fps": {
+          "delay": 1.0
+        },
+
+        "author": "Haruky",
+        "version": "v0.90.0"
     },
 
     "ball": {
-        "speed": 300.0,
+        "speed": 150.0,
+        "MAXspeed": 600.0,
         "accel": 20.0,
-        "rot": 50.0
+        "rot": {
+          "delay": 50.0,
+          "speed": 0.05
+        }
+        
     },
 
-    "ai": {
-        "speed": 200.0,
-        "retDur": 1000.0,
-        "deadZone": 10.0,
-        "retTime": 100.0
+    "ai": { 
+        "difficulty": "M",
+
+        "speed": 100.0,
+        "returnDuration": 2,
+        "deadZone": 22.0,
+        "returnTime": 3.0,
+        
+        "predictionError": {
+          "min": -8,
+          "max": 8
+        },
+        "reactionDelay": {
+          "min": 0.3,
+          "max": 1.5 
+        },
+
+        "ballAccelOnReflect": 20
     },
 
     "p": {
         "speed": 500.0,
+        "ballSpeed": 20.0,
         "accel": 20.0,
-        "duration": {}
+        "duration": {},
+        
+        "ballAccelOnReflect": 20
+    },
+    
+    "modes": {
+      "Easy": {
+        "general": {
+          "maxScore": 0
+        },
+        "ball": {
+          "speed": 0.0,
+          "maxSp": 0.0,
+          "accel": 0.0
+        },
+        "player": {
+          
+        },
+        "computer": {
+          "speed": 0.0,
+          "deadZone": 0.0,
+          "returnTime": 0.0,
+          "returnDuration": 0.0,
+          "predictionErr": {
+            "min": 0,
+            "max": 0
+          },
+          "reactDelay": {
+            "min": 0,
+            "max": 0
+          }
+        }
+      },
+
+      "Mid": {
+        "general": {
+          "maxScore": 0
+        },
+        "ball": {
+          "speed": 0.0,
+          "maxSp": 0.0,
+          "accel": 0.0
+        },
+        "player": {
+          
+        },
+        "computer": {
+          "speed": 0.0,
+          "deadZone": 0.0,
+          "returnTime": 0.0,
+          "returnDuration": 0.0,
+          "predictionErr": {
+            "min": 0,
+            "max": 0
+          },
+          "reactDelay": {
+            "min": 0,
+            "max": 0
+          }
+        }
+      },
+
+      "Hard": {
+        "general": {
+          "maxScore": 0
+        },
+        "ball": {
+          "speed": 0.0,
+          "maxSp": 0.0,
+          "accel": 0.0
+        },
+        "player": {
+          
+        },
+        "computer": {
+          "speed": 0.0,
+          "deadZone": 0.0,
+          "returnTime": 0.0,
+          "returnDuration": 0.0,
+          "predictionErr": {
+            "min": 0,
+            "max": 0
+          },
+          "reactDelay": {
+            "min": 0,
+            "max": 0
+          }
+        }
+      }
     }
 }

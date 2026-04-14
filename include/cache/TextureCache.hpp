@@ -14,7 +14,6 @@ class TextureCache {
         TextureCache() = default;
 
         TextureCache( const TextureCache& ) = delete;
-        TextureCache( const TextureCache&& ) = delete;
 
         TextureCache& operator=( const TextureCache& ) = delete;
         TextureCache& operator=( const TextureCache&& ) = delete;
@@ -22,7 +21,7 @@ class TextureCache {
         std::unordered_map<std::string, std::unique_ptr<sf::Texture>> cache;
 
     public:
-        static TextureCache& getInst();
+        static TextureCache& inst();
 
         void Load( Progressive& );
 

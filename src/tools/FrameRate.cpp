@@ -1,28 +1,21 @@
 #include <tools/FrameRate.hpp>
 
+#include <cache/FontCache.hpp>
 #include <tools/Json.hpp>
 
+
 FrameRate::FrameRate()
-    : accTime(sf::Time::Zero), frames(0), fps(0), font(),
-    txt(font, ""), delay(Json::getFloat("setting.fps_t")) {
+    : accTime(sf::Time::Zero), frames(0), fps(0),
+    txt(FontCache::RASTER, ""), delay(Json::Float("setting.fps.delay")) {
 
-        if (!font.openFromFile("assets/RasterForge.ttf"))
-            throw std::runtime_error("Unable to load Font");
-
-        txt.setFont(font);
-        txt.setString( "" );
-        // txt.setScale( 4.f, 4.f );
-        // txt.setFillColor( sf::Color::Green);
-        txt.setFillColor( sf::Color(255, 165, 171) );
+        this->txt.setFillColor( sf::Color(241, 233, 219, 200) );
         this->adjTxt();
-
 }
 
-void FrameRate::UpdateState( sf::Time& dt ) {
+void FrameRate::update( sf::Time& dt ) {
     this->accTime += dt;
     this->frames++;
 
-    // must be set on conf.json later on
     if ( this->accTime.asSeconds() >=  this->delay ) {
         fps = static_cast<int>( this->frames / this->accTime.asSeconds() );
 

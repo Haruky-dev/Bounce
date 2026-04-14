@@ -1,14 +1,14 @@
-/* Base class that define shape of all derived states */
+/* Base class that define shape of all derived layers */
 #pragma once
 
 #include <SFML/Window/Window.hpp>
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 
-#include <engine/input/InputManager.hpp>
-#include <engine/input/Request.hpp>
-#include <engine/input/Action.hpp>
 #include <engine/input/Input.hpp>
+#include <engine/input/Action.hpp>
+#include <engine/input/Request.hpp>
+#include <engine/input/InputManager.hpp>
 
 #include <initializer_list>
 
@@ -16,7 +16,7 @@
 class StateManager;
 
 
-class State { 
+class Layer { 
     private:
         virtual Action feature() const {
             return Action::None;
@@ -35,38 +35,28 @@ class State {
 
     protected:
         Request request;
-        int buttonsCount;
         bool loadFlag;
         bool overlapFlag;
-        bool freezeFlag;
 
 
-        explicit State() : loadFlag(false), overlapFlag(false),
-            freezeFlag(false), buttonsCount(0) {}
+        explicit Layer() : loadFlag(false), overlapFlag(false) {}
 
     public:
         virtual void   Load() = 0;
         virtual void   Update( sf::Time& dt ) = 0;
         virtual void   Render( sf::RenderWindow& win ) const = 0; 
 
-        virtual Action Read( const Input& input ) {
+        virtual Action Read( const Input& input ) const {
             Action act = this->feature();
- 
+
             if ( act == Action::None )
                 act = InputManager::verifyInput( this->request, input );
-            
+
             return act;
         }
-        
-        // getters
-        virtual State::Type getType() const = 0;
-        virtual bool animated() const { return false; }
-        virtual bool exitDone() const { return true; }
-        virtual int getButtonsCount() const { return this->buttonsCount; }
 
-        // setters (other than flags setters)
-        virtual void setButtonsCount( const int n ) { this->buttonsCount = n; }
-        virtual void requestExit() {}
+        // getters
+        virtual Layer::Type getType() const = 0;
 
         virtual void setRequest( const std::initializer_list< Request::kbBinding >& that ) {
             for ( const Request::kbBinding& K : that )
@@ -105,12 +95,13 @@ class State {
         void setOverlap( bool flag ) { this->overlapFlag = flag; }
         bool isOverlapping() const { return this->overlapFlag; }
 
-        void setFreeze( bool flag ) { this->freezeFlag = flag; }
-        bool isFrozen() const { return this->freezeFlag; }
 
         // actions
-        virtual void exit() {}
+        virtual void enter() {}
         virtual void pause() {}
+        virtual void resume() {}
+        virtual void exit() {} // leave
+        virtual bool popable() const { return false; }
 
-        virtual ~State() = default;
+        virtual ~Layer() = default;
 };

@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
 
-#include <engine/StateManager.hpp>
+#include <engine/Manager.hpp>
 #include <tools/Tool.hpp>
 #include <tools/Json.hpp>
 
@@ -11,8 +13,8 @@ int main( void ) {
 
     std::unique_ptr<sf::RenderWindow> win;
     win = std::make_unique<sf::RenderWindow>(
-        sf::VideoMode( {720, 480} ),
-        "Testing",
+        sf::VideoMode( sf::Vector2u(Tool::WIDTH, Tool::HEIGHT) ),
+        Json::String("win.title"),
         sf::Style::Default & ~sf::Style::Resize
     );
 
@@ -22,23 +24,23 @@ int main( void ) {
           sf::Vector2i({Tool::WIDTH, Tool::HEIGHT}) )
         / 2);
     
-    StateManager manager{};
+    Manager manager{};
 
-    sf::Clock clk;
+    sf::Clock clk{};
     sf::Time dt = sf::Time::Zero;
 
-    bool focused = true;
+    bool onFocus = true;
 
     while ( win->isOpen() ) {
         dt = clk.restart();
 
         while ( const std::optional<sf::Event> ev = win->pollEvent() ) {
             if ( ev->is<sf::Event::FocusGained>() )
-                focused = true;
+                onFocus = true;
             else if ( ev->is<sf::Event::FocusLost>() )
-                focused = false;
+                onFocus = false;
 
-            if (focused) {
+            if (onFocus) {
                 if ( ev->is<sf::Event::Closed>() )
                     win->close();
                 else if ( ev->is<sf::Event::KeyPressed>() ) {
@@ -52,7 +54,7 @@ int main( void ) {
             }
         }
 
-        if (focused) manager.Update( dt, *win );
+        if (onFocus) manager.Update( dt, *win );
 
         win->clear();
 
@@ -60,5 +62,6 @@ int main( void ) {
 
         win->display();
     }
+
     return 0; 
 }

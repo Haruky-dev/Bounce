@@ -2,25 +2,23 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 
-#include <cache/TextureCache.hpp>
 #include <cache/visuals/BaseUI.hpp>
 #include <engine/features/Progressive.hpp>
 
 
-class PauseUI : public BaseUI {
-    friend class PauseLayer;
+class SetUI : public BaseUI {
+    friend class SetLayer;
 
     private:
         sf::Sprite bg;
         sf::Sprite shad;
-        sf::Color shadClr; // tweak opacity
-        sf::Color bgClr;
+        sf::Color shadClr;
 
         float bg_initY;
 
     public:
-        PauseUI();
-        ~PauseUI() = default;
+        SetUI();
+        ~SetUI() = default;
 
         void configure( Progressive& ) override;
 };

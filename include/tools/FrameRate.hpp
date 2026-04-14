@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 
 class FrameRate : public sf::Drawable {
-    sf::Font font;
     sf::Text txt;
 
     sf::Time accTime;
@@ -17,5 +16,6 @@ class FrameRate : public sf::Drawable {
 
     public:
         FrameRate();
-        void UpdateState( sf::Time& );
+
+        void update( sf::Time& );
 };

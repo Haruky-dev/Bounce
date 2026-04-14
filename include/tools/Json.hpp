@@ -2,8 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
-#include <memory>
-#include <fstream>
 
 #include <tools/json.hpp>
 
@@ -30,9 +28,9 @@ class Json {
 
         // getters
             // Primitive types
-        static int   getInt( const str& key );
-        static float getFloat( const str& key);
-        static bool  getBool( const str& key );
-        static str   getString( const str& key );
+        static int   Int( const str& key );
+        static float Float( const str& key);
+        static bool  Bool( const str& key );
+        static str   String( const str& key );
         // json  getArray( const str& key )  const;
 };

@@ -1,3 +1,4 @@
+#include <SFML/System/Angle.hpp>
 #include <cassert>
 #include <entities/Ball.hpp>
 
@@ -10,163 +11,116 @@
 #include <cache/SoundCache.hpp>
 
 #include <math.h>
+#include <print>
 
 
-Ball::Ball( const sf::Sprite& spr )
-    : ball(spr), start(false), cd(0), accTime(sf::Time::Zero),
-      moving(false), EastP(nullptr), WestP(nullptr),
-      padHit( SoundCache::getInst().get("padHit")), wallHit( SoundCache::getInst().get("wallHit")),
-      speed(Json::getFloat("ball.speed")), accel(Json::getFloat("ball.accel")) {
-
-        // !! make better random system on utils
+Ball::Ball( const sf::Sprite& spr ) :
+    spr(spr), onStart(false), onMove(false),
+    accTime(sf::Time::Zero),
+    speed(Json::Float("ball.speed")), accel(Json::Float("ball.accel")),
+    MAXspeed(Json::Float("ball.MAXspeed"))
+    {
+        // !! Math::rand( min, max )
         srand(time(NULL));
 
-        char orients[2] = {'l', 'r'};
-        this->orient = orients[ rand() % 2 ];
+        this->spr.setOrigin( this->spr.getLocalBounds().getCenter() );
 
-        this->ball.setOrigin(
-            sf::Vector2f(spr.getTexture().getSize()) / 2.f
-        );
-
-        this->ResetPos();
+        this->reset();
 }
 
-void Ball::LaunchBall() {
-    // target
-    if ( this->orient == 'l' )
-        direc.x = 0.0f;
-    else if (this->orient == 'r')
-        direc.x = Tool::WIDTH;
-        
-    // randPoint = (rand() % (end - start + 1)) + start
-    
-    //   1st Half         2nd Half
-    // [ 0,  200 ]  U  [ 250,  480 ]
-    char halfs[2] = {'1', '2'};
-    if ( halfs[rand() % 2] == '1' ) {
-        direc.y = rand() % 200;
+void Ball::launch() {
+    //= Target point
+    sf::Vector2f targetPt;
+
+        // tp.x
+    switch ( Tool::ballOrient ) {
+        case '1': targetPt.x = 0.0f; break;
+        case '2': targetPt.x = Tool::WIDTH;        break;
+
+        default:
+            throw std::runtime_error("Invalid [orient] given for 'ball.launch'!");
+    }
+        // tp.y
+    //  1st Half=0      2nd Half=1
+    // [ 0,  200 ]  U  [ 250,  Tool::HEIGHT ]
+    if ( Math::randi() ) {
+        targetPt.y = Math::randi( 250, Tool::HEIGHT );
     } else {
-        direc.y = (rand() % (230)) + 250;
+        targetPt.y = Math::randi( 0, 200 );
     }
 
     // direction = targetPos - currPos;
-    direc -= ball.getPosition();
+    this->unitDirec = Math::Normalize( targetPt - this->spr.getPosition() );
+    this->velocity = this->unitDirec * static_cast<float>(this->speed);
 
-    unitDirec  = Math::Normalize(direc);
-    velocity.x = unitDirec.x * speed;
-    velocity.y = unitDirec.y * speed;
-
-    moving = true;
-}
-
-void Ball::setPlayers( Player& p1, Player& p2 ) {
-    this->EastP = &p1;
-    this->WestP = &p2;
+    this->onMove = true;
 }
 
 void Ball::draw( sf::RenderTarget& target, sf::RenderStates states ) const  {
-    target.draw(ball, states);
+    target.draw(spr, states);
 }
 
-void Ball::AdjustPos( Tool::Sides side ) {
-    assert( EastP && WestP );
+void Ball::adjust( const Tool::Sides side, const sf::Rect<float>& padBounds) {
+    sf::Vector2f newBallPos = spr.getPosition();
+    int ballR = std::floor( this->spr.getGlobalBounds().size.x / 2.0f );
 
-    sf::FloatRect BallBounds = getBounds();
-    sf::FloatRect PlayBounds = EastP->getBounds();
-    sf::Vector2f newBallPos = ball.getPosition();
-    
     switch ( side ) {
         case Tool::Sides::TOP:
-            newBallPos.y = BallBounds.size.x/2.0f + 12.0f;
+            newBallPos.y = ballR + Tool::W_EDGE + 1.0f;
             break;
         case Tool::Sides::BOTTOM:
-            newBallPos.y = Tool::HEIGHT - (BallBounds.size.x/2.0f + 12.0f);
+            newBallPos.y = Tool::HEIGHT - (ballR + Tool::W_EDGE + 1.0f);
             break;
         case Tool::Sides::LEFT:
-            newBallPos.x = PlayBounds.size.x/2.f + 35.f;
+            newBallPos.x = padBounds.position.x + padBounds.size.x + ballR + 1.0f;
             break;
         case Tool::Sides::RIGHT:
-            newBallPos.x = Tool::WIDTH - (PlayBounds.size.x/2.f + 35.f);
+            newBallPos.x = padBounds.position.x - (ballR + 1.0f);
             break;
     }
 
-    this->speed += this->accel;
-    ball.setPosition( newBallPos );
+    this->speed = std::min( this->speed + this->accel, this->MAXspeed );
+    this->velocity = this->unitDirec * static_cast<float>(this->speed);
+
+    this->spr.setPosition( newBallPos );
 }
 
-void Ball::ResetPos() {
-    ball.setPosition( Tool::W_CTR );
-    moving = false;
-    start = true;
-    // reset speed
-    this->speed = Json::getFloat("ball.speed");
-}
-
-void Ball::Rotate( const sf::Time& dt ) {
-    if (moving) {
-        if ( accTime.asMilliseconds() >= Json::getFloat("ball.rot") ) {
-            accTime = sf::Time::Zero;
-
-            // 
-            int direc = (unitDirec.x > 0)? 1 : -1;
-            // ball.rotate( 0.05f * this->speed * direc);
-            ball.rotate( sf::Angle( sf::degrees(0.05f * this->speed * direc) ));
-
-        } else accTime+= dt;
-    }
-}
-
-void Ball::UpdateState( const sf::Time& dt ) {
+void Ball::reset() {
+    this->onStart = true;
+    this->onMove = false;
+    this->speed = Json::Float("ball.speed");
     
-    if (!moving && start) {
-        if (accTime.asSeconds() >= 3.0f) {
-            this->LaunchBall();
-            start = false;
-            // moving = true;
-            accTime = sf::Time::Zero;
-        } else {
-            accTime+=dt;
-            cd = (int) accTime.asSeconds();
-            if (cd == 3) cd = -1;
-        }
-    }
+    this->unitDirec = this->velocity = sf::Vector2<float>( 0.0f, 0.0f );
 
-    else if (moving) {
-        Rotate( dt );
-        ball.move( speed * dt.asSeconds() * unitDirec );
-    }
+    this->spr.setPosition( Tool::W_CTR );
+    this->spr.setRotation( sf::Angle( sf::degrees( 0.0f )) );
+}
 
-    if ( Tool::checkPlayColl( *EastP, *WestP, *this, side)
-      || Tool::checkWallColl(*this, side)) {
+void Ball::rotate( const sf::Time& dt ) {
+    if ( this->onMove ) {
+        if ( this->accTime.asMilliseconds() >= Json::Float("ball.rot.delay") ) {
+            this->accTime = sf::Time::Zero;
 
-        if (side == Tool::Sides::LEFT || side == Tool::Sides::RIGHT) {
-            this->padHit.play();
-        } else {
-            this->wallHit.play();
-        }
+            int direc = (unitDirec.x > 0)? 1 : -1;
+            this->spr.rotate( sf::Angle( sf::degrees(0.05f * this->speed * direc) ));
 
-        Math::Reflect(unitDirec, side);
-        // update velocity
-        this->velocity.x = this->unitDirec.x * this->speed;
-        this->velocity.y = this->unitDirec.y * this->speed;
-
-        AdjustPos(side);
+        } else this->accTime+= dt;
     }
 }
 
-sf::FloatRect Ball::getBounds() const {
-    return this->ball.getGlobalBounds();
+void Ball::move( const sf::Vector2f& position ) { this->spr.move( position ); }
+
+void Ball::reflect( const Tool::Sides side ) {
+    const sf::Vector2f N = Math::Normalize( Tool::Norms[(int) side] );
+    const float DP = Math::Dot( this->unitDirec, Tool::Norms[(int) side] );
+
+    if (
+        (N.x == 0.0f && N.y == 0.0f)
+        || DP == 0.0f
+    ) return;
+
+    this->unitDirec -= 2.0f * DP * N;
+    this->velocity = this->unitDirec * static_cast<float>(this->speed);
 }
 
-sf::Vector2f Ball::getPos() const {
-    return ball.getPosition();
-}
-
-/* if (ball.getDirec().x <= 0) // ball is moving towards LEFT. */
-sf::Vector2f Ball::getDirec() const {
-    return this->unitDirec;
-}
-
-sf::Vector2f Ball::getVelocity() const {
-    return this->velocity;
-}
+sf::Rect<float> Ball::bounds() const { return this->spr.getGlobalBounds(); }

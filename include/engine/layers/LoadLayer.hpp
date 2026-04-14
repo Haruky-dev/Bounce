@@ -2,14 +2,14 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <engine/State.hpp>
+#include <engine/Layer.hpp>
 #include <engine/features/Progressive.hpp>
 
 #include <thread>
 #include <atomic>
 
 
-class Loading : public State, public Progressive {
+class LoadLayer : public Layer, public Progressive {
     private:
         sf::Font fnt;
         sf::Text txt;
@@ -34,15 +34,15 @@ class Loading : public State, public Progressive {
         }
 
     public:
-        Loading();
+        LoadLayer();
 
         void Load() override;
         void Update(sf::Time &dt) override;
         void Render(sf::RenderWindow &win) const override;
 
-        State::Type getType() const override;
+        Layer::Type getType() const override;
 
         std::atomic<bool> loadDone {false};
 
-        ~Loading();
+        ~LoadLayer();
 };

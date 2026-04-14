@@ -1,9 +1,9 @@
 #include <cache/TextureCache.hpp>
 
-#include <engine/states/Loading.hpp>
+#include <engine/layers/LoadLayer.hpp>
 
 
-TextureCache& TextureCache::getInst() {
+TextureCache& TextureCache::inst() {
     static TextureCache inst = TextureCache();
     
     // This func
@@ -12,7 +12,7 @@ TextureCache& TextureCache::getInst() {
 
 
 void TextureCache::Load( Progressive& prog ) {
-    prog.addTotal( 210 ); // 1kb -> .5 units, ~400kb -> 200u
+    prog.addTotal( 260 ); // 1kb -> .5 units
 
     //-- [MainMenu] State
     this->cache["mm/bg"] = std::make_unique<sf::Texture>();
@@ -42,7 +42,7 @@ void TextureCache::Load( Progressive& prog ) {
     prog.incCount( 19 );
 
     this->cache["set/shad"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["set/shad"]->loadFromFile( "assets/shadow.png" )))
+    if (!(this->cache["set/shad"]->loadFromFile( "assets/shadow_1.png" )))
         throw std::runtime_error("Cannot load [Texture] 'Setting/Shadow'!");
     prog.incCount( 19 );
 
@@ -53,7 +53,7 @@ void TextureCache::Load( Progressive& prog ) {
     prog.incCount( 35 );
 
     this->cache["play/pad"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/pad"]->loadFromFile( "assets/paddle.png" )))
+    if (!(this->cache["play/pad"]->loadFromFile( "assets/pad.png" )))
         throw std::runtime_error("Cannot load [Texture] 'play/pad'!");
     prog.incCount( 1 );
 
@@ -61,51 +61,16 @@ void TextureCache::Load( Progressive& prog ) {
     if (!(this->cache["play/ball"]->loadFromFile( "assets/ball.png" )))
         throw std::runtime_error("Cannot load [Texture] 'play/ball'!");
     prog.incCount( 1 );
-
-    this->cache["play/sc/0"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/sc/0"]->loadFromFile( "assets/zero.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/score/0'!");
-    prog.incCount( 1 );
-
-    this->cache["play/sc/1"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/sc/1"]->loadFromFile( "assets/one.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/score/1'!");
-    prog.incCount( 1 );
-
-    this->cache["play/sc/2"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/sc/2"]->loadFromFile( "assets/two.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/score/2'!");
-    prog.incCount( 1 );
-
-    this->cache["play/sc/3"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/sc/3"]->loadFromFile( "assets/three.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/score/3'!");
-    prog.incCount( 1 );
-
-    this->cache["play/sc/4"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/sc/4"]->loadFromFile( "assets/four.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/score/4'!");
-    prog.incCount( 1 );
-
-    this->cache["play/sc/5"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/sc/5"]->loadFromFile( "assets/five.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/score/5'!");
-    prog.incCount( 1 );
-
-    this->cache["play/cd/1"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/cd/1"]->loadFromFile( "assets/cOne.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/countD/1'!");
-    prog.incCount( 1 );
-
-    this->cache["play/cd/2"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/cd/2"]->loadFromFile( "assets/cTwo.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/countD/2'!");
-    prog.incCount( 1 );
-
-    this->cache["play/cd/3"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/cd/3"]->loadFromFile( "assets/cThree.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/countD/3'!");
-    prog.incCount( 1 );
+    
+    this->cache["pause/shad"] = std::make_unique<sf::Texture>();
+    if (!(this->cache["pause/shad"]->loadFromFile( "assets/shadow_2.png" )))
+        throw std::runtime_error("Cannot load [Texture] 'pause/shadow'!");
+    prog.incCount( 4 );
+    
+    this->cache["pause/bg"] = std::make_unique<sf::Texture>();
+    if (!(this->cache["pause/bg"]->loadFromFile( "assets/p_menu.png" )))
+        throw std::runtime_error("Cannot load [Texture] 'pause/bg'!");
+    prog.incCount( 40 );
 }
 
 const sf::Texture& TextureCache::get( const std::string& id ) const {

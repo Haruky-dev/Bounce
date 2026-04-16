@@ -2,7 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <unordered_map>
+#include <vector>
 #include <memory>
 #include <string>
 
@@ -11,14 +11,21 @@
 
 class TextureCache {
     private:
-        TextureCache() = default;
 
+        TextureCache() = default;
         TextureCache( const TextureCache& ) = delete;
 
         TextureCache& operator=( const TextureCache& ) = delete;
         TextureCache& operator=( const TextureCache&& ) = delete;
 
-        std::unordered_map<std::string, std::unique_ptr<sf::Texture>> cache;
+        struct Asset {
+            std::string path;
+            std::string id;
+            int weight;
+        };
+
+    private:
+        std::unordered_map< std::string, std::unique_ptr<sf::Texture> > __cache;
 
     public:
         static TextureCache& inst();

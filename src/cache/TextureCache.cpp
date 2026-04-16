@@ -2,81 +2,64 @@
 
 #include <engine/layers/LoadLayer.hpp>
 
+#include <algorithm>
+#include <print>
+
 
 TextureCache& TextureCache::inst() {
     static TextureCache inst = TextureCache();
     
-    // This func
     return inst;
 }
 
-
 void TextureCache::Load( Progressive& prog ) {
-    prog.addTotal( 260 ); // 1kb -> .5 units
+    const std::vector<TextureCache::Asset> properties = { /* 1kb -> .5 units */
+        { "assets/MMbg.jpg", "mm/bg", 120 },        /* MainMenu layer assets */
+        { "assets/play.png", "mm/btn/play", 4 },
+        { "assets/set.png", "mm/btn/set", 4 },
+        { "assets/quit.png", "mm/btn/q", 4 },
 
-    //-- [MainMenu] State
-    this->cache["mm/bg"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["mm/bg"]->loadFromFile("assets/MMbg.jpg")))
-        throw std::runtime_error("Cannot load [Texture] 'MainMenu/bg'!");
-    prog.incCount( 120 );
+        { "assets/menu.png", "set/bg", 4 },         /* Setting layer assets */
+        { "assets/shadow_1.png", "set/shad", 20 },
 
-    this->cache["mm/btn/play"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["mm/btn/play"]->loadFromFile( "assets/play.png" )))   //-- buttons
-        throw std::runtime_error("Cannot load [Texture] 'MainMenu/Button/play'!");
-    prog.incCount( 2 );
+        { "assets/gameBg.png", "play/bg", 44 },     /* Game layer assets */
+        { "assets/pad.png", "play/pad", 2 },
+        { "assets/ball.png", "play/ball", 2 },
 
-    this->cache["mm/btn/set"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["mm/btn/set"]->loadFromFile( "assets/set.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'MainMenu/Button/Setting'!");
-    prog.incCount( 2 );
-
-    this->cache["mm/btn/q"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["mm/btn/q"]->loadFromFile( "assets/quit.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'MainMenu/Button/Quit'!");
-    prog.incCount( 2 );
-
-    //= [Setting] State
-    this->cache["set/bg"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["set/bg"]->loadFromFile( "assets/menu.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'Setting/bg'!");
-    prog.incCount( 19 );
-
-    this->cache["set/shad"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["set/shad"]->loadFromFile( "assets/shadow_1.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'Setting/Shadow'!");
-    prog.incCount( 19 );
-
-    //= [Play] State
-    this->cache["play/bg"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/bg"]->loadFromFile( "assets/gameBg.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/bg'!");
-    prog.incCount( 35 );
-
-    this->cache["play/pad"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/pad"]->loadFromFile( "assets/pad.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/pad'!");
-    prog.incCount( 1 );
-
-    this->cache["play/ball"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["play/ball"]->loadFromFile( "assets/ball.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'play/ball'!");
-    prog.incCount( 1 );
+        { "assets/shadow_2.png", "pause/shad", 4 }, /* Pause layer assets */
+        { "assets/p_menu.png", "pause/bg", 44 }
+    };
     
-    this->cache["pause/shad"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["pause/shad"]->loadFromFile( "assets/shadow_2.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'pause/shadow'!");
-    prog.incCount( 4 );
-    
-    this->cache["pause/bg"] = std::make_unique<sf::Texture>();
-    if (!(this->cache["pause/bg"]->loadFromFile( "assets/p_menu.png" )))
-        throw std::runtime_error("Cannot load [Texture] 'pause/bg'!");
-    prog.incCount( 40 );
+    prog.addTotal(
+        std::ranges::fold_left(
+            properties, 0,
+            [] ( int acc, const TextureCache::Asset& that ) {
+                return acc + that.weight;
+            }
+        )
+    );
+
+    this->__cache.reserve( properties.size() );
+
+    for ( const Asset& that : properties ) {
+        this->__cache[ that.id ] = std::make_unique<sf::Texture>();
+
+        if ( !(this->__cache.at( that.id )->loadFromFile( that.path )) )
+            throw std::runtime_error(
+                "Cannot load [Texture] at path: '" + that.path + "' !"
+            );    
+
+        prog.incCount( that.weight );
+    }
 }
 
 const sf::Texture& TextureCache::get( const std::string& id ) const {
+    const auto it = this->__cache.find( id );
 
-    if ( this->cache.find( id ) == this->cache.end() )
-        throw std::runtime_error("Invalid given [ID] for 'Texture' look-up!");
+    if ( it == this->__cache.end() )
+        throw std::runtime_error(
+            "Invalid given [ID] (id==" + id + ") for 'Texture' look-up!"
+        );
 
-    return *( this->cache.at( id ) );
+    return *(it->second);
 }

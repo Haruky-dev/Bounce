@@ -15,9 +15,6 @@
 
 #include <tools/Tool.hpp>
 #include <tools/Json.hpp>
-#include <cache/UICache.hpp>
-#include <cache/SoundCache.hpp>
-#include <cache/TextureCache.hpp>
 
 #include <memory>
 

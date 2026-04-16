@@ -9,6 +9,8 @@
 #include <tools/Math.hpp>
 #include <tools/Collision.hpp>
 
+#include <print>
+
 
 GameLayer::GameLayer() :
     Layer(),
@@ -23,16 +25,20 @@ GameLayer::GameLayer() :
 GameLayer::~GameLayer() = default;
 
 void GameLayer::Load() {
+    std::println("[GameLayer] loading..");
+
     this->music = std::make_unique<sf::Music>();
     if (!(this->music->openFromFile( "assets/musics/Toejam_and_Earl.ogg" )))
         throw std::runtime_error("Failure");
-        
+
     this->music->setLooping( true );
 
     this->setRequest({
         { sf::Keyboard::Key::Escape, Action::raiseMain },
         { sf::Keyboard::Key::Space, Action::raisePause }
     });
+    
+    std::println("[GameLayer] loaded!");
 }
 
 void GameLayer::Update( sf::Time& dt ) {
@@ -65,13 +71,13 @@ void GameLayer::Render( sf::RenderWindow& win ) const {
 }
 
 void GameLayer::resume() {
-    this->resetT();
+    // this->resetT();
 }
 void GameLayer::exit() {
     this->music.reset();
 }
 void GameLayer::pause() {
-    this->initT();
+    // this->initT();
     // this->music->setVolume( 10 );
 }
 Layer::Type GameLayer::getType() const { return Layer::Type::Play; }
@@ -106,7 +112,6 @@ void GameLayer::updateBall( const sf::Time& dt ) {
      || Collision::computer( this->P2.bounds(), this->ball.bounds(), this->norme )
     ) {
             if ( Tool::goalScored ) {
-                // Tool::goalScored = false;
                 assert( Tool::ballOrient == '1' || Tool::ballOrient == '2' );
     
                 this->ball.reset();

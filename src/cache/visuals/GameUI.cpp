@@ -23,8 +23,8 @@ GameUI::GameUI() :
     {}
 
 
-void GameUI::configure( Progressive& prog ) {
-    prog.addTotal( 10 );
+void GameUI::configure( const std::optional<Progressive*>& prog ) {
+    if ( prog.has_value() ) (*prog)->addTotal( 10 );
 
     // scores conf
     this->score_1.setOrigin( this->score_1.getLocalBounds().getCenter() );
@@ -43,7 +43,7 @@ void GameUI::configure( Progressive& prog ) {
     this->countD.setFillColor( sf::Color( 12, 32, 36, 150 ));
     this->countD.setScale( {1.5f, 1.5f} );
 
-    prog.incCount( 10 );
+    if ( prog.has_value() )  (*prog)->incCount( 10 );
 }
 
 void GameUI::update( const sf::Time& dt ) {

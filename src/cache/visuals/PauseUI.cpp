@@ -11,11 +11,11 @@ PauseUI::PauseUI() :
     bg_initY( Tool::HEIGHT + bg.getTexture().getSize().y / 2.f )
     {}
 
-void PauseUI::configure( Progressive& prog ) {
-    prog.addTotal( 5 );
+void PauseUI::configure( const std::optional<Progressive*>& prog ) {
+    if ( prog.has_value() ) (*prog)->addTotal( 5 );
 
     this->bg.setOrigin( sf::Vector2f(bg.getTexture().getSize()) / 2.f );
     this->bg.setPosition( {Tool::W_CTR.x, this->bg_initY});
 
-    prog.incCount( 5 );
+    if ( prog.has_value() ) (*prog)->incCount( 5 );
 }

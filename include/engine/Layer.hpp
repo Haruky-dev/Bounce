@@ -35,11 +35,8 @@ class Layer {
 
     protected:
         Request request;
-        bool loadFlag;
-        bool overlapFlag;
 
-
-        explicit Layer() : loadFlag(false), overlapFlag(false) {}
+        explicit Layer() : request() {}
 
     public:
         virtual void   Load() = 0;
@@ -86,15 +83,6 @@ class Layer {
 
             return buttons;
         }
-
-
-        // flags
-        void setLoaded( bool flag ) { this->loadFlag = flag; }
-        bool isLoaded() const { return this->loadFlag; }
-
-        void setOverlap( bool flag ) { this->overlapFlag = flag; }
-        bool isOverlapping() const { return this->overlapFlag; }
-
 
         // actions
         virtual void enter() {}

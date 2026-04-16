@@ -46,5 +46,5 @@ class MenuUI : public BaseUI {
         MenuUI();
         ~MenuUI() = default;
         
-        void configure( Progressive& ) override;
+        void configure( const std::optional<Progressive*>& ) override;
 };

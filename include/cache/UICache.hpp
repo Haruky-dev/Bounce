@@ -23,7 +23,7 @@ class UICache {
         UICache& operator=( UICache& )  = delete;
         UICache& operator=( UICache&& ) = delete;
 
-        std::array< std::unique_ptr<BaseUI>, static_cast<std::size_t>( Layer::Type::Quit ) > cache;
+        std::array< std::unique_ptr<BaseUI>, static_cast<int>( Layer::Type::Quit ) > cache;
             // State::Type::Quit == Last state == size (excluding Loading since it won't have a UI)
 
         template <typename T>
@@ -56,7 +56,7 @@ class UICache {
 
             this->cache[I] = std::make_unique<T>();
 
-            this->cache[I]->configure( prog );
+            this->cache[I]->configure( std::optional<Progressive*>( &prog ) );
         }
 
         template <typename T>
@@ -64,5 +64,13 @@ class UICache {
             const int I = this->indexof<T>();
 
             return static_cast<T&>( *this->cache[I] );
+        }
+        
+        template <typename T>
+        void reload() {
+            const int I = this->indexof<T>();
+
+            this->cache.at( I ).reset( std::make_unique<T>() );
+            this->cache.at( I )->configure( std::nullopt );
         }
 };

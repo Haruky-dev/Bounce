@@ -41,7 +41,6 @@ void MenuLayer::Load() {
 }
 
 void MenuLayer::Update( sf::Time& dt ) {
-    
     if (this->music->getStatus() != sf::Music::Status::Playing) {
         this->music->play();
     }

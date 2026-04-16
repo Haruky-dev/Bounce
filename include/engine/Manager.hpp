@@ -14,15 +14,22 @@ enum class Action;
 
 class Manager {
     private:
+        struct State {
+            std::unique_ptr<Layer> layer;
+            bool onOverlap = false;
+            bool onFreeze  = false;
+            bool Loaded    = false;
+        };
+
         // A storing unit that holds factory functions of layers
         std::unordered_map<
             Layer::Type, std::function<std::unique_ptr<Layer>()>
             > __register;
 
-        std::vector<std::unique_ptr<Layer>> __stack;
+        std::vector<State> __stack;
 
     private:
-        void pushLayer( Layer::Type T, bool overlapLast=false );
+        void pushLayer( Layer::Type T, bool overlapping=false, bool freezeLast=false );
         void updateLayers( sf::Time& dt );
         void controlOut( const Action out );
         void renderLayers( sf::RenderWindow& win  ) const;

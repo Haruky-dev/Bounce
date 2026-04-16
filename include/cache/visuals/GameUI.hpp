@@ -34,5 +34,5 @@ class GameUI : public BaseUI {
         GameUI();
         ~GameUI() = default;
 
-        void configure( Progressive& ) override;
+        void configure( const std::optional<Progressive*>& ) override;
 };

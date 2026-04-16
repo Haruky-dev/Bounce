@@ -20,5 +20,5 @@ class SetUI : public BaseUI {
         SetUI();
         ~SetUI() = default;
 
-        void configure( Progressive& ) override;
+        void configure( const std::optional<Progressive*>& ) override;
 };

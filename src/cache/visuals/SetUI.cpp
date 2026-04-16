@@ -11,8 +11,8 @@ SetUI::SetUI() :
     bg_initY(Tool::HEIGHT + bg.getPosition().y / 2.f)
     {}
 
-void SetUI::configure( Progressive& prog ) {
-    prog.addTotal( 5 );
+void SetUI::configure( const std::optional<Progressive*>& prog ) {
+    if ( prog.has_value() ) (*prog)->addTotal( 5 );
 
     this->bg.setOrigin(
         sf::Vector2f(this->bg.getTexture().getSize()) / 2.f
@@ -20,5 +20,5 @@ void SetUI::configure( Progressive& prog ) {
 
     this->bg.setPosition( {Tool::W_CTR.x, this->bg_initY} );
 
-    prog.incCount( 5 );
+    if ( prog.has_value() ) (*prog)->incCount( 5 );
 }

@@ -22,5 +22,5 @@ class PauseUI : public BaseUI {
         PauseUI();
         ~PauseUI() = default;
 
-        void configure( Progressive& ) override;
+        void configure( const std::optional<Progressive*>& ) override;
 };

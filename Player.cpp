@@ -9,13 +9,10 @@
 
 
 Player::Player(const sf::Sprite &spr, bool id )
-    : bar(spr), score(0), accTime(0.f), id(id), direction(0),
-    speed(Json::Float("p.speed")),
-    b_speed(Json::Float("p.ballSpeed")) {
+    : bar(spr), id(id), direction(0)
+    {
 
     this->bar.setOrigin( this->bar.getLocalBounds().getCenter() );
-
-    this->bar.setPosition( {Tool::WIDTH - 20.f, Tool::W_CTR.y} );
 }
 
 void Player::update( const sf::Time& dt ) {

@@ -27,6 +27,8 @@ sf::Vector2f Tool::W_CTR = {
     Tool::HEIGHT / 2.0f
 };
 
+std::string Tool::MODE = Json::String("setting.mode") + '.';
+
 // REVIEW THIS SHIT, google it
 std::array<sf::Vector2f, 4> Tool::Norms = {
     sf::Vector2f( {0.0f, -1.0f} ),

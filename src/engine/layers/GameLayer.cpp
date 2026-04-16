@@ -118,7 +118,7 @@ void GameLayer::updateBall( const sf::Time& dt ) {
         ) {
             this->UI.paddleSFX.play();
             if ( this->norme == Tool::Sides::RIGHT )
-                this->P2.updateImperfection();
+                this->P2.refresh();
         } else {
             this->UI.wallSFX.play();
         }

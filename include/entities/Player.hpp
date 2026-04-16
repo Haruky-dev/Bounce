@@ -12,8 +12,6 @@ class Player : public sf::Drawable {
 
     protected:
         sf::Sprite bar;
-        float speed;
-        float b_speed; // additional ball speed on reflecting
         int direction;
         
     protected:
@@ -31,7 +29,7 @@ class Player : public sf::Drawable {
     public:
         // virtual void update() = 0;
 
-        virtual bool ready() {
+        virtual bool ready() { // total BS
             return Math::isBetween(
                 this->bar.getPosition().y, Tool::HEIGHT / 3.0f, 2.0f/3.0f * Tool::HEIGHT
             );

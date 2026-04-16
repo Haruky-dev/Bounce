@@ -11,20 +11,16 @@
 #include <cache/SoundCache.hpp>
 
 #include <math.h>
-#include <print>
 
 
 Ball::Ball( const sf::Sprite& spr ) :
     spr(spr), onStart(false), onMove(false),
-    accTime(sf::Time::Zero),
-    speed(Json::Float("ball.speed")), accel(Json::Float("ball.accel")),
-    MAXspeed(Json::Float("ball.MAXspeed"))
+    accTime(sf::Time::Zero), path( "modes." + Tool::MODE + "ball." ),
+    speed(Json::Float( path + "speed" )), accel(Json::Float( path + "accel" )),
+    MAXspeed(Json::Float( path + "MAXspeed" )), rotDelay( Json::Float( path + "rotationDelay" ))
     {
-        // !! Math::rand( min, max )
-        srand(time(NULL));
 
         this->spr.setOrigin( this->spr.getLocalBounds().getCenter() );
-
         this->reset();
 }
 
@@ -88,8 +84,8 @@ void Ball::adjust( const Tool::Sides side, const sf::Rect<float>& padBounds) {
 void Ball::reset() {
     this->onStart = true;
     this->onMove = false;
-    this->speed = Json::Float("ball.speed");
-    
+    this->speed = Json::Float( this->path + "speed" );
+
     this->unitDirec = this->velocity = sf::Vector2<float>( 0.0f, 0.0f );
 
     this->spr.setPosition( Tool::W_CTR );
@@ -98,7 +94,7 @@ void Ball::reset() {
 
 void Ball::rotate( const sf::Time& dt ) {
     if ( this->onMove ) {
-        if ( this->accTime.asMilliseconds() >= Json::Float("ball.rot.delay") ) {
+        if ( this->accTime.asMilliseconds() >= this->rotDelay ) {
             this->accTime = sf::Time::Zero;
 
             int direc = (unitDirec.x > 0)? 1 : -1;

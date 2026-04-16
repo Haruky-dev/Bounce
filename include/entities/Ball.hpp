@@ -20,6 +20,8 @@ class Ball : public sf::Drawable {
 
         sf::Time accTime;
 
+        std::string path;
+        float rotDelay;
         int speed;
         int MAXspeed;
         int accel;

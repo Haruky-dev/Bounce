@@ -4,7 +4,7 @@
 
 #include <entities/Ball.hpp>
 #include <entities/Player.hpp>
-#include <entities/Computer.hpp>
+#include <entities/ai/Computer.hpp>
 
 #include <tools/Tool.hpp>
 

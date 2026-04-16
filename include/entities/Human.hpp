@@ -4,6 +4,11 @@
 
 
 class Human : public Player {
+    private:
+        std::string path;
+        float speed;
+        float ballBounce;
+
     public:
         Human( const sf::Sprite& spr, bool id );
 

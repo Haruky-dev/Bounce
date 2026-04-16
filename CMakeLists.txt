@@ -15,7 +15,8 @@ add_executable( ${PROJECT_NAME}
 
     src/entities/Ball.cpp
     src/entities/Human.cpp
-    src/entities/Computer.cpp
+    src/entities/ai/Computer.cpp
+    src/entities/ai/Neuron.cpp
 
     src/tools/Tool.cpp
     src/tools/Math.cpp
@@ -30,13 +31,13 @@ add_executable( ${PROJECT_NAME}
     src/cache/visuals/GameUI.cpp
     src/cache/visuals/PauseUI.cpp
     src/cache/visuals/SetUI.cpp
-    
+
     src/engine/Manager.cpp
     src/engine/layers/LoadLayer.cpp
     src/engine/layers/MenuLayer.cpp
     src/engine/layers/GameLayer.cpp
     src/engine/layers/PauseLayer.cpp
-    src/engine/layers/SetLayer.cpp    
+    src/engine/layers/SetLayer.cpp
     src/engine/layers/EndLayer.cpp
     # src/engine/layers/Quit.cpp
     src/engine/features/Motion.cpp
@@ -65,11 +66,11 @@ add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
         ${CMAKE_SOURCE_DIR}/assets
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets   
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
 
     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
         ${CMAKE_SOURCE_DIR}/data
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/data
-        
+
     COMMENT "Copied [assets/] and [data/] directories..."
 )

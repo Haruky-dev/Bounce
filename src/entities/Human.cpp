@@ -8,9 +8,12 @@
 #include <math.h>
 
 
-Human::Human(const sf::Sprite &spr, bool id ) : Player(spr, id) {
-    this->speed   = Json::Float("p.speed");
-    this->b_speed = Json::Float("p.ballAccelOnReflect");
+Human::Human(const sf::Sprite &spr, bool id ) :
+    Player(spr, id),
+    path( "modes." + Tool::MODE + "player." ),
+    speed( Json::Float( path + "speed" ) ),
+    ballBounce( Json::Float( path + "ballBounce" ) )
+    {
 
     this->bar.setPosition( {Tool::WIDTH - 20.f, Tool::W_CTR.y} );
 }
@@ -23,13 +26,13 @@ void Human::update( const sf::Time& dt ) {
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
         if (Y_pos - halfHeight > Tool::W_EDGE)
-            bar.move({0, -speed * dt.asSeconds()});
+            bar.move({0, -this->speed * dt.asSeconds()});
 
         this->direction = 1;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
         if (Y_pos + halfHeight < Tool::HEIGHT - Tool::W_EDGE)
-            bar.move({0, speed * dt.asSeconds()});
+            bar.move({0, this->speed * dt.asSeconds()});
 
         this->direction = -1;
     }

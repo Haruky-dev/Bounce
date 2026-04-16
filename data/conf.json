@@ -1,147 +1,106 @@
 {
-    "win": {
-        "W": 720,
-        "H": 480,
-        "edge": 5.0,
-        "title": "PingPong Game :)"
+  "win": {
+    "W": 720,
+    "H": 480,
+    "edge": 5.0,
+    "title": "PingPong Game :)"
+  },
+
+  "setting": {
+    "maxScore": 9,
+    "maxCD": 3,
+    "mode": "Easy",
+
+    "fps": {
+      "delay": 1.0
     },
 
-    "setting": {
-        "maxScore": 9,
-        "maxCD": 3,
-        "mode": "M",
+    "author": "Haruky",
+    "version": "v0.90.0"
+  },
 
-        "fps": {
-          "delay": 1.0
-        },
-
-        "author": "Haruky",
-        "version": "v0.90.0"
-    },
-
-    "ball": {
+  "modes": {
+    "Easy": {
+      "ball": {
         "speed": 150.0,
         "MAXspeed": 600.0,
         "accel": 20.0,
-        "rot": {
-          "delay": 50.0,
-          "speed": 0.05
-        }
-        
-    },
+        "rotationDelay": 50.0
+      },
 
-    "ai": { 
-        "difficulty": "M",
+      "player": {
+        "speed": 500.0,
+        "ballBounce": 20.0,
+        "accel": 20.0
+      },
 
+      "computer": {
         "speed": 100.0,
-        "returnDuration": 2,
+        "ballBounce": 20,
         "deadZone": 22.0,
         "returnTime": 3.0,
-        
-        "predictionError": {
+        "returnDuration": 2.0,
+        "predictionErr": {
           "min": -8,
           "max": 8
         },
-        "reactionDelay": {
+        "reactDelay": {
           "min": 0.3,
-          "max": 1.5 
-        },
-
-        "ballAccelOnReflect": 20
+          "max": 1.5
+        }
+      }
     },
 
-    "p": {
-        "speed": 500.0,
-        "ballSpeed": 20.0,
-        "accel": 20.0,
-        "duration": {},
-        
-        "ballAccelOnReflect": 20
+    "Mid": {
+      "general": {
+        "maxScore": 0
+      },
+      "ball": {
+        "speed": 0.0,
+        "maxSp": 0.0,
+        "accel": 0.0
+      },
+      "player": {},
+      "computer": {
+        "speed": 0.0,
+        "deadZone": 0.0,
+        "returnTime": 0.0,
+        "returnDuration": 0.0,
+        "predictionErr": {
+          "min": 0,
+          "max": 0
+        },
+        "reactDelay": {
+          "min": 0,
+          "max": 0
+        }
+      }
     },
-    
-    "modes": {
-      "Easy": {
-        "general": {
-          "maxScore": 0
-        },
-        "ball": {
-          "speed": 0.0,
-          "maxSp": 0.0,
-          "accel": 0.0
-        },
-        "player": {
-          
-        },
-        "computer": {
-          "speed": 0.0,
-          "deadZone": 0.0,
-          "returnTime": 0.0,
-          "returnDuration": 0.0,
-          "predictionErr": {
-            "min": 0,
-            "max": 0
-          },
-          "reactDelay": {
-            "min": 0,
-            "max": 0
-          }
-        }
-      },
 
-      "Mid": {
-        "general": {
-          "maxScore": 0
-        },
-        "ball": {
-          "speed": 0.0,
-          "maxSp": 0.0,
-          "accel": 0.0
-        },
-        "player": {
-          
-        },
-        "computer": {
-          "speed": 0.0,
-          "deadZone": 0.0,
-          "returnTime": 0.0,
-          "returnDuration": 0.0,
-          "predictionErr": {
-            "min": 0,
-            "max": 0
-          },
-          "reactDelay": {
-            "min": 0,
-            "max": 0
-          }
-        }
+    "Hard": {
+      "general": {
+        "maxScore": 0
       },
-
-      "Hard": {
-        "general": {
-          "maxScore": 0
+      "ball": {
+        "speed": 0.0,
+        "maxSp": 0.0,
+        "accel": 0.0
+      },
+      "player": {},
+      "computer": {
+        "speed": 0.0,
+        "deadZone": 0.0,
+        "returnTime": 0.0,
+        "returnDuration": 0.0,
+        "predictionErr": {
+          "min": 0,
+          "max": 0
         },
-        "ball": {
-          "speed": 0.0,
-          "maxSp": 0.0,
-          "accel": 0.0
-        },
-        "player": {
-          
-        },
-        "computer": {
-          "speed": 0.0,
-          "deadZone": 0.0,
-          "returnTime": 0.0,
-          "returnDuration": 0.0,
-          "predictionErr": {
-            "min": 0,
-            "max": 0
-          },
-          "reactDelay": {
-            "min": 0,
-            "max": 0
-          }
+        "reactDelay": {
+          "min": 0,
+          "max": 0
         }
       }
     }
+  }
 }

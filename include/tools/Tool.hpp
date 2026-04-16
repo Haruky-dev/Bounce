@@ -24,6 +24,7 @@ class Tool {
         static int HEIGHT;
         static int W_EDGE;
         static sf::Vector2f W_CTR;
+        static std::string MODE;
 
         enum class Sides {
             TOP, LEFT, BOTTOM, RIGHT

@@ -11,7 +11,7 @@
 
 #include <entities/Player.hpp>
 #include <entities/Human.hpp>
-#include <entities/Computer.hpp>
+#include <entities/ai/Computer.hpp>
 
 #include <entities/Ball.hpp>
 #include <tools/FrameRate.hpp>

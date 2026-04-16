@@ -4,14 +4,12 @@
 
 #include <tools/Tool.hpp>
 #include <tools/Math.hpp>
-#include <cache/UICache.hpp>
 
 
-SetLayer::SetLayer() :
-    Layer(),
-    Animated(),
-    UI(UICache::inst().deploy<SetUI>())
-    {}
+SetLayer::SetLayer() : Layer(), Animated()
+    {
+        this->UI.configure( std::nullopt );
+}
 
 void SetLayer::Load() {
     this->setRequest({

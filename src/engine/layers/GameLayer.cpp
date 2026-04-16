@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 
 #include <cache/SoundCache.hpp>
-#include <cache/UICache.hpp>
 #include <tools/Json.hpp>
 #include <tools/Tool.hpp>
 #include <tools/Math.hpp>
@@ -14,10 +13,11 @@
 
 GameLayer::GameLayer() :
     Layer(),
-    UI(UICache::inst().deploy<GameUI>()),
     P1(this->UI.pad, 0),
     P2(this->UI.pad, 1),
     ball(this->UI.ball) {
+        this->UI.configure( std::nullopt );
+
         char orients[2] = {'1', '2'};
         Tool::ballOrient = orients[ Math::randi() ];
     }
@@ -44,7 +44,6 @@ void GameLayer::Load() {
 void GameLayer::Update( sf::Time& dt ) {
     if ( this->music->getStatus() != sf::Music::Status::Playing )
         this->music->play();
-
 
     // sf::Time DT = this->tick( dt );
 

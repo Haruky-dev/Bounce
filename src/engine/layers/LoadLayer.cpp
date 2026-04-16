@@ -7,7 +7,6 @@
 #include <cache/TextureCache.hpp>
 
 #include <engine/Layer.hpp>
-#include <cache/UICache.hpp>
 
 using namespace std::literals::chrono_literals;
 class MenuUI; class GameUI; class SetUI; class PauseUI;
@@ -49,11 +48,6 @@ void LoadLayer::Load() {
             TextureCache::inst().Load( *this );
             SoundCache::Load( *this );
             FontCache::Load( *this );
-
-            UICache::inst().build<MenuUI>( *this );
-            UICache::inst().build<SetUI>( *this );
-            UICache::inst().build<PauseUI>( *this );
-            UICache::inst().build<GameUI>( *this );
 
             loadDone.store(true);
         });

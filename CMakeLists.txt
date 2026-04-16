@@ -39,7 +39,7 @@ add_executable( ${PROJECT_NAME}
     src/engine/layers/PauseLayer.cpp
     src/engine/layers/SetLayer.cpp
     src/engine/layers/EndLayer.cpp
-    # src/engine/layers/Quit.cpp
+    # src/engine/layers/QuitLayer.cpp
     src/engine/features/Motion.cpp
     src/engine/features/Transition.cpp
     src/engine/input/InputManager.cpp

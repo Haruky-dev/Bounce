@@ -19,7 +19,7 @@
 
 class GameLayer : public Layer, public Transition {
     private:
-        GameUI& UI;
+        GameUI UI;
 
         Human P1;
         Computer P2;

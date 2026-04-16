@@ -9,7 +9,7 @@
 
 class SetLayer : public Layer, public Animated {
     private:
-        SetUI& UI;
+        SetUI UI;
 
     public:
         SetLayer();

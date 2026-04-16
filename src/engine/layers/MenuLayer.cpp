@@ -1,6 +1,5 @@
 #include <engine/layers/MenuLayer.hpp>
 
-#include <cache/UICache.hpp>
 #include <cache/visuals/MenuUI.hpp>
 #include <engine/input/Request.hpp>
 
@@ -9,10 +8,10 @@
 #include <iostream>
 
 
-MenuLayer::MenuLayer() :
-    Layer(),
-    UI( UICache::inst().deploy<MenuUI>() )
-{}
+MenuLayer::MenuLayer() : Layer() {
+
+    this->UI.configure( std::nullopt );
+}
 
 void MenuLayer::Load() {
     std::cout << "[MenuLayer] Loading..\n";

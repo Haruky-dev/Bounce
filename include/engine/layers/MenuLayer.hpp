@@ -11,7 +11,7 @@
 
 class MenuLayer : public Layer {
     private:
-        MenuUI& UI;
+        MenuUI UI;
         std::unique_ptr<sf::Music> music; // should be a ref as well, held by 'SoundCache'
         sf::Time accTime;
 

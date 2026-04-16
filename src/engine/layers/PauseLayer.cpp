@@ -3,16 +3,14 @@
 
 #include <tools/Math.hpp>
 #include <engine/input/Action.hpp>
-#include <cache/UICache.hpp>
 
 #include <iostream>
 
 
-PauseLayer::PauseLayer() :
-    Layer(),
-    Animated(),
-    UI(UICache::inst().deploy<PauseUI>())
-    {}
+PauseLayer::PauseLayer() : Layer(), Animated()
+    {
+        this->UI.configure( std::nullopt );
+}
 
 void PauseLayer::Load() {
     std::cout << "[Pause] Loading..\n";

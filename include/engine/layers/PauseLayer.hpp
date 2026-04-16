@@ -10,7 +10,7 @@
 
 class PauseLayer : public Layer, public Animated {
     private:
-        PauseUI& UI;
+        PauseUI UI;
         sf::Time accTime;
 
     public:

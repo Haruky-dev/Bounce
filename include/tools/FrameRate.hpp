@@ -17,5 +17,5 @@ class FrameRate : public sf::Drawable {
     public:
         FrameRate();
 
-        void update( sf::Time& );
+        void update( const sf::Time& );
 };

@@ -1,4 +1,4 @@
-#include <cache/visuals/GameUI.hpp>
+#include <engine/visuals/GameUI.hpp>
 
 #include <cache/TextureCache.hpp>
 #include <cache/SoundCache.hpp>
@@ -24,7 +24,7 @@ GameUI::GameUI() :
 
 
 void GameUI::configure( const std::optional<Progressive*>& prog ) {
-    if ( prog.has_value() ) (*prog)->addTotal( 10 );
+    if ( prog.has_value() ) (*prog)->add_to_total( 10 );
 
     // scores conf
     this->score_1.setOrigin( this->score_1.getLocalBounds().getCenter() );
@@ -43,7 +43,7 @@ void GameUI::configure( const std::optional<Progressive*>& prog ) {
     this->countD.setFillColor( sf::Color( 12, 32, 36, 150 ));
     this->countD.setScale( {1.5f, 1.5f} );
 
-    if ( prog.has_value() )  (*prog)->incCount( 10 );
+    if ( prog.has_value() )  (*prog)->increment_by( 10 );
 }
 
 void GameUI::update( const sf::Time& dt ) {

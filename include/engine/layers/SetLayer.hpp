@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <engine/Layer.hpp>
-#include <cache/visuals/SetUI.hpp>
+#include <engine/visuals/SetUI.hpp>
 #include <engine/features/Animated.hpp>
 
 
@@ -14,13 +14,14 @@ class SetLayer : public Layer, public Animated {
     public:
         SetLayer();
         void Load() override;
-        void Update( sf::Time& dt ) override;
+        void Update( const sf::Time& dt ) override;
         void Render( sf::RenderWindow& win ) const override;
 
+        bool animated() const override;
         void exit() override;
         bool popable() const override;
 
-        Layer::Type getType() const override;
+        Layer::Type type() const override;
 
         ~SetLayer() = default;
 };

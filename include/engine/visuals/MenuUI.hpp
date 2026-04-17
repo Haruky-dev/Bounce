@@ -6,7 +6,7 @@
 #include <array>
 
 #include <cache/TextureCache.hpp>
-#include <cache/visuals/BaseUI.hpp>
+#include <engine/visuals/BaseUI.hpp>
 #include <engine/features/Progressive.hpp>
 #include <tools/Tool.hpp>
 

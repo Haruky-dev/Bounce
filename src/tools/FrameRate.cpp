@@ -12,7 +12,7 @@ FrameRate::FrameRate()
         this->adjTxt();
 }
 
-void FrameRate::update( sf::Time& dt ) {
+void FrameRate::update( const sf::Time& dt ) {
     this->accTime += dt;
     this->frames++;
 

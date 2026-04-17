@@ -1,4 +1,4 @@
-#include <cache/visuals/EndUI.hpp>
+#include <engine/visuals/EndUI.hpp>
 
 #include <cache/TextureCache.hpp>
 
@@ -8,8 +8,8 @@ EndUI::EndUI() :
     {}
     
 void EndUI::configure( Progressive& prog ) {
-    prog.addTotal( 1 );
+    prog.add_to_total( 1 );
     
     
-    prog.incCount( 1 );
+    prog.increment_by( 1 );
 }

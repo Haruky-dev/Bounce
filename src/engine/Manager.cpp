@@ -2,6 +2,7 @@
 
 #include <engine/Layer.hpp>
 #include <engine/layers/LoadLayer.hpp>
+#include <engine/layers/HoldLayer.hpp>
 #include <engine/layers/GameLayer.hpp>
 #include <engine/layers/PauseLayer.hpp>
 #include <engine/layers/SetLayer.hpp>
@@ -21,6 +22,7 @@
 Manager::Manager() : __stack() {
     // register all states
     this->__register[Layer::Type::Loading]  = []() { return std::make_unique<LoadLayer>(); };
+    this->__register[Layer::Type::Holding]  = []() { return std::make_unique<HoldLayer>(); };
     this->__register[Layer::Type::MainMenu] = []() { return std::make_unique<MenuLayer>(); };
     this->__register[Layer::Type::Setting]  = []() { return std::make_unique<SetLayer>(); };
     this->__register[Layer::Type::Play]     = []() { return std::make_unique<GameLayer>(); };
@@ -42,8 +44,8 @@ void Manager::Update( sf::Time& dt, sf::RenderWindow& win ) {
     Layer& curr = *(this->__stack.back().layer);
     Input in;
 
-    in.mouse = InputEv::MouseClick( curr.getButtons(), win );
-    in.keyb  = InputEv::keybClick( curr.getKeys() );
+    in.mouse = InputEv::MouseClick( curr.buttons(), win );
+    in.keyb  = InputEv::keybClick( curr.keys() );
 
     this->controlOut( curr.Read( in ) );
 }
@@ -57,7 +59,7 @@ void Manager::Render( sf::RenderWindow& win ) const {
 // -- PRIVATE Func Section
 void Manager::pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
     if ( !(this->__stack.empty()) )
-        if ( this->__stack.back().layer->getType() == T )
+        if ( this->__stack.back().layer->type() == T )
             return;
 
     if ( freezeLast )
@@ -112,16 +114,25 @@ void Manager::controlOut( const Action out ) {
             this->pushLayer( Layer::Type::GameOver, true, true );
             break;
 
+        case Action::raiseHold:
+            this->pushLayer( Layer::Type::Holding, true );
+            break;
+
         case Action::dropOverlap: // dropOverLayer
             assert(
-                ( this->__stack.back().onOverlap )
-                && (this->__stack.size() > 1)
+                this->__stack.back().onOverlap
+             && (this->__stack.size() > 1)
             );
 
             lastLayer->exit();
-            // this->__stack.pop_back();
-            // this->__stack.back().onFreeze = false;
-            break;
+
+            if ( !(lastLayer->animated()) ) {
+                this->__stack.pop_back();
+                if ( this->__stack.back().onFreeze ) {
+                    this->__stack.back().onFreeze = false;
+                    this->__stack.back().layer->resume();
+                }
+            }
     }
 }
 

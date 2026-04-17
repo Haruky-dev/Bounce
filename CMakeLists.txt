@@ -27,10 +27,11 @@ add_executable( ${PROJECT_NAME}
     src/cache/FontCache.cpp
     src/cache/SoundCache.cpp
     src/cache/TextureCache.cpp
-    src/cache/visuals/MenuUI.cpp
-    src/cache/visuals/GameUI.cpp
-    src/cache/visuals/PauseUI.cpp
-    src/cache/visuals/SetUI.cpp
+    src/engine/visuals/MenuUI.cpp
+    src/engine/visuals/GameUI.cpp
+    src/engine/visuals/PauseUI.cpp
+    src/engine/visuals/SetUI.cpp
+    src/engine/visuals/EndUI.cpp
 
     src/engine/Manager.cpp
     src/engine/layers/LoadLayer.cpp
@@ -39,6 +40,7 @@ add_executable( ${PROJECT_NAME}
     src/engine/layers/PauseLayer.cpp
     src/engine/layers/SetLayer.cpp
     src/engine/layers/EndLayer.cpp
+    src/engine/layers/HoldLayer.cpp
     # src/engine/layers/QuitLayer.cpp
     src/engine/features/Motion.cpp
     src/engine/features/Transition.cpp
@@ -54,22 +56,22 @@ target_link_libraries( ${PROJECT_NAME} PRIVATE
 )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC
-    ${CMAKE_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/include 
 )
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "game" )
-set_source_files_properties( ${CMAKE_SOURCE_DIR}/src/tools/Json.cpp
-    PROPERTIES OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/data/conf.json )
+set_source_files_properties( ${PROJECT_SOURCE_DIR}/src/tools/Json.cpp
+    PROPERTIES OBJECT_DEPENDS ${PROJECT_SOURCE_DIR}/data/conf.json )
 
 # inc assets/ in build
 add_custom_command(
     TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
-        ${CMAKE_SOURCE_DIR}/assets
+        ${PROJECT_SOURCE_DIR}/assets
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/assets
 
     COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different
-        ${CMAKE_SOURCE_DIR}/data
+        ${PROJECT_SOURCE_DIR}/data
         $<TARGET_FILE_DIR:${PROJECT_NAME}>/data
 
     COMMENT "Copied [assets/] and [data/] directories..."

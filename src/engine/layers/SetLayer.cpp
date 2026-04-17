@@ -17,7 +17,7 @@ void SetLayer::Load() {
     });
 }
 
-void SetLayer::Update( sf::Time& dt ) {    
+void SetLayer::Update( const sf::Time& dt ) {
     animation.update( dt );
     
     if ( !(this->isExited()) )
@@ -46,6 +46,8 @@ void SetLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.bg );
 }
 
+bool SetLayer::animated() const { return true; }
+
 void SetLayer::exit() {
     this->setExit( true );
     this->animation.backward();
@@ -55,4 +57,4 @@ bool SetLayer::popable() const {
     return this->isDone();
 }
 
-Layer::Type SetLayer::getType() const { return Layer::Type::Setting; }
+Layer::Type SetLayer::type() const { return Layer::Type::Setting; }

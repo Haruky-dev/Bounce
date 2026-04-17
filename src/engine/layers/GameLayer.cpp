@@ -41,7 +41,7 @@ void GameLayer::Load() {
     std::println("[GameLayer] loaded!");
 }
 
-void GameLayer::Update( sf::Time& dt ) {
+void GameLayer::Update( const sf::Time& dt ) {
     if ( this->music->getStatus() != sf::Music::Status::Playing )
         this->music->play();
 
@@ -79,7 +79,7 @@ void GameLayer::pause() {
     // this->initT();
     // this->music->setVolume( 10 );
 }
-Layer::Type GameLayer::getType() const { return Layer::Type::Play; }
+Layer::Type GameLayer::type() const { return Layer::Type::Play; }
 
 
 Action GameLayer::feature() const {

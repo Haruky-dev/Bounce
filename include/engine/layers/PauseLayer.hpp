@@ -5,7 +5,7 @@
 #include <SFML/Graphics/Color.hpp>
 #include <engine/Layer.hpp>
 #include <engine/features/Animated.hpp>
-#include <cache/visuals/PauseUI.hpp>
+#include <engine/visuals/PauseUI.hpp>
 
 
 class PauseLayer : public Layer, public Animated {
@@ -17,13 +17,14 @@ class PauseLayer : public Layer, public Animated {
         PauseLayer();
 
         void Load() override;
-        void Update( sf::Time& dt ) override;
+        void Update( const sf::Time& dt ) override;
         void Render( sf::RenderWindow& win ) const override;
 
+        bool animated() const override;
         void exit() override;
         bool popable() const override;
 
-        Layer::Type getType() const override;
+        Layer::Type type() const override;
 
         ~PauseLayer() = default;
 };

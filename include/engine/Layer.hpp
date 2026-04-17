@@ -18,13 +18,12 @@ class StateManager;
 
 class Layer { 
     private:
-        virtual Action feature() const {
-            return Action::None;
-        }
-    
+        virtual Action feature() const { return Action::None; }
+
     public:
         enum class Type {
             Loading,
+            Holding,
             MainMenu,
             Setting,
             Play,
@@ -40,7 +39,7 @@ class Layer {
 
     public:
         virtual void   Load() = 0;
-        virtual void   Update( sf::Time& dt ) = 0;
+        virtual void   Update( const sf::Time& dt ) = 0;
         virtual void   Render( sf::RenderWindow& win ) const = 0; 
 
         virtual Action Read( const Input& input ) const {
@@ -53,7 +52,7 @@ class Layer {
         }
 
         // getters
-        virtual Layer::Type getType() const = 0;
+        virtual Layer::Type type() const = 0;
 
         virtual void setRequest( const std::initializer_list< Request::kbBinding >& that ) {
             for ( const Request::kbBinding& K : that )
@@ -64,7 +63,7 @@ class Layer {
                 this->request.vitalButtons.push_back( B );
         }
 
-        virtual std::vector<sf::Keyboard::Key> getKeys() const {
+        virtual std::vector<sf::Keyboard::Key> keys() const {
             std::vector<sf::Keyboard::Key> keys;
             keys.reserve( this->request.vitalKeys.size() );
 
@@ -74,7 +73,7 @@ class Layer {
             return keys;
         }
 
-        virtual std::vector<sf::Mouse::Button> getButtons() const {
+        virtual std::vector<sf::Mouse::Button> buttons() const {
             std::vector<sf::Mouse::Button> buttons;
             buttons.reserve( this->request.vitalButtons.size() );
 
@@ -90,6 +89,7 @@ class Layer {
         virtual void resume() {}
         virtual void exit() {} // leave
         virtual bool popable() const { return false; }
+        virtual bool animated() const { return false; }
 
         virtual ~Layer() = default;
 };

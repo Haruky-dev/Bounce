@@ -5,7 +5,7 @@
 #include <memory>
 
 #include <engine/Layer.hpp>
-#include <cache/visuals/GameUI.hpp>
+#include <engine/visuals/GameUI.hpp>
 #include <engine/input/Action.hpp>
 #include <engine/features/Transition.hpp>
 
@@ -37,12 +37,12 @@ class GameLayer : public Layer, public Transition {
         GameLayer();
         ~GameLayer();
         void Load() override;
-        void Update( sf::Time& dt ) override;
+        void Update( const sf::Time& dt ) override;
         void Render( sf::RenderWindow& win ) const override;
 
         void pause() override;
         void resume() override;
         void exit() override;
 
-        Layer::Type getType() const override;
+        Layer::Type type() const override;
 };

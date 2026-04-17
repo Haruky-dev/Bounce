@@ -1,6 +1,6 @@
 #include <engine/layers/MenuLayer.hpp>
 
-#include <cache/visuals/MenuUI.hpp>
+#include <engine/visuals/MenuUI.hpp>
 #include <engine/input/Request.hpp>
 
 #include <cache/SoundCache.hpp>
@@ -21,14 +21,16 @@ void MenuLayer::Load() {
     this->music = std::make_unique<sf::Music>();
     if (!(this->music->openFromFile( "assets/musics/Yoshis_Story-Games_of_Happiness.ogg" )))
         throw std::runtime_error("Failure");
-        
+
     this->music->setLooping( true );
     this->music->setVolume(20);
 
     this->setRequest({
         { sf::Keyboard::Key::P, Action::raisePlay },
         { sf::Keyboard::Key::M, Action::raiseSett },
-        { sf::Keyboard::Key::Q, Action::raiseQuit }
+        { sf::Keyboard::Key::Q, Action::raiseQuit },
+
+        { sf::Keyboard::Key::Space, Action::raiseHold }
     });
     this->setRequest({
         { sf::Mouse::Button::Left, Action::raisePlay, UI.btnBound( 0 ) },
@@ -39,7 +41,7 @@ void MenuLayer::Load() {
     std::cout << "[MenuLayer] Loaded!\n";
 }
 
-void MenuLayer::Update( sf::Time& dt ) {
+void MenuLayer::Update( const sf::Time& dt ) {
     if (this->music->getStatus() != sf::Music::Status::Playing) {
         this->music->play();
     }
@@ -57,11 +59,11 @@ void MenuLayer::Render( sf::RenderWindow& win ) const {
     for (int i = 0; i < UI.nBtns(); i++)
         win.draw( UI.btns.at( i ) );
 
-    win.draw( UI.author );
-    win.draw( UI.version );
+    // win.draw( UI.author );
+    // win.draw( UI.version );
 }
 
-Layer::Type MenuLayer::getType() const { return Layer::Type::MainMenu; }
+Layer::Type MenuLayer::type() const { return Layer::Type::MainMenu; }
 
 void MenuLayer::enter() {
     Tool::P1_SCORE = Tool::P2_SCORE = 0;

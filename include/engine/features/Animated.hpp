@@ -5,19 +5,19 @@
 
 class Animated {
     private:
-        bool done;
-        bool exit;
+        bool finished;
+        bool onExit;
 
     protected:
-        explicit Animated() : done(false), exit(false) {}
+        explicit Animated() : finished(false), onExit(false) {}
 
     public:
         Motion animation;
     
     public:
-        virtual void setDone( const bool flag ) { this->done = flag; }
-        virtual void setExit( const bool flag ) { this->exit = flag; }
+        virtual void setDone( const bool flag ) { this->finished = flag; }
+        virtual void setExit( const bool flag ) { this->onExit = flag; }
 
-        virtual bool isDone() const { return this->done; }
-        virtual bool isExited() const { return this->exit; }
+        virtual bool isDone() const { return this->finished; }
+        virtual bool isExited() const { return this->onExit; }
 };

@@ -27,7 +27,7 @@ void EndLayer::Load() {
     });
 }
 
-void EndLayer::Update( sf::Time& dt ) {
+void EndLayer::Update( const sf::Time& dt ) {
     accTime+=dt;
 
     if (accTime.asSeconds() >= 2.f) {
@@ -41,4 +41,4 @@ void EndLayer::Render( sf::RenderWindow& win ) const { win.draw( bg ); }
 
 void EndLayer::exit() { Tool::P1_SCORE = Tool::P2_SCORE = 0; }
 
-Layer::Type EndLayer::getType() const { return Layer::Type::GameOver; }
+Layer::Type EndLayer::type() const { return Layer::Type::GameOver; }

@@ -9,6 +9,8 @@ enum class Action {
     raiseSett,
     raiseQuit,
     raiseGameOv,
+    
+    raiseHold,
 
     dropOverlap
 };

@@ -30,7 +30,7 @@ void TextureCache::Load( Progressive& prog ) {
         { "assets/p_menu.png", "pause/bg", 44 }
     };
     
-    prog.addTotal(
+    prog.add_to_total(
         std::ranges::fold_left(
             properties, 0,
             [] ( int acc, const TextureCache::Asset& that ) {
@@ -49,7 +49,7 @@ void TextureCache::Load( Progressive& prog ) {
                 "Cannot load [Texture] at path: '" + that.path + "' !"
             );    
 
-        prog.incCount( that.weight );
+        prog.increment_by( that.weight );
     }
 }
 

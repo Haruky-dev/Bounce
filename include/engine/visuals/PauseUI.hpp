@@ -3,7 +3,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 
 #include <cache/TextureCache.hpp>
-#include <cache/visuals/BaseUI.hpp>
+#include <engine/visuals/BaseUI.hpp>
 #include <engine/features/Progressive.hpp>
 
 

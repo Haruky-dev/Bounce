@@ -25,7 +25,7 @@ void PauseLayer::Load() {
     std::cout << "[Pause] Loaded!\n";
 }
 
-void PauseLayer::Update( sf::Time& dt ) {
+void PauseLayer::Update( const sf::Time& dt ) {
     this->animation.update( dt );
 
     accTime+=dt;
@@ -67,6 +67,8 @@ void PauseLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.bg );
 }
 
+bool PauseLayer::animated() const { return true; }
+
 void PauseLayer::exit() {
     this->setExit( true );
     this->animation.backward();
@@ -76,4 +78,4 @@ bool PauseLayer::popable() const {
     return this->isDone();
 }
 
-Layer::Type PauseLayer::getType() const { return Layer::Type::Pause; }
+Layer::Type PauseLayer::type() const { return Layer::Type::Pause; }

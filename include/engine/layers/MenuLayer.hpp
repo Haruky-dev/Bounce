@@ -4,7 +4,7 @@
 #include <SFML/Audio/Music.hpp>
 
 #include <engine/Layer.hpp>
-#include <cache/visuals/MenuUI.hpp>
+#include <engine/visuals/MenuUI.hpp>
 
 #include <memory>
 
@@ -18,14 +18,14 @@ class MenuLayer : public Layer {
     public:
         MenuLayer();
         void Load() override;
-        void Update( sf::Time& dt ) override;
+        void Update( const sf::Time& dt ) override;
         void Render( sf::RenderWindow& win ) const override;
 
         void enter() override;
         void pause() override;
         void exit() override;
 
-        Layer::Type getType() const override;
+        Layer::Type type() const override;
 
         ~MenuLayer() = default;
 };

@@ -40,7 +40,7 @@ LoadLayer::LoadLayer() : Layer(), fnt(), txt(fnt), progTxt(fnt) {
 void LoadLayer::Load() {
     try {
         loader = std::thread([this]() {
-            
+
             // create OpenGL/SFML context
             sf::Context ctx;
 
@@ -49,17 +49,18 @@ void LoadLayer::Load() {
             SoundCache::Load( *this );
             FontCache::Load( *this );
 
-            loadDone.store(true);
+            this->done.store(true);
         });
+
     } catch (...) {
-        throw std::runtime_error("Loading Thread Failed\n");   
+        throw std::runtime_error("Loading Thread Failed\n");
     }
 }
 
-void LoadLayer::Update(sf::Time &dt) {
+void LoadLayer::Update(const sf::Time& dt) {
     progTxt.setString(
         std::to_string(
-            static_cast<int>( (currUnit.load() / static_cast<float>(loadCost.load()) ) * 100.0f )
+            static_cast<int>( (this->progress.load() / static_cast<float>(this->cost.load()) ) * 100.0f )
         )
         + " %"
     );
@@ -78,13 +79,13 @@ void LoadLayer::Render(sf::RenderWindow &win) const {
 }
 
 Action LoadLayer::feature() const {
-    if ( this->loadDone.load() )
+    if ( this->done.load() )
         return Action::raiseMain;
-    
+
     return Action::None;
 }
 
-Layer::Type LoadLayer::getType() const { return Layer::Type::Loading; }
+Layer::Type LoadLayer::type() const { return Layer::Type::Loading; }
 
 LoadLayer::~LoadLayer() {
     if (loader.joinable())

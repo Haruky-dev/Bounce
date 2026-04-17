@@ -14,11 +14,11 @@ class EndLayer : public Layer {
         EndLayer();
         
         void Load() override;
-        void Update( sf::Time& dt ) override;
+        void Update( const sf::Time& dt ) override;
         void Render( sf::RenderWindow& win ) const override;
 
         void exit() override;
-        Layer::Type getType() const override;
+        Layer::Type type() const override;
 
         ~EndLayer() = default;
 };

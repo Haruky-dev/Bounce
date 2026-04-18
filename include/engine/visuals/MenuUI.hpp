@@ -20,16 +20,22 @@ class MenuUI : public BaseUI {
         // const int BTN_COUNT = 3;
         std::array<sf::Sprite, BTN_COUNT> btns;
         std::array<sf::Rect<int>, BTN_COUNT> bounds;
-    
+
         sf::Sprite bg;
         sf::Text author;
         sf::Text version;
 
     private:
-        const sf::Rect<int>& btnBound( const int id ) const;
 
+        MenuUI();
+        ~MenuUI() = default;
+
+        void update( const sf::Time& ) override {}
+        void configure( const std::optional<Progressive*>& ) override;
+
+        const sf::Rect<int>& btnBound( const int id ) const; // constexpr?
         constexpr int nBtns() const { return BTN_COUNT; }
-    
+
     protected:
         // helper initializer for 'btns' (std::array<sf::Sprite>)
         static std::array< sf::Sprite, BTN_COUNT > makeBtns() {
@@ -41,10 +47,5 @@ class MenuUI : public BaseUI {
                 sf::Sprite( inst.get("mm/btn/q") )
             };
         }
-    
-    public:
-        MenuUI();
-        ~MenuUI() = default;
-        
-        void configure( const std::optional<Progressive*>& ) override;
+
 };

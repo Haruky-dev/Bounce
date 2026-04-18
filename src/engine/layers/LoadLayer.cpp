@@ -1,53 +1,27 @@
 #include <engine/layers/LoadLayer.hpp>
 
 #include <tools/Json.hpp>
-
 #include <cache/FontCache.hpp>
 #include <cache/SoundCache.hpp>
 #include <cache/TextureCache.hpp>
 
-#include <engine/Layer.hpp>
 
-using namespace std::literals::chrono_literals;
-class MenuUI; class GameUI; class SetUI; class PauseUI;
-
-
-LoadLayer::LoadLayer() : Layer(), fnt(), txt(fnt), progTxt(fnt) {
-    if (!(fnt.openFromFile("assets/fonts/RasterForge.ttf")))
-        throw std::runtime_error("UNABLE TO LOAD [FONT] in Loading State!");
-
-    txt.setFont(fnt);
-    progTxt.setFont(fnt);
-    txt.setString("Loading..");
-    txt.setOrigin(
-        txt.getGlobalBounds().size / 2.f
-    );
-    txt.setPosition({360.f, 200.f});
-    txt.setFillColor(sf::Color::White);
-
-    progTxt.setFont(fnt);
-    progTxt.setString("0 %");
-    progTxt.setOrigin(
-        progTxt.getGlobalBounds().size / 2.f
-    );
-    progTxt.setPosition({360.f, 240});
-    progTxt.setFillColor(sf::Color::White);
-
-    bg.setSize(sf::Vector2f(720.f, 480.f));
-    bg.setFillColor(sf::Color::Black);
+LoadLayer::LoadLayer() : Layer(), UI() {
+    this->UI.configure( std::nullopt );
 }
 
 void LoadLayer::Load() {
     try {
         loader = std::thread([this]() {
-
             // create OpenGL/SFML context
-            sf::Context ctx;
+            sf::Context context;
 
             Json::reLoad();
             TextureCache::inst().Load( *this );
             SoundCache::Load( *this );
             FontCache::Load( *this );
+            
+            std::this_thread::sleep_for( std::chrono::seconds( 2 ) );
 
             this->done.store(true);
         });
@@ -58,24 +32,15 @@ void LoadLayer::Load() {
 }
 
 void LoadLayer::Update(const sf::Time& dt) {
-    progTxt.setString(
-        std::to_string(
-            static_cast<int>( (this->progress.load() / static_cast<float>(this->cost.load()) ) * 100.0f )
-        )
-        + " %"
+    this->UI.setValue(
+        this->progress.load() / static_cast<float>(this->cost.load())
     );
-
-    progTxt.setOrigin(
-        progTxt.getGlobalBounds().size / 2.f
-    );
-
-    progTxt.setPosition({360.f, 240});
+    this->UI.update( dt );
 }
 
 void LoadLayer::Render(sf::RenderWindow &win) const {
-    win.draw(bg);
-    win.draw(txt);
-    win.draw(progTxt);
+    win.draw( this->UI.bg );
+    win.draw( this->UI.progressText );
 }
 
 Action LoadLayer::feature() const {

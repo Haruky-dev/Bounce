@@ -5,3 +5,4 @@ include/tools/json.hpp
 assets/
 build/
 .cache/
+.zed/

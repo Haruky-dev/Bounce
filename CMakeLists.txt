@@ -27,6 +27,8 @@ add_executable( ${PROJECT_NAME}
     src/cache/FontCache.cpp
     src/cache/SoundCache.cpp
     src/cache/TextureCache.cpp
+    src/engine/visuals/LoadUI.cpp
+    src/engine/visuals/HoldUI.cpp
     src/engine/visuals/MenuUI.cpp
     src/engine/visuals/GameUI.cpp
     src/engine/visuals/PauseUI.cpp

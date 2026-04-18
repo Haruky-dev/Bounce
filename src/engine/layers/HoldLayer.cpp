@@ -5,13 +5,9 @@
 #include <print>
 
 
-HoldLayer::HoldLayer() : Layer() {
-    this->bg.setSize( {150.0f, 100.0f} );
-    this->bg.setOrigin( this->bg.getLocalBounds().getCenter() );
-    this->bg.setPosition( Tool::W_CTR );
-    this->bg.setFillColor( sf::Color::Black );
-    this->bg.setOutlineColor( sf::Color::Red );
-    this->bg.setOutlineThickness( 3.0f );    
+HoldLayer::HoldLayer() : Layer(), UI()
+    {
+        this->UI.configure( std::nullopt );
 }
 
 void HoldLayer::Load() {
@@ -47,7 +43,7 @@ Action HoldLayer::feature() const {
 }
 
 void HoldLayer::Render( sf::RenderWindow& win ) const {
-    win.draw( this->bg );
+    win.draw( this->UI.bg );
 }
 
 Layer::Type HoldLayer::type() const {

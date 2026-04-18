@@ -6,16 +6,16 @@
 #include <engine/features/Progressive.hpp>
 
 
-class EndUI : public BaseUI {
-    friend class EndLayer;
-    
+class HoldUI : BaseUI {
+    friend class HoldLayer;
+
     private:
         sf::Sprite bg;
-    
-    public:
-        EndUI();
-        ~EndUI() = default;
+
+    private:
+        HoldUI();
+        ~HoldUI() = default;
         
         void update( const sf::Time& ) override {}
-        void configure( Progressive& );
+        void configure( const std::optional<Progressive*>& ) override;
 };

@@ -24,15 +24,13 @@ class GameUI : public BaseUI {
         sf::Sound paddleSFX;
         sf::Sound wallSFX;
 
-    private:
-        void update( const sf::Time& dt );
-
     protected:
         sf::Time _cdTime;
 
-    public:
+    private:
         GameUI();
         ~GameUI() = default;
 
+        void update( const sf::Time& dt ) override;
         void configure( const std::optional<Progressive*>& ) override;
 };

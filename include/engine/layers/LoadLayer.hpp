@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <engine/Layer.hpp>
+#include <engine/visuals/LoadUI.hpp>
 #include <engine/features/Progressive.hpp>
 
 #include <thread>
@@ -10,10 +11,7 @@
 
 class LoadLayer : public Layer, public Progressive {
     private:
-        sf::Font fnt;
-        sf::Text txt;
-        sf::Text progTxt;
-        sf::RectangleShape bg;
+        LoadUI UI;
         std::thread loader;
 
         Action feature() const override;

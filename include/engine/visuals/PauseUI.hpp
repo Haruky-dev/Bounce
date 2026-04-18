@@ -18,9 +18,10 @@ class PauseUI : public BaseUI {
 
         float bg_initY;
 
-    public:
+    private:
         PauseUI();
         ~PauseUI() = default;
 
+        void update( const sf::Time& ) override {}
         void configure( const std::optional<Progressive*>& ) override;
 };

@@ -16,9 +16,10 @@ class SetUI : public BaseUI {
 
         float bg_initY;
 
-    public:
+    private:
         SetUI();
         ~SetUI() = default;
 
+        void update( const sf::Time& dt ) override {}
         void configure( const std::optional<Progressive*>& ) override;
 };

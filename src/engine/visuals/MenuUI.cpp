@@ -18,7 +18,7 @@ MenuUI::MenuUI() :
     
 
 void MenuUI::configure( const std::optional<Progressive*>& prog ) {
-    if ( prog.has_value() ) (*prog)->add_to_total( 6 );
+    if ( prog.has_value() ) (*prog)->add_to_total( 10 );
 
     TextureCache& txtCache = TextureCache::inst();
 
@@ -34,7 +34,7 @@ void MenuUI::configure( const std::optional<Progressive*>& prog ) {
     this->version.setFillColor( sf::Color::Black );
     this->version.setPosition( {20.0f, 20.0f} );
 
-    if ( prog.has_value() ) (*prog)->increment_by( 6 );
+    if ( prog.has_value() ) (*prog)->increment_by( 10 );
 }
 
 const sf::Rect<int>& MenuUI::btnBound( const int id ) const {

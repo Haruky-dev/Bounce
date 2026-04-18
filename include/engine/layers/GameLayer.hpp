@@ -32,6 +32,12 @@ class GameLayer : public Layer, public Transition {
 
         Action feature() const override;
         void updateBall( const sf::Time& dt );
+        void refresh_entities();
+        // match player.direction with ball.direction
+            // same-> inc ball.speed
+            // diff-> dec ball.speed
+            // (player.direction == 0)-> NOOP
+        const int guide_direcion( const int id ) const;
 
     public:
         GameLayer();

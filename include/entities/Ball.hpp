@@ -21,16 +21,22 @@ class Ball : public sf::Drawable {
         sf::Time accTime;
 
         std::string path;
+
         float rotDelay;
+
         int speed;
         int MAXspeed;
-        int accel;
+        int direction;
+
         bool onStart;
         bool onMove;
         
+    private:
+        void validate_direc();
+        
     protected:
         virtual void draw( sf::RenderTarget& target, sf::RenderStates states ) const override;
-        
+
     public:
         Ball( const sf::Sprite& spr );
 

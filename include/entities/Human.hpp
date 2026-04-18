@@ -6,11 +6,13 @@
 class Human : public Player {
     private:
         std::string path;
-        float speed;
-        float ballBounce;
+        float speed, accel, ballBounce;
 
     public:
         Human( const sf::Sprite& spr, bool id );
 
         void update( const sf::Time& dt );
+        void refresh() override;
+
+        const float bounce_acceleration() const;
 };

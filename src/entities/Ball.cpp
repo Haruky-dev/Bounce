@@ -14,10 +14,12 @@
 
 
 Ball::Ball( const sf::Sprite& spr ) :
-    spr(spr), onStart(false), onMove(false),
-    accTime(sf::Time::Zero), path( "modes." + Tool::MODE + "ball." ),
-    speed(Json::Float( path + "speed" )), accel(Json::Float( path + "accel" )),
-    MAXspeed(Json::Float( path + "MAXspeed" )), rotDelay( Json::Float( path + "rotationDelay" ))
+    spr(spr), onStart(false),
+    onMove(false), accTime(sf::Time::Zero),
+    path( "modes." + Tool::MODE + "ball." ),
+    speed(Json::Float( path + "speed" )),
+    MAXspeed(Json::Float( path + "MAXspeed" )),
+    rotDelay( Json::Float( path + "rotationDelay" ))
     {
 
         this->spr.setOrigin( this->spr.getLocalBounds().getCenter() );
@@ -47,6 +49,7 @@ void Ball::launch() {
 
     // direction = targetPos - currPos;
     this->unitDirec = Math::Normalize( targetPt - this->spr.getPosition() );
+    this->validate_direc();
     this->velocity = this->unitDirec * static_cast<float>(this->speed);
 
     this->onMove = true;
@@ -75,9 +78,6 @@ void Ball::adjust( const Tool::Sides side, const sf::Rect<float>& padBounds) {
             break;
     }
 
-    this->speed = std::min( this->speed + this->accel, this->MAXspeed );
-    this->velocity = this->unitDirec * static_cast<float>(this->speed);
-
     this->spr.setPosition( newBallPos );
 }
 
@@ -87,6 +87,7 @@ void Ball::reset() {
     this->speed = Json::Float( this->path + "speed" );
 
     this->unitDirec = this->velocity = sf::Vector2<float>( 0.0f, 0.0f );
+    this->direction = 0; // this->validate_direc();
 
     this->spr.setPosition( Tool::W_CTR );
     this->spr.setRotation( sf::Angle( sf::degrees( 0.0f )) );
@@ -104,7 +105,10 @@ void Ball::rotate( const sf::Time& dt ) {
     }
 }
 
-void Ball::move( const sf::Vector2f& position ) { this->spr.move( position ); }
+void Ball::move( const sf::Vector2f& position ) {
+    if ( position.y > 0 )
+    this->spr.move( position );
+}
 
 void Ball::reflect( const Tool::Sides side ) {
     const sf::Vector2f N = Math::Normalize( Tool::Norms[(int) side] );
@@ -116,7 +120,18 @@ void Ball::reflect( const Tool::Sides side ) {
     ) return;
 
     this->unitDirec -= 2.0f * DP * N;
+    this->validate_direc();
     this->velocity = this->unitDirec * static_cast<float>(this->speed);
 }
 
 sf::Rect<float> Ball::bounds() const { return this->spr.getGlobalBounds(); }
+
+void Ball::validate_direc() {
+    if ( this->unitDirec.y > 0 ) {
+        this->direction = -1;
+    } else if ( this->unitDirec.y < 0 ) {
+        this->direction = 1;
+    } else {
+        this->direction = 0;
+    }
+}

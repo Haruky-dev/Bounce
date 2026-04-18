@@ -45,8 +45,6 @@ void GameLayer::Update( const sf::Time& dt ) {
     if ( this->music->getStatus() != sf::Music::Status::Playing )
         this->music->play();
 
-    // sf::Time DT = this->tick( dt );
-
     this->updateBall( dt );
     this->UI.update( dt );
     this->P1.update( dt );
@@ -84,8 +82,8 @@ Layer::Type GameLayer::type() const { return Layer::Type::Play; }
 
 Action GameLayer::feature() const {
     if (
-        ( Tool::P1_SCORE >= Json::Int("setting.maxScore") ) 
-        || ( Tool::P2_SCORE >= Json::Int("setting.maxScore") )
+        ( Tool::P1_SCORE >= Tool::maxScore ) 
+        || ( Tool::P2_SCORE >= Tool::maxScore )
     )
         return Action::raiseGameOv;
     
@@ -117,16 +115,7 @@ void GameLayer::updateBall( const sf::Time& dt ) {
                 return;
             }
 
-        if ( (this->norme == Tool::Sides::LEFT)
-         || (this->norme == Tool::Sides::RIGHT)
-        ) {
-            this->UI.paddleSFX.play();
-            if ( this->norme == Tool::Sides::RIGHT )
-                this->P2.refresh();
-        } else {
-            this->UI.wallSFX.play();
-        }
-
+        this->refresh_entities();            
         this->ball.reflect( this->norme );
 
         sf::Rect<float> padBounds = (this->norme == Tool::Sides::RIGHT)?
@@ -135,5 +124,62 @@ void GameLayer::updateBall( const sf::Time& dt ) {
                                     P2.bounds() : sf::Rect<float>();
 
         this->ball.adjust( this->norme, padBounds );
+    }
+}
+
+void GameLayer::refresh_entities() {
+    switch ( this->norme ) {
+        case Tool::Sides::RIGHT: {
+            this->UI.paddleSFX.play();
+            this->P1.refresh();
+            const int factor = this->guide_direcion(this->P1.id);
+            if ( factor ) {
+                const int unit = this->P1.bounce_acceleration() * factor;
+                if (unit>0) std::println("increased");
+                else std::println("decreased");
+
+                this->ball.speed += unit;
+            }
+        }
+            break;
+
+        case Tool::Sides::LEFT: {
+            this->UI.paddleSFX.play();
+            this->P2.refresh();
+            const int factor = this->guide_direcion(this->P2.id);
+            if ( factor ) {
+                const int unit = this->P2.bounce_acceleration() * factor;
+                this->ball.speed += unit;
+                
+                if (unit>0) std::println("[AI] increased");
+                else std::println("[AI] decreased");
+            }
+            
+        }
+            break;
+
+        default:
+            this->UI.wallSFX.play();
+    }
+}
+
+const int GameLayer::guide_direcion( const int id ) const {
+    switch ( id ) {
+        case 0:
+            if ( this->P1.direction ) {
+                return
+                    ( this->P1.direction == this->ball.direction )? 1 : -1;
+            } else return 0;
+
+        case 1:
+            if ( this->P2.direction ) {
+                return
+                    ( this->P2.direction == this->ball.direction )? 1 : -1;
+            } else return 0;
+            break;
+        
+        default:
+            throw std::runtime_error("Invalid given [ID] in 'GameLayer::guide_direction'.\
+                            'id==" + std::to_string(id) + "' !");
     }
 }

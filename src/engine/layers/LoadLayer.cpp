@@ -20,8 +20,6 @@ void LoadLayer::Load() {
             TextureCache::inst().Load( *this );
             SoundCache::Load( *this );
             FontCache::Load( *this );
-            
-            std::this_thread::sleep_for( std::chrono::seconds( 2 ) );
 
             this->done.store(true);
         });

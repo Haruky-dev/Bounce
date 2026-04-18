@@ -4,6 +4,8 @@
 #include <tools/Math.hpp>
 #include <tools/Tool.hpp>
 
+#include <print>
+
 
 Neuron::Neuron() :
     path( "modes." + Tool::MODE + "computer."),
@@ -11,6 +13,7 @@ Neuron::Neuron() :
     returnTime( Json::Float( path + "returnTime" ) ),
     deadZone( Json::Float( path + "deadZone" ) ),
     speed( Json::Float( path + "speed" ) ),
+    accel( Json::Float( path + "accel") ),
     ballBounce( Json::Float( path + "ballBounce") ),
 
     errorRange({
@@ -22,11 +25,11 @@ Neuron::Neuron() :
         Json::Float( path + "reactDelay.max" )
         } )
     {
-        this->refresh_imperfection();
+        this->refresh();
     }
 
 
-void Neuron::refresh_imperfection() {
+void Neuron::refresh() {
     this->error = Math::randi(
         this->errorRange.first, this->errorRange.second
     );
@@ -34,8 +37,12 @@ void Neuron::refresh_imperfection() {
     this->delay = Math::randi(
         this->delayRange.first, this->delayRange.second
     );
+
+    std::println("refreshed [Computer]");
+
+    this->speed += this->accel;
 }
 
-void Neuron::general_refresh() {
-    // Neuron(); can you do something like this?? lol
-}
+// void Neuron::general_refresh() {
+//     // Neuron(); can you do something like this?? lol
+// }

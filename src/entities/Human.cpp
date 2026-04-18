@@ -12,6 +12,7 @@ Human::Human(const sf::Sprite &spr, bool id ) :
     Player(spr, id),
     path( "modes." + Tool::MODE + "player." ),
     speed( Json::Float( path + "speed" ) ),
+    accel( Json::Float( path + "accel" ) ),
     ballBounce( Json::Float( path + "ballBounce" ) )
     {
 
@@ -30,10 +31,16 @@ void Human::update( const sf::Time& dt ) {
 
         this->direction = 1;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
         if (Y_pos + halfHeight < Tool::HEIGHT - Tool::W_EDGE)
             bar.move({0, this->speed * dt.asSeconds()});
 
         this->direction = -1;
-    }
+    } else if ( this->direction ) { this->direction = 0; }
 }
+
+void Human::refresh() {
+    this->speed += this->accel;
+}
+
+const float Human::bounce_acceleration() const { return this->ballBounce; }

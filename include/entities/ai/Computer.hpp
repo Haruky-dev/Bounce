@@ -21,8 +21,8 @@ class Computer : public Player {
     public:
         Computer( const sf::Sprite& spr, const bool );
 
-        // randomize imperfections flags. Used each Player<Human> ball reflect
-        void refresh();
-
+        void refresh() override;
         void update( const sf::Time& dt, const Ball& );
+        
+        const float bounce_acceleration() const;
 };

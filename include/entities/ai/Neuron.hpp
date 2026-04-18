@@ -15,6 +15,7 @@ class Neuron {
         float deadZone;
 
         float speed;
+        float accel;
         float ballBounce;
 
         float delay;
@@ -23,8 +24,7 @@ class Neuron {
         std::pair<int, int> errorRange;
 
     public:
-        void refresh_imperfection();
-        void general_refresh();
+        void refresh();
 
         Neuron();
         ~Neuron() = default;

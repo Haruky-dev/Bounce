@@ -24,18 +24,18 @@
       "ball": {
         "speed": 150.0,
         "MAXspeed": 600.0,
-        "accel": 20.0,
         "rotationDelay": 50.0
       },
 
       "player": {
         "speed": 500.0,
         "ballBounce": 20.0,
-        "accel": 20.0
+        "accel": 5.0
       },
 
       "computer": {
         "speed": 100.0,
+        "accel": 2.0,
         "ballBounce": 20,
         "deadZone": 22.0,
         "returnTime": 3.0,

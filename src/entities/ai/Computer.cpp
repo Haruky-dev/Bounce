@@ -6,6 +6,8 @@
 #include <tools/Json.hpp>
 #include <tools/Math.hpp>
 
+#include <print>
+
 
 Computer::Computer( const sf::Sprite& bar, const bool id ) : Player( bar, id ), neuron(),
     centerTimer(0.0f),
@@ -55,6 +57,10 @@ void Computer::update( const sf::Time& dt, const Ball& ball ) {
     if ( onTracking ) {
         const float step = std::clamp( diffrenceY, -mov, mov );
 
+        if ( step > 0 ) {
+            this->direction = -1;
+        } else if ( step < 0 ) this->direction = 1;
+
         this->bar.move( {0.0f, step} );
         
     //---------------------- [Return-To-Center] logic
@@ -66,7 +72,9 @@ void Computer::update( const sf::Time& dt, const Ball& ball ) {
         const float step    = std::clamp( targetY - compPos.y, -mov, mov );
 
         this->bar.move( {0.0f, step} );
-    }
+
+    //---------------------- [IDLE] Not moving (excluding the case where the ball isn't comming towards AI)
+    } else if ( this->direction ) { this->direction = 0; }
 
     const bool resettable = ((ball.unitDirec.x < 0.0f) || Tool::goalScored) && ( this->centerTimer != 0.0f);
 
@@ -95,5 +103,8 @@ void Computer::refresh() {
     
     this->delayTimer = 0.0f;
     this->actAllowed = false;
-    this->neuron.refresh_imperfection();
+
+    this->neuron.refresh();
 }
+
+const float Computer::bounce_acceleration() const { return this->neuron.ballBounce; }

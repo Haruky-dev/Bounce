@@ -26,6 +26,7 @@ class GameUI : public BaseUI {
 
     protected:
         sf::Time _cdTime;
+        bool P1_ready, P2_ready;
 
     private:
         GameUI();
@@ -33,4 +34,5 @@ class GameUI : public BaseUI {
 
         void update( const sf::Time& dt ) override;
         void configure( const std::optional<Progressive*>& ) override;
+        void set_players_ready( const bool, const bool );
 };

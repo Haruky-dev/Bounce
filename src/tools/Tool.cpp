@@ -11,7 +11,6 @@
 
 int Tool::CD = 0;
 int Tool::maxCD = Json::Int("setting.maxCD");
-
 int Tool::P1_SCORE = 0;
 int Tool::P2_SCORE = 0;
 int Tool::maxScore = Json::Int("setting.maxScore");

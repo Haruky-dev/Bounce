@@ -17,6 +17,7 @@ GameUI::GameUI() :
     countD(FontCache::RASTER, "3"),
     score_1(FontCache::KA, std::to_string(Tool::P1_SCORE)),
     score_2(score_1.getFont(), std::to_string(Tool::P2_SCORE)),
+    P1_ready(false), P2_ready(false), // true?
 
     paddleSFX( SoundCache::paddleBUF ),
     wallSFX( SoundCache::wallBUF )
@@ -63,9 +64,14 @@ void GameUI::update( const sf::Time& dt ) {
         this->countD.setString( std::to_string( Tool::maxCD ) );
 
     } else if ( Tool::CD != -1 ) {
-        // only update when both players are on center, both ready
+        if ( !(P1_ready && P2_ready) ) return;
+
         Tool::CD = static_cast<int>( this->_cdTime.asSeconds() );
         this->countD.setString( std::to_string( Tool::maxCD - Tool::CD ) );
         this->_cdTime += dt;
     }
+}
+
+void GameUI::set_players_ready( const bool P1, const bool P2 ) {
+    this->P1_ready = P1; this->P2_ready = P2;
 }

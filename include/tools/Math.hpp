@@ -17,8 +17,6 @@ class Math {
         static double easeIn( const double x );
         static double easeOut( const double x );
         static double easeInOut( const double x );
-        static bool isBetween( const float val, const float min, const float max );
-        static bool isBetween( const int val, const int min, const int max );
 
     private:
         static std::mt19937& randEngine();

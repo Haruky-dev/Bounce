@@ -95,6 +95,10 @@ void GameLayer::updateBall( const sf::Time& dt ) {
         if ( Tool::CD >= Tool::maxCD ) {
             this->ball.launch();
             this->ball.onStart = false;
+        } else if ( Tool::CD == 0 ) {
+            this->UI.set_players_ready(
+                this->P1.ready(), this->P2.ready()
+            );
         }
     } else if ( this->ball.onMove ) {
         this->ball.rotate( dt );

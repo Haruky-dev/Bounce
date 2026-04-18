@@ -16,7 +16,7 @@ Human::Human(const sf::Sprite &spr, bool id ) :
     ballBounce( Json::Float( path + "ballBounce" ) )
     {
 
-    this->bar.setPosition( {Tool::WIDTH - 20.f, Tool::W_CTR.y} );
+    this->bar.setPosition( {Tool::WIDTH - 20.f, Tool::W_CTR.y - 100.0f} );
 }
 
 void Human::update( const sf::Time& dt ) {
@@ -41,6 +41,13 @@ void Human::update( const sf::Time& dt ) {
 
 void Human::refresh() {
     this->speed += this->accel;
+}
+
+const bool Human::ready() const {
+    const float y_pos = this->bar.getPosition().y;
+    const float bar_height = this->bar.getLocalBounds().size.y; // hitbox
+
+    return ( y_pos > Tool::W_CTR.y - bar_height) && (y_pos < Tool::W_CTR.y + bar_height);
 }
 
 const float Human::bounce_acceleration() const { return this->ballBounce; }

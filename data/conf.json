@@ -7,7 +7,7 @@
   },
 
   "setting": {
-    "maxScore": 1,
+    "maxScore": 2,
     "maxCD": 2,
     "mode": "Easy",
 
@@ -22,7 +22,7 @@
   "modes": {
     "Easy": {
       "ball": {
-        "speed": 150.0,
+        "speed": 220.0,
         "MAXspeed": 600.0,
         "rotationDelay": 50.0
       },

@@ -6,8 +6,6 @@
 #include <tools/Json.hpp>
 #include <tools/Math.hpp>
 
-#include <print>
-
 
 Computer::Computer( const sf::Sprite& bar, const bool id ) : Player( bar, id ), neuron(),
     centerTimer(0.0f),

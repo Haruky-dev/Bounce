@@ -13,6 +13,7 @@ class Human : public Player {
 
         void update( const sf::Time& dt );
         void refresh() override;
+        const bool ready() const override;
 
         const float bounce_acceleration() const;
 };

@@ -48,11 +48,6 @@ double Math::easeInOut( const double x ) {
     return (x < 0.5f)? 4.f * x * x * x :
         1 - ( (-2.f * x + 2)*(-2.f * x + 2)*(-2.f * x + 2) ) /2.f;
 }
-
-bool Math::isBetween( const float val, const float min, const float max ) { return ( val >= min ) && ( val <= max ); }
-bool Math::isBetween( const int val, const int min, const int max ) { return ( val >= min ) && ( val <= max ); }
-
-
 std::mt19937& Math::randEngine() {
     static std::mt19937 eng(std::random_device{}());
 

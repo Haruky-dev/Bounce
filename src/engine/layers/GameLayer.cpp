@@ -67,9 +67,8 @@ void GameLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->ball );
 }
 
-void GameLayer::resume() {
-    // this->resetT();
-}
+void GameLayer::resume() { this->UI.sync(); }
+
 void GameLayer::exit() {
     this->music.reset();
 }

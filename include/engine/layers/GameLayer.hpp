@@ -42,6 +42,7 @@ class GameLayer : public Layer, public Transition {
     public:
         GameLayer();
         ~GameLayer();
+
         void Load() override;
         void Update( const sf::Time& dt ) override;
         void Render( sf::RenderWindow& win ) const override;

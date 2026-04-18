@@ -34,5 +34,6 @@ class GameUI : public BaseUI {
 
         void update( const sf::Time& dt ) override;
         void configure( const std::optional<Progressive*>& ) override;
+        void sync();
         void set_players_ready( const bool, const bool );
 };

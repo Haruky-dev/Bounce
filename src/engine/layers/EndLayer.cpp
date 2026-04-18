@@ -39,6 +39,9 @@ void EndLayer::Update( const sf::Time& dt ) {
 
 void EndLayer::Render( sf::RenderWindow& win ) const { win.draw( bg ); }
 
-void EndLayer::exit() { Tool::P1_SCORE = Tool::P2_SCORE = 0; }
+void EndLayer::exit() {
+    std::cout << "reseted\n\n";
+    Tool::P1_SCORE = Tool::P2_SCORE = 0;
+}
 
 Layer::Type EndLayer::type() const { return Layer::Type::GameOver; }

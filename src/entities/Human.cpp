@@ -16,7 +16,7 @@ Human::Human(const sf::Sprite &spr, bool id ) :
     ballBounce( Json::Float( path + "ballBounce" ) )
     {
 
-    this->bar.setPosition( {Tool::WIDTH - 20.f, Tool::W_CTR.y - 100.0f} );
+    this->bar.setPosition( {Tool::WIDTH - 20.f, Tool::W_CTR.y} );
 }
 
 void Human::update( const sf::Time& dt ) {

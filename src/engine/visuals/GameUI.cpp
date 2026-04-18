@@ -72,6 +72,11 @@ void GameUI::update( const sf::Time& dt ) {
     }
 }
 
+void GameUI::sync() {
+    this->score_1.setString( std::to_string( Tool::P1_SCORE) );
+    this->score_2.setString( std::to_string( Tool::P2_SCORE ));
+}
+
 void GameUI::set_players_ready( const bool P1, const bool P2 ) {
     this->P1_ready = P1; this->P2_ready = P2;
 }

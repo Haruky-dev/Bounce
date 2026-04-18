@@ -74,6 +74,8 @@ void Manager::pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
         this->__stack.back().layer->Load();
         this->__stack.back().Loaded = true;
     }
+    
+    this->__stack.back().layer->enter();
 }
 
 void Manager::controlOut( const Action out ) {
@@ -87,7 +89,7 @@ void Manager::controlOut( const Action out ) {
             this->__stack.clear();
 
             this->pushLayer( Layer::Type::MainMenu );            
-            this->__stack.back().layer->enter();
+            // this->__stack.back().layer->enter();
             break;
 
         case Action::raisePause:

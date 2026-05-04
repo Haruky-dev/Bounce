@@ -4,10 +4,10 @@
 
 #include <engine/Layer.hpp>
 #include <engine/visuals/SetUI.hpp>
-#include <engine/features/Animated.hpp>
+#include <engine/features/Animation.hpp>
 
 
-class SetLayer : public Layer, public Animated {
+class SetLayer : public Layer, public Animation {
     private:
         SetUI UI;
 

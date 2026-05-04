@@ -11,16 +11,14 @@
 
 MenuUI::MenuUI() :
     bg(TextureCache::inst().get("mm/bg")),
-    author( FontCache::RASTER, Json::String("setting.author") ),
-    version( author.getFont(), Json::String("setting.version") ),
+    credit(TextureCache::inst().get("mm/c")),
+    version(TextureCache::inst().get("mm/v")),
     btns( this->makeBtns() )
     {}
     
 
 void MenuUI::configure( const std::optional<Progressive*>& prog ) {
     if ( prog.has_value() ) (*prog)->add_to_total( 10 );
-
-    TextureCache& txtCache = TextureCache::inst();
 
     for (int i{}; i < BTN_COUNT; i++) {
         this->btns.at( i ).setOrigin( sf::Vector2f(this->btns.at( i ).getTexture().getSize()) / 2.f );
@@ -30,9 +28,11 @@ void MenuUI::configure( const std::optional<Progressive*>& prog ) {
         this->bounds.at( i ) = Tool::getBound( this->btns.at( i ) );
     }
     
-    this->author.setFillColor( sf::Color::Black );
-    this->version.setFillColor( sf::Color::Black );
-    this->version.setPosition( {20.0f, 20.0f} );
+    this->credit.setOrigin( sf::Vector2f(this->credit.getTexture().getSize()) / 2.0f );
+    this->credit.setPosition( {Tool::WIDTH - this->credit.getTexture().getSize().x/2.0f , Tool::HEIGHT - 20.0f} );
+
+    // this->version.setOrigin( sf::Vector2f(this->version.getTexture().getSize()) / 2.0f );
+    this->version.setPosition( {5.0f, 5.0f} );
 
     if ( prog.has_value() ) (*prog)->increment_by( 10 );
 }

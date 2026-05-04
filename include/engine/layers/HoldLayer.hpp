@@ -3,7 +3,6 @@
 
 #include <engine/Layer.hpp>
 #include <engine/visuals/HoldUI.hpp>
-#include <engine/features/Animated.hpp>
 #include <engine/features/Progressive.hpp>
 
 

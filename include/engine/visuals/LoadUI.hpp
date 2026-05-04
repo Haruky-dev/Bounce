@@ -10,9 +10,10 @@
 
 class LoadUI : BaseUI {
     friend class LoadLayer;
-    
+
     private:
         sf::RectangleShape bg;
+        sf::Font __font;
         sf::Text progressText;
         float v;
 

@@ -7,8 +7,8 @@
   },
 
   "setting": {
-    "maxScore": 2,
-    "maxCD": 2,
+    "maxScore": 1,
+    "maxCD": 4,
     "mode": "Easy",
 
     "fps": {

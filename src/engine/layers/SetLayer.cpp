@@ -1,12 +1,11 @@
 #include <engine/layers/SetLayer.hpp>
 
-#include <cstdint>
 
 #include <tools/Tool.hpp>
 #include <tools/Math.hpp>
 
-
-SetLayer::SetLayer() : Layer(), Animated()
+    
+SetLayer::SetLayer() : Layer(), Animation()
     {
         this->UI.configure( std::nullopt );
 }
@@ -18,43 +17,20 @@ void SetLayer::Load() {
 }
 
 void SetLayer::Update( const sf::Time& dt ) {
-    animation.update( dt );
-    
-    if ( !(this->isExited()) )
-        this->animation.forward();   
-
-    float y = Math::Lerp(
-        this->UI.bg_initY,
-        Tool::W_CTR.y,
-        Math::easeOut( this->animation.prog() )
-    );
-    this->UI.shadClr.a = static_cast<std::uint8_t>(
-        255 * Math::easeInOut( this->animation.prog() )
-    );
-
-    this->UI.bg.setPosition( {this->UI.bg.getPosition().x, y} );
-    this->UI.shad.setColor( this->UI.shadClr );
-
-    if ( this->animation.finished()
-        && this->animation.onReverse() ) {
-            this->setDone( true );
-    }
+    this->UI.update( dt );
 }
 
 void SetLayer::Render( sf::RenderWindow& win ) const {
-    win.draw( this->UI.shad );
+    win.draw( this->UI.shadow );
     win.draw( this->UI.bg );
 }
 
 bool SetLayer::animated() const { return true; }
 
-void SetLayer::exit() {
-    this->setExit( true );
-    this->animation.backward();
-}
+void SetLayer::exit() { this->UI.exit_animation(); }
 
 bool SetLayer::popable() const {
-    return this->isDone();
+    return this->UI.anim_finished();
 }
 
 Layer::Type SetLayer::type() const { return Layer::Type::Setting; }

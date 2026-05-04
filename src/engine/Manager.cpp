@@ -12,10 +12,11 @@
 #include <engine/input/Action.hpp>
 #include <engine/input/InputEv.hpp>
 
-#include <engine/features/Animated.hpp>
 
 #include <tools/Tool.hpp>
 #include <tools/Json.hpp>
+
+#include <print>
 
 
 // -- CONSTRUCTOR/DEST SECTION
@@ -65,16 +66,13 @@ void Manager::pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
     if ( freezeLast )
         this->__stack.back().onFreeze = true;
 
-    this->__stack.push_back( {this->__register[T]()} );
-
-    if ( overlapping )
-        this->__stack.back().onOverlap = true;
+    this->__stack.push_back( {this->__register[T](), overlapping} );
 
     if ( !(this->__stack.back().Loaded) ) {
         this->__stack.back().layer->Load();
         this->__stack.back().Loaded = true;
     }
-    
+
     this->__stack.back().layer->enter();
 }
 
@@ -127,37 +125,34 @@ void Manager::controlOut( const Action out ) {
             );
 
             lastLayer->exit();
-
-            if ( !(lastLayer->animated()) ) {
-                this->__stack.pop_back();
-                if ( this->__stack.back().onFreeze ) {
-                    this->__stack.back().onFreeze = false;
-                    this->__stack.back().layer->resume();
-                }
-            }
+            this->__stack.back().onExit = true;
     }
 }
 
 void Manager::updateLayers( sf::Time& dt ) {
-    // update all (top + overlapping) states in __stack each frame
-
     int I = static_cast<int>(this->__stack.size()) - 1;
 
     for ( ; I >= 0; I-- ) {
         if ( !(this->__stack.at( I ).onFreeze) )
-            this->__stack.back().layer->Update( dt );
+            this->__stack.at( I ).layer->Update( dt );
 
-        if ( !this->__stack.at( I ).onOverlap ) break;
+        if ( !(this->__stack.at( I ).onOverlap) ) break;
     }
 
-    Layer* lastLayer = this->__stack.back().layer.get();
+    State& state = this->__stack.back();
 
-    if ( lastLayer && lastLayer->popable() ) {
+    // An on-exit + animated, layer has finished its exit animation
+    const bool flag = state.layer                // non-nullptr
+                   && state.layer->animated()    //
+                   && state.onExit               // Manager requested an exit animation
+                   && state.layer->popable(); // animation done
+
+    if ( flag ) {
         this->__stack.pop_back();
         assert( !(this->__stack.empty()) );
-        
+
         this->__stack.back().onFreeze = false;
-        this->__stack.back().layer->resume();
+        this->__stack.back().layer->resume(); // optional, might delete later on
     }
 }
 

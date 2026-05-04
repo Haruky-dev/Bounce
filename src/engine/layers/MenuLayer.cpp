@@ -30,7 +30,7 @@ void MenuLayer::Load() {
         { sf::Keyboard::Key::M, Action::raiseSett },
         { sf::Keyboard::Key::Q, Action::raiseQuit },
 
-        { sf::Keyboard::Key::Space, Action::raiseHold }
+        { sf::Keyboard::Key::H, Action::raiseHold }
     });
     this->setRequest({
         { sf::Mouse::Button::Left, Action::raisePlay, UI.btnBound( 0 ) },
@@ -54,13 +54,13 @@ void MenuLayer::Update( const sf::Time& dt ) {
 }
 
 void MenuLayer::Render( sf::RenderWindow& win ) const {
-    win.draw( UI.bg );
+    win.draw( this->UI.bg );
 
-    for (int i = 0; i < UI.nBtns(); i++)
-        win.draw( UI.btns.at( i ) );
+    for (int i = 0; i < this->UI.nBtns(); i++)
+        win.draw( this->UI.btns.at( i ) );
 
-    // win.draw( UI.author );
-    // win.draw( UI.version );
+    win.draw( this->UI.credit );
+    win.draw( this->UI.version );
 }
 
 Layer::Type MenuLayer::type() const { return Layer::Type::MainMenu; }

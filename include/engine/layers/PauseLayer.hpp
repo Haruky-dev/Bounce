@@ -4,11 +4,11 @@
 
 #include <SFML/Graphics/Color.hpp>
 #include <engine/Layer.hpp>
-#include <engine/features/Animated.hpp>
+#include <engine/features/Animation.hpp>
 #include <engine/visuals/PauseUI.hpp>
 
 
-class PauseLayer : public Layer, public Animated {
+class PauseLayer : public Layer, public Animation {
     private:
         PauseUI UI;
         sf::Time accTime;

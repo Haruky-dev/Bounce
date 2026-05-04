@@ -5,26 +5,22 @@
 #include <iostream>
 
 
-EndLayer::EndLayer() : Layer() {}
+EndLayer::EndLayer() : Layer(), UI() {
+    this->UI.configure( std::nullopt );
+}
 
 void EndLayer::Load() {
     std::cout << "[EndLayer] Loading..\n";
 
     this->accTime = sf::Time::Zero;
 
-    this->bg.setRadius( 100.f );
-    this->bg.setFillColor( sf::Color::White );
-    this->bg.setOutlineColor( sf::Color::Black );
-    this->bg.setOutlineThickness( 10.f );
-    this->bg.setOrigin( {this->bg.getRadius(), this->bg.getRadius()} );
-    this->bg.setPosition( Tool::W_CTR );
-
-    std::cout << "[EndLayer] Loaded!\n";
 
     this->setRequest({
         { sf::Keyboard::Key::Enter, Action::dropOverlap },
         { sf::Keyboard::Key::Escape, Action::raiseMain }
     });
+
+    std::cout << "[EndLayer] Loaded!\n";
 }
 
 void EndLayer::Update( const sf::Time& dt ) {
@@ -37,10 +33,15 @@ void EndLayer::Update( const sf::Time& dt ) {
     }
 }
 
-void EndLayer::Render( sf::RenderWindow& win ) const { win.draw( bg ); }
+void EndLayer::Render( sf::RenderWindow& win ) const {
+    win.draw( this->UI.bg );
+    win.draw( this->UI.menu_btn );
+    win.draw( this->UI.replay_btn );
+    win.draw( this->UI.winner );
+    // win.draw( this->UI.shadow );
+}
 
 void EndLayer::exit() {
-    std::cout << "reseted\n\n";
     Tool::P1_SCORE = Tool::P2_SCORE = 0;
 }
 

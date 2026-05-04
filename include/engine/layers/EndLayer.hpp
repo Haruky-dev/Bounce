@@ -3,16 +3,17 @@
 #include <SFML/Graphics.hpp>
 
 #include <engine/Layer.hpp>
+#include <engine/visuals/EndUI.hpp>
 
 
 class EndLayer : public Layer {
     private:
-        sf::CircleShape bg;
+        EndUI UI;
         sf::Time accTime;
 
     public:
         EndLayer();
-        
+
         void Load() override;
         void Update( const sf::Time& dt ) override;
         void Render( sf::RenderWindow& win ) const override;

@@ -16,8 +16,9 @@ class Manager {
     private:
         struct State {
             std::unique_ptr<Layer> layer;
-            bool onOverlap = false;
-            bool onFreeze  = false;
+            bool onOverlap = false; // handle overlapping layers
+            bool onFreeze  = false; // Do not update frozen layers
+            bool onExit    = false; // Do not pop 'exiting' layers until flagged as 'popable'
             bool Loaded    = false;
         };
 

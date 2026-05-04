@@ -5,8 +5,8 @@
 
 
 LoadUI::LoadUI() :
-    BaseUI(),
-    progressText(FontCache::RASTER, "")
+    BaseUI(), __font("assets/fonts/RasterForge.ttf"),
+    progressText(__font, "")
     {}
 
 void LoadUI::configure( const std::optional<Progressive*>& prog ) {

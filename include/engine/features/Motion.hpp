@@ -4,20 +4,14 @@
 
 
 class Motion {
-    public:
-        explicit Motion();
-            
-        void forward();
-        void backward();
-        
-        void update( const sf::Time& dt );
-        
-        float prog() const;
-        bool finished() const;
-        bool onReverse() const;
-        
-    private:
-        float duration, elapsed;
-        int direction;
-        bool active;
+    friend class Animation;
+
+    Motion();
+    ~Motion() = default;
+
+    void reset();
+
+    sf::Time _duration, _elapsed;
+    int _direction; // 1==forward, -1==backward
+    bool _active;
 };

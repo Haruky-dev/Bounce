@@ -27,6 +27,7 @@ add_executable( ${PROJECT_NAME}
     src/cache/FontCache.cpp
     src/cache/SoundCache.cpp
     src/cache/TextureCache.cpp
+
     src/engine/visuals/LoadUI.cpp
     src/engine/visuals/HoldUI.cpp
     src/engine/visuals/MenuUI.cpp
@@ -36,6 +37,7 @@ add_executable( ${PROJECT_NAME}
     src/engine/visuals/EndUI.cpp
 
     src/engine/Manager.cpp
+
     src/engine/layers/LoadLayer.cpp
     src/engine/layers/MenuLayer.cpp
     src/engine/layers/GameLayer.cpp
@@ -44,8 +46,11 @@ add_executable( ${PROJECT_NAME}
     src/engine/layers/EndLayer.cpp
     src/engine/layers/HoldLayer.cpp
     # src/engine/layers/QuitLayer.cpp
+
     src/engine/features/Motion.cpp
+    src/engine/features/Animation.cpp
     src/engine/features/Transition.cpp
+    
     src/engine/input/InputManager.cpp
 )
 

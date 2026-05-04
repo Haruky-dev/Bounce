@@ -21,9 +21,7 @@ class MenuUI : public BaseUI {
         std::array<sf::Sprite, BTN_COUNT> btns;
         std::array<sf::Rect<int>, BTN_COUNT> bounds;
 
-        sf::Sprite bg;
-        sf::Text author;
-        sf::Text version;
+        sf::Sprite bg, credit, version;
 
     private:
 

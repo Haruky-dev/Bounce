@@ -37,7 +37,7 @@ void MenuUI::configure( const std::optional<Progressive*>& prog ) {
     if ( prog.has_value() ) (*prog)->increment_by( 10 );
 }
 
-const sf::Rect<int>& MenuUI::btnBound( const int id ) const {
+const sf::Rect<int>& MenuUI::btn_bound( const int id ) const {
     assert( id >= 0 && id < BTN_COUNT );
     
     return this->bounds[id];

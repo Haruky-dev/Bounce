@@ -33,9 +33,9 @@ void MenuLayer::Load() {
         { sf::Keyboard::Key::H, Action::raiseHold }
     });
     this->setRequest({
-        { sf::Mouse::Button::Left, Action::raisePlay, UI.btnBound( 0 ) },
-        { sf::Mouse::Button::Left, Action::raiseSett, UI.btnBound( 1 ) },
-        { sf::Mouse::Button::Left, Action::raiseQuit, UI.btnBound( 2 ) }
+        { sf::Mouse::Button::Left, Action::raisePlay, UI.btn_bound( 0 ) },
+        { sf::Mouse::Button::Left, Action::raiseSett, UI.btn_bound( 1 ) },
+        { sf::Mouse::Button::Left, Action::raiseQuit, UI.btn_bound( 2 ) }
     });
 
     std::cout << "[MenuLayer] Loaded!\n";
@@ -56,7 +56,7 @@ void MenuLayer::Update( const sf::Time& dt ) {
 void MenuLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.bg );
 
-    for (int i = 0; i < this->UI.nBtns(); i++)
+    for (int i = 0; i < this->UI.BTN_COUNT; i++)
         win.draw( this->UI.btns.at( i ) );
 
     win.draw( this->UI.credit );

@@ -29,8 +29,8 @@ void GameUI::configure( const std::optional<Progressive*>& prog ) {
 
     // scores conf
     this->score_1.setOrigin( this->score_1.getLocalBounds().getCenter() );
-    this->score_1.setPosition( {Tool::WIDTH /4.f, Tool::HEIGHT /4.f} );
-    this->score_1.setFillColor( sf::Color(241, 233, 219, 100) );
+    this->score_1.setPosition( {Tool::WIDTH /3.f, Tool::HEIGHT /3.f} );
+    this->score_1.setFillColor( sf::Color(94, 159, 224, 255) );
     this->score_1.setScale( {2.f, 2.f} );
 
     this->score_2.setOrigin( this->score_2.getLocalBounds().getCenter() );

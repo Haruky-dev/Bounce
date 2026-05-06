@@ -11,9 +11,7 @@ class SetUI : public BaseUI {
     friend class SetLayer;
 
     private:
-        sf::Sprite bg;
-        sf::Sprite shadow;
-        sf::Color shadow_clr;
+        sf::Sprite bg, shadow;
 
         Animation animation;
 

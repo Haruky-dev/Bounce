@@ -6,7 +6,6 @@ Animation::Animation() :
         this->forward();
     }
 
-
 void Animation::update( const sf::Time& dt ) {
     if ( !(this->motion._active) ) return;
 

@@ -8,6 +8,7 @@ Action InputManager::verifyInput( const Request& request, const Input& input ) {
     if ( input.keyb.clicked )
         for ( const auto& binding : request.vitalKeys )
             if ( binding.key == input.keyb.key ) {
+                // out = binding.act;
                 out = request.getAction( binding.key );
                 break;
             }
@@ -18,6 +19,7 @@ Action InputManager::verifyInput( const Request& request, const Input& input ) {
         for ( const auto& binding : request.vitalButtons )
             if (( binding.btn == input.mouse.btn )
                 && ( binding.bounds->contains( input.mouse.pos ))) {
+                    // out = binding.act;
                     out = request.getAction( binding.btn, *(binding.bounds) );
                     break;
                 }

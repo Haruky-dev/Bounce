@@ -13,27 +13,29 @@ TextureCache& TextureCache::inst() {
 
 void TextureCache::Load( Progressive& prog ) {
     const std::vector<TextureCache::Asset> properties = { /* 1kb -> .5 units */
-        { "assets/MMbg.jpg", "mm/bg", 120 },        /* MainMenu layer assets */
-        { "assets/credit_gh.png", "mm/c", 3 },
-        { "assets/version.png", "mm/v", 2 },
-        { "assets/play.png", "mm/btn/play", 4 },
-        { "assets/set.png", "mm/btn/set", 4 },
-        { "assets/quit.png", "mm/btn/q", 4 },
+        { "assets/UI/Menu/bg.jpg", "mm/bg", 120 },              /* MainMenu layer assets */
+        { "assets/UI/Menu/credit.png", "mm/c", 3 },
+        { "assets/UI/Menu/v.png", "mm/v", 2 },
+        { "assets/UI/Menu/play.png", "mm/btn/play", 3 },
+        { "assets/UI/Menu/menu.png", "mm/btn/set", 3 },
+        { "assets/UI/Menu/quit.png", "mm/btn/q", 3 }, 
+    
+        { "assets/holdBg.png", "h/bg", 4 },                     /* Hold Layer assets */
+
+        { "assets/UI/Setting/bg.png", "set/bg", 20 },           /* Setting layer assets */
+        { "assets/UI/Setting/shadow.png", "set/shad", 20 },
+
+        { "assets/UI/Game/bg.png", "play/bg", 3 },              /* Game layer assets */
+        { "assets/UI/Game/paddle.png", "play/pad", 1 },
+        { "assets/UI/Game/ball.png", "play/ball", 1 },
         
-        { "assets/holdBg.png", "h/bg", 4 },        /* Hold Layer assets */
 
-        { "assets/menu.png", "set/bg", 4 },         /* Setting layer assets */
-        { "assets/shadow_1.png", "set/shad", 20 },
+        { "assets/UI/Pause/shadow.png", "pause/shad", 1 },      /* Pause layer assets */
+        { "assets/UI/Pause/bg.png", "pause/bg", 2 },
+        { "assets/UI/Pause/quit.png", "pause/btn/quit", 1 },
+        { "assets/UI/Pause/resume.png", "pause/btn/resume", 1 },
 
-        // { "assets/gameBg.png", "play/bg", 44 },     /* Game layer assets */
-        { "assets/gameBg_1.png", "play/bg", 2 },
-        { "assets/pad.png", "play/pad", 2 },
-        { "assets/ball.png", "play/ball", 2 },
-
-        { "assets/shadow_2.png", "pause/shad", 4 }, /* Pause layer assets */
-        { "assets/p_menu.png", "pause/bg", 44 },
-
-        { "assets/EndBg.png", "end/bg", 50 },       /* End layer assets */
+        { "assets/EndBg.png", "end/bg", 50 },                   /* End layer assets */
         { "assets/return.png", "end/btn/ret", 4 },
         { "assets/replay.png", "end/btn/rep", 5 },
         { "assets/winner.png", "end/winner", 1 }

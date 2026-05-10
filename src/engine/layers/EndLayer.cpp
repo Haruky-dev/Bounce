@@ -19,11 +19,16 @@ void EndLayer::Load() {
         { sf::Keyboard::Key::Enter, Action::dropOverlap },
         { sf::Keyboard::Key::Escape, Action::raiseMain }
     });
+    this->setRequest({
+        { sf::Mouse::Button::Left, Action::dropOverlap, this->UI.bounds.at(0) },
+        { sf::Mouse::Button::Left, Action::raiseMain, this->UI.bounds.at(1) }
+    });
 
     std::cout << "[EndLayer] Loaded!\n";
 }
 
 void EndLayer::Update( const sf::Time& dt ) {
+    this->UI.update( dt );
     accTime+=dt;
 
     if (accTime.asSeconds() >= 2.f) {
@@ -35,12 +40,14 @@ void EndLayer::Update( const sf::Time& dt ) {
 
 void EndLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.bg );
-    win.draw( this->UI.menu_btn );
-    win.draw( this->UI.replay_btn );
     win.draw( this->UI.winner );
+    win.draw( this->UI.scores.at(0) );
+    win.draw( this->UI.scores.at(1) );
     // win.draw( this->UI.shadow );
 }
 
+bool EndLayer::animated() const { return true; }
+bool EndLayer::popable() const { return this->UI.animation.finished(); }
 void EndLayer::exit() {
     Tool::P1_SCORE = Tool::P2_SCORE = 0;
 }

@@ -35,9 +35,7 @@ void TextureCache::Load( Progressive& prog ) {
         { "assets/UI/Pause/quit.png", "pause/btn/quit", 1 },
         { "assets/UI/Pause/resume.png", "pause/btn/resume", 1 },
 
-        { "assets/EndBg.png", "end/bg", 50 },                   /* End layer assets */
-        { "assets/return.png", "end/btn/ret", 4 },
-        { "assets/replay.png", "end/btn/rep", 5 },
+        { "assets/UI/End/bg.png", "end/bg", 2 },                   /* End layer assets */
         { "assets/winner.png", "end/winner", 1 }
     };
 

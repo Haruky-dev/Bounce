@@ -44,3 +44,10 @@ const Animation::Status Animation::status() const {
     return ( this->motion._direction == -1 )?
         Animation::Status::Out : Animation::Status::In;
 }
+
+void Animation::set_duration( const float sec ) {
+    assert( sec > 0.0f );
+
+    this->motion._duration
+        = sf::seconds( sec );
+}

@@ -18,7 +18,10 @@ class EndLayer : public Layer {
         void Update( const sf::Time& dt ) override;
         void Render( sf::RenderWindow& win ) const override;
 
+        bool animated() const override;
+        bool popable() const override;
         void exit() override;
+        
         Layer::Type type() const override;
 
         ~EndLayer() = default;

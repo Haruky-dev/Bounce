@@ -38,6 +38,8 @@ sf::Vector2f Math::Lerp( const sf::Vector2f& A, const sf::Vector2f& B, const dou
     );
 }
 
+
+// © https://easings.net
 double Math::easeIn( const double x ) {
     return x * x * x;
 }
@@ -48,6 +50,15 @@ double Math::easeInOut( const double x ) {
     return (x < 0.5f)? 4.f * x * x * x :
         1 - ( (-2.f * x + 2)*(-2.f * x + 2)*(-2.f * x + 2) ) /2.f;
 }
+double Math::easeElastic( const double x ) {
+    const double A = (2 * 3.14159265f) / 3;
+
+    return ( x == 0 )?
+        0 : ( x == 1 )?
+        1
+        : std::pow( 2, -10*x ) * std::sin( (x*10 - 0.75f) * A ) + 1;
+}
+
 std::mt19937& Math::randEngine() {
     static std::mt19937 eng(std::random_device{}());
 

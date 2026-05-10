@@ -3,9 +3,10 @@
 #include <engine/features/Progressive.hpp>
 
 
-sf::Font FontCache::ARIAL = sf::Font();
-sf::Font FontCache::RASTER = sf::Font();
-sf::Font FontCache::KA = sf::Font();
+sf::Font FontCache::ARIAL    = sf::Font();
+sf::Font FontCache::RASTER   = sf::Font();
+sf::Font FontCache::KA       = sf::Font();
+sf::Font FontCache::MineCraf = sf::Font();
 
 
 void FontCache::Load( Progressive& prog ) {
@@ -17,9 +18,13 @@ void FontCache::Load( Progressive& prog ) {
 
     if (!(FontCache::RASTER.openFromFile("assets/fonts/RasterForge.ttf")))
         throw std::runtime_error("Cannot load [Font] 'Raster Forge'!");    
-    prog.increment_by( 20 );
+    prog.increment_by( 15 );
 
     if (!(FontCache::KA.openFromFile("assets/fonts/ka1.ttf")))
         throw std::runtime_error("Cannot load [Font] 'ka'!");
     prog.increment_by( 30 );
+
+    if (!(FontCache::MineCraf.openFromFile("assets/fonts/Minercraftory.ttf")))
+        throw std::runtime_error("Cannot load [Font] 'Minecraftory'!");
+    prog.increment_by( 10 );
 }

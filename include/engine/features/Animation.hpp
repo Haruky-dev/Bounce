@@ -20,6 +20,7 @@ class Animation {
         void update( const sf::Time& );
 
         void exit();
+        void set_duration( const float time );
 
         const double progress() const;
         const bool   finished() const;

@@ -21,8 +21,9 @@ void PauseUI::configure( const std::optional<Progressive*>& prog ) {
     // init buttons bounds to their final position
     for ( int i = 0; i < this->BTN_COUNT; i++ ) {
         static const int width = this->buttons.at(0).getTexture().getSize().x;
+        static const int h_dist = 20; // horizontal distance between the two buttons
         this->bounds.at( i ) = sf::Rect<int>(
-            sf::Vector2<int>( Tool::W_CTR.x + ( (20+width)*i - (width+10) ), Tool::W_CTR.y + 40 ),
+            sf::Vector2<int>( Tool::W_CTR.x + ( (h_dist+width)*i - (width+h_dist/2.f) ), Tool::W_CTR.y + 40 ),
             this->buttons.at( i ).getTextureRect().size
         );
     }

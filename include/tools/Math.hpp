@@ -17,6 +17,7 @@ class Math {
         static double easeIn( const double x );
         static double easeOut( const double x );
         static double easeInOut( const double x );
+        static double easeElastic( const double x );
 
     private:
         static std::mt19937& randEngine();

@@ -15,4 +15,5 @@ class FontCache {
         static sf::Font ARIAL;
         static sf::Font RASTER;
         static sf::Font KA;
+        static sf::Font MineCraf;
 };

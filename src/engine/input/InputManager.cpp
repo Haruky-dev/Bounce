@@ -1,7 +1,6 @@
 #include <engine/input/InputManager.hpp>
 
 #include <algorithm>
-#include <functional>
 
 
 Action InputManager::verifyInput( const Request& request, const Input& input ) {

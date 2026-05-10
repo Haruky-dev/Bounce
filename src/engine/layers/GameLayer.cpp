@@ -19,7 +19,8 @@ GameLayer::GameLayer() :
         this->UI.configure( std::nullopt );
 
         char orients[2] = {'1', '2'};
-        Tool::ballOrient = orients[ Math::randi(0, 1) ];
+        Tool::ballOrient = '1';
+        // Tool::ballOrient = orients[ Math::randi(0, 1) ];
     }
 
 GameLayer::~GameLayer() = default;

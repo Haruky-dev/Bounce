@@ -6,33 +6,34 @@
 
 Action InputManager::verifyInput( const Request& request, const Input& input ) {
     // [KEYBOARD]============================================
-    std::function<bool( const Request::kbBinding& )> p1
-        = [&]( const Request::kbBinding& B ) {
-        return input.keyb.key == B.key;
-    };
-    const auto& A = std::find_if(
-        request.vitalKeys.begin(),
-        request.vitalKeys.end(),
-        p1
-    );
+    if ( input.keyb.clicked ) {
+        const auto& B = std::find_if(
+            request.vitalKeys.begin(),
+            request.vitalKeys.end(),
+            [&]( const Request::kbBinding& B ) {
+                return B.key == input.keyb.key;
+            }
+        );
 
-    if ( A != request.vitalKeys.end() ) {
-        return A->act;
-    } else return Action::None;
+        if ( B != request.vitalKeys.end() )
+            return B->act;
+    }
 
     // [MOUSE]==============================================
-    std::function<bool( const Request::msBinding& )> p2
-        = [&]( const Request::msBinding& B ) {
-            return ( input.mouse.btn == B.btn )
-                && ( B.bounds->contains(input.mouse.pos) );
-        };
-    const auto& B = std::find_if(
-        request.vitalButtons.begin(),
-        request.vitalButtons.end(),
-        p2
-    );
+    if ( input.mouse.clicked ) {
+        const auto& B = std::find_if(
+            request.vitalButtons.begin(),
+            request.vitalButtons.end(),
+            [&]( const Request::msBinding& B ) {
+                return ( B.btn == input.mouse.btn
+                    && ( B.bounds->contains(input.mouse.pos) )
+                );
+            }
+        );
+        
+        if ( B != request.vitalButtons.end() )
+            return B->act;
+    }
 
-    if ( B != request.vitalButtons.end() ) {
-        return B->act;
-    } else return Action::None;
+    return Action::None;
 }

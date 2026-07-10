@@ -43,7 +43,6 @@ void EndLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.winner );
     win.draw( this->UI.scores.at(0) );
     win.draw( this->UI.scores.at(1) );
-    // win.draw( this->UI.shadow );
 }
 
 bool EndLayer::animated() const { return true; }

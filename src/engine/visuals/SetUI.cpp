@@ -1,12 +1,16 @@
 #include <engine/visuals/SetUI.hpp>
 
 #include <cache/TextureCache.hpp>
+#include <cache/FontCache.hpp>
 #include <tools/Tool.hpp>
 #include <tools/Math.hpp>
 
 
 SetUI::SetUI() :
     animation(),
+    modes_spr( __init_modes() ),
+    marks_spr( __init_marks() ),
+    max_score(FontCache::MineCraf, std::to_string(Tool::maxScore)),
     bg(TextureCache::inst().get("set/bg")),
     shadow(TextureCache::inst().get("set/shad")),
     bg_init_y(1.5f*Tool::HEIGHT)
@@ -20,6 +24,20 @@ void SetUI::configure( const std::optional<Progressive*>& prog ) {
     );
     this->bg.setPosition( {Tool::W_CTR.x, this->bg_init_y} );
 
+    this->__init_bounds();
+
+    for ( int i = 0; i < this->modes_spr.size(); i++ )
+        this->modes_spr.at(i).setPosition(
+            sf::Vector2f( this->__normalize({72, 175}) ) // or just bounds+margin
+        );
+
+    // // this->max_score.setPosition(Vector2f position)
+
+    // for ( int i = 0; i < this->marks_spr.size(); i++ )
+    //     this->marks_spr.at( i ).setPosition(
+    //         sf::Vector2f( this->bounds.at( SetUI::BTNS::SFX_MARK ).position )
+    //     );
+    
     if ( prog.has_value() ) (*prog)->increment_by( 5 );
 }
 
@@ -48,4 +66,39 @@ void SetUI::exit_animation() {
 }
 const bool SetUI::anim_finished() const {
     return this->animation.finished();
+}
+
+std::array<sf::Sprite, 3> SetUI::__init_modes() const {
+    return std::array<sf::Sprite, 3>({
+        sf::Sprite(TextureCache::inst().get("set/mode/easy")),
+        sf::Sprite(TextureCache::inst().get("set/mode/even")),
+        sf::Sprite(TextureCache::inst().get("set/mode/hard"))
+    });
+}
+std::array<sf::Sprite, 2> SetUI::__init_marks() const {
+    return std::array<sf::Sprite, 2>({
+       sf::Sprite(TextureCache::inst().get("set/mark")), 
+       sf::Sprite(TextureCache::inst().get("set/mark"))
+    });
+}
+void SetUI::__init_bounds() {
+    this->bounds[BTNS::DIF_ARW_INC] = sf::Rect<int>( this->__normalize( {47, 173} ),  {20, 20} );
+    this->bounds[BTNS::DIF_ARW_DEC] = sf::Rect<int>( this->__normalize( {159, 173} ), {20, 20} );
+    this->bounds[BTNS::SCR_ARW_INC] = sf::Rect<int>( this->__normalize( {78, 218} ),  {20, 20} );
+    this->bounds[BTNS::SCR_ARW_DEC] = sf::Rect<int>( this->__normalize( {131, 218} ), {20, 20} );
+    this->bounds[BTNS::MUSIC_MARK]  = sf::Rect<int>( this->__normalize( {327, 171} ), {20, 20} );
+    this->bounds[BTNS::SFX_MARK]    = sf::Rect<int>( this->__normalize( {327, 215} ), {20, 20} );
+    this->bounds[BTNS::EXIT]        = sf::Rect<int>( this->__normalize( {400, 20} ),  {30, 30} );
+}
+
+sf::Vector2<int> SetUI::__normalize( const sf::Vector2<int>& pos ) const {
+    // static const int X = Tool::WIDTH - this->bg.getTextureRect().size.x;
+    // static const int Y = Tool::HEIGHT - this->bg.getTextureRect().size.y;
+    static const int X = Tool::W_CTR.x - this->bg.getTextureRect().size.x / 2.0f;
+    static const int Y = Tool::W_CTR.y - this->bg.getTextureRect().size.y / 2.0f;
+
+    return sf::Vector2<int>(
+        X + pos.x,
+        Y + pos.y
+    );
 }

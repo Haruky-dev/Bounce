@@ -118,6 +118,25 @@ void Manager::controlOut( const Action out ) {
             this->pushLayer( Layer::Type::Holding, true );
             break;
 
+        case Action::incMaxScr:
+            ( Tool::maxScore < 9 )? Tool::maxScore++ : 1;
+            break;
+        case Action::decMaxScr:
+            ( Tool::maxScore > 1 )? Tool::maxScore-- : 9;
+            break;
+
+        case Action::incDiff:
+            Tool::MODE = ( Tool::MODE == "hard" )? "easy"
+                : (Tool::MODE == "easy")? "even"
+                : (Tool::MODE == "even")? "hard" : "easy";
+            break;
+
+        case Action::decDiff:
+            Tool::MODE = (Tool::MODE == "hard")? "even"
+                : (Tool::MODE == "even")? "easy"
+                : (Tool::MODE == "easy")? "hard" : "easy";
+            break;
+
         case Action::dropOverlap: // dropOverLayer
             assert(
                 this->__stack.back().onOverlap

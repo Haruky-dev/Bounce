@@ -56,11 +56,11 @@ void MenuLayer::Update( const sf::Time& dt ) {
 void MenuLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.bg );
 
-    for (int i = 0; i < this->UI.BTN_COUNT; i++)
-        win.draw( this->UI.btns.at( i ) );
+    for ( const sf::Sprite& btn : this->UI.btns )
+        win.draw( btn );
 
-    win.draw( this->UI.credit );
-    win.draw( this->UI.version );
+        win.draw( this->UI.credit );
+        win.draw( this->UI.version );
 }
 
 Layer::Type MenuLayer::type() const { return Layer::Type::MainMenu; }

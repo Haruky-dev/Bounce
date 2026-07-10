@@ -7,7 +7,7 @@
 
 TextureCache& TextureCache::inst() {
     static TextureCache inst = TextureCache();
-    
+
     return inst;
 }
 
@@ -18,17 +18,21 @@ void TextureCache::Load( Progressive& prog ) {
         { "assets/UI/Menu/v.png", "mm/v", 2 },
         { "assets/UI/Menu/play.png", "mm/btn/play", 3 },
         { "assets/UI/Menu/menu.png", "mm/btn/set", 3 },
-        { "assets/UI/Menu/quit.png", "mm/btn/q", 3 }, 
-    
+        { "assets/UI/Menu/quit.png", "mm/btn/q", 3 },
+
         { "assets/holdBg.png", "h/bg", 4 },                     /* Hold Layer assets */
 
-        { "assets/UI/Setting/bg.png", "set/bg", 20 },           /* Setting layer assets */
+        { "assets/UI/Setting/bg.png", "set/bg", 2 },           /* Setting layer assets */
         { "assets/UI/Setting/shadow.png", "set/shad", 20 },
+        { "assets/UI/Setting/mark.png", "set/mark", 2},
+        { "assets/UI/Setting/easy.png", "set/mode/easy", 2 },
+        { "assets/UI/Setting/even.png", "set/mode/even", 2 },
+        { "assets/UI/Setting/hard.png", "set/mode/hard", 2 },
 
         { "assets/UI/Game/bg.png", "play/bg", 3 },              /* Game layer assets */
         { "assets/UI/Game/paddle.png", "play/pad", 1 },
         { "assets/UI/Game/ball.png", "play/ball", 1 },
-        
+
 
         { "assets/UI/Pause/shadow.png", "pause/shad", 1 },      /* Pause layer assets */
         { "assets/UI/Pause/bg.png", "pause/bg", 2 },
@@ -56,7 +60,7 @@ void TextureCache::Load( Progressive& prog ) {
         if ( !(this->__cache.at( that.id )->loadFromFile( that.path )) )
             throw std::runtime_error(
                 "Cannot load [Texture] at path: '" + that.path + "' !"
-            );    
+            );
 
         prog.increment_by( that.weight );
     }

@@ -12,5 +12,10 @@ enum class Action {
     
     raiseHold,
 
+    incDiff,
+    decDiff,
+    incMaxScr,
+    decMaxScr,
+
     dropOverlap
 };

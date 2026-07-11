@@ -13,6 +13,8 @@ enum class Action;
 
 
 class Manager {
+    friend class ActDispatcher;
+
     private:
         struct State {
             std::unique_ptr<Layer> layer;

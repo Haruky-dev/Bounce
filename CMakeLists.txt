@@ -37,6 +37,7 @@ add_executable( ${PROJECT_NAME}
     src/engine/visuals/EndUI.cpp
 
     src/engine/Manager.cpp
+    src/engine/handles/ActDispatcher.cpp
 
     src/engine/layers/LoadLayer.cpp
     src/engine/layers/MenuLayer.cpp

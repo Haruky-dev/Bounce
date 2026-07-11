@@ -9,7 +9,7 @@
   "setting": {
     "maxScore": 3,
     "maxCD": 1,
-    "mode": "Easy",
+    "mode": "easy",
 
     "fps": {
       "delay": 1.0
@@ -20,7 +20,7 @@
   },
 
   "modes": {
-    "Easy": {
+    "easy": {
       "ball": {
         "speed": 220.0,
         "MAXspeed": 600.0,
@@ -51,7 +51,7 @@
       }
     },
 
-    "Mid": {
+    "even": {
       "general": {
         "maxScore": 0
       },
@@ -77,7 +77,7 @@
       }
     },
 
-    "Hard": {
+    "hard": {
       "general": {
         "maxScore": 0
       },

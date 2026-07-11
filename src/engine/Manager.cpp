@@ -12,11 +12,10 @@
 #include <engine/input/Action.hpp>
 #include <engine/input/InputEv.hpp>
 
+#include <engine/handles/ActDispatcher.hpp>
 
 #include <tools/Tool.hpp>
 #include <tools/Json.hpp>
-
-#include <print>
 
 
 // -- CONSTRUCTOR/DEST SECTION
@@ -77,75 +76,8 @@ void Manager::pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
 }
 
 void Manager::controlOut( const Action out ) {
-    Layer* lastLayer = this->__stack.back().layer.get();
+    ActDispatcher::handleOutput( *this, out );
 
-    switch ( out ) {
-        case Action::None:
-            return; break;
-
-        case Action::raiseMain:
-            this->__stack.clear();
-
-            this->pushLayer( Layer::Type::MainMenu );            
-            // this->__stack.back().layer->enter();
-            break;
-
-        case Action::raisePause:
-            lastLayer->pause();
-            this->pushLayer( Layer::Type::Pause, true, true );
-            break;
-
-        case Action::raisePlay:
-            lastLayer->exit();
-            this->pushLayer( Layer::Type::Play );
-            break;
-
-        case Action::raiseSett:
-            lastLayer->pause();
-            this->pushLayer( Layer::Type::Setting, true, true );
-            break;
-
-        case Action::raiseQuit:
-            // std::cout << "Wanna quit?\n";
-            break;
-
-        case Action::raiseGameOv:
-            lastLayer->pause();
-            this->pushLayer( Layer::Type::GameOver, true, true );
-            break;
-
-        case Action::raiseHold:
-            this->pushLayer( Layer::Type::Holding, true );
-            break;
-
-        case Action::incMaxScr:
-            ( Tool::maxScore < 9 )? Tool::maxScore++ : 1;
-            break;
-        case Action::decMaxScr:
-            ( Tool::maxScore > 1 )? Tool::maxScore-- : 9;
-            break;
-
-        case Action::incDiff:
-            Tool::MODE = ( Tool::MODE == "hard" )? "easy"
-                : (Tool::MODE == "easy")? "even"
-                : (Tool::MODE == "even")? "hard" : "easy";
-            break;
-
-        case Action::decDiff:
-            Tool::MODE = (Tool::MODE == "hard")? "even"
-                : (Tool::MODE == "even")? "easy"
-                : (Tool::MODE == "easy")? "hard" : "easy";
-            break;
-
-        case Action::dropOverlap: // dropOverLayer
-            assert(
-                this->__stack.back().onOverlap
-             && (this->__stack.size() > 1)
-            );
-
-            lastLayer->exit();
-            this->__stack.back().onExit = true;
-    }
 }
 
 void Manager::updateLayers( sf::Time& dt ) {

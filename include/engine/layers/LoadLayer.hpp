@@ -14,6 +14,7 @@ class LoadLayer : public Layer, public Progressive {
         LoadUI UI;
         std::thread loader;
 
+    private:
         Action feature() const override;
 
     public:

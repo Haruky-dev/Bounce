@@ -7,10 +7,14 @@
 
 #include <engine/input/Input.hpp>
 #include <engine/input/Action.hpp>
-#include <engine/input/Request.hpp>
+#include <engine/request/Request.hpp>
+#include <engine/request/Constraint.hpp>
 #include <engine/input/InputManager.hpp>
 
-#include <initializer_list>
+#include <engine/request/constraints/Bounds.hpp>
+#include <engine/request/constraints/Cooldown.hpp>
+
+#include <vector>
 
 
 class StateManager;
@@ -19,6 +23,7 @@ class StateManager;
 class Layer { 
     private:
         virtual Action feature() const { return Action::None; }
+        virtual void form_request() {}
 
     public:
         enum class Type {
@@ -33,20 +38,19 @@ class Layer {
         };
 
     protected:
-        Request request;
+        std::vector<Request> requests;
 
-        explicit Layer() : request() {}
+        explicit Layer() : requests() {}
 
     public:
         virtual void   Load() = 0;
         virtual void   Update( const sf::Time& dt ) = 0;
         virtual void   Render( sf::RenderWindow& win ) const = 0; 
-
-        virtual Action Read( const Input& input ) const {
+        virtual Action Read( const Context& context ) const {
             Action act = this->feature();
 
             if ( act == Action::None )
-                act = InputManager::verifyInput( this->request, input );
+                act = InputManager::verifyInput( this->requests, context );
 
             return act;
         }
@@ -54,31 +58,24 @@ class Layer {
         // getters
         virtual Layer::Type type() const = 0;
 
-        virtual void setRequest( const std::initializer_list< Request::kbBinding >& that ) {
-            for ( const Request::kbBinding& K : that )
-                this->request.vitalKeys.push_back( K );
-        }
-        virtual void setRequest( const std::initializer_list< Request::msBinding >& that ) {
-            for ( const Request::msBinding& B : that )
-                this->request.vitalButtons.push_back( B );
-        }
-
         virtual std::vector<sf::Keyboard::Key> keys() const {
             std::vector<sf::Keyboard::Key> keys;
-            keys.reserve( this->request.vitalKeys.size() );
+            keys.reserve( this->requests.size() );
 
-            for ( const Request::kbBinding& B : this->request.vitalKeys )
-                keys.push_back( B.key );
+            for ( const Request& R : this->requests )
+                if ( !(R.trigger.index()) )
+                    keys.push_back( std::get<sf::Keyboard::Key>(R.trigger) );
 
             return keys;
         }
 
         virtual std::vector<sf::Mouse::Button> buttons() const {
             std::vector<sf::Mouse::Button> buttons;
-            buttons.reserve( this->request.vitalButtons.size() );
+            buttons.reserve( this->requests.size() );
 
-            for ( const Request::msBinding& B : this->request.vitalButtons )
-                buttons.push_back( B.btn );
+            for ( const Request& R : this->requests )
+                if ( R.trigger.index() )
+                    buttons.push_back( std::get<sf::Mouse::Button>(R.trigger) );
 
             return buttons;
         }

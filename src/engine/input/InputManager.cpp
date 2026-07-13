@@ -1,37 +1,35 @@
 #include <engine/input/InputManager.hpp>
 
-#include <algorithm>
 
-
-Action InputManager::verifyInput( const Request& request, const Input& input ) {
+Action InputManager::verifyInput(const std::vector<Request>& reqs, const Context& context ) {
     // [KEYBOARD]============================================
-    if ( input.keyb.clicked ) {
-        const auto& B = std::find_if(
-            request.vitalKeys.begin(),
-            request.vitalKeys.end(),
-            [&]( const Request::kbBinding& B ) {
-                return B.key == input.keyb.key;
-            }
-        );
+    if ( context.input.keyb.clicked ) {
+        for ( const Request& request : reqs ) {
+            // is the current request has a Keyboard::Key trigger
+            if ( request.trigger.index() )
+                continue;
 
-        if ( B != request.vitalKeys.end() )
-            return B->act;
+            if ( // Does the inputed Keyboard::Key matches the request' trigger
+                ( std::get<sf::Keyboard::Key>( request.trigger ) == context.input.keyb.key )
+                && ( request.allowed(context) ) // and the request isn't stopped by any Constraint
+            )
+                return request.act;
+        }
     }
 
-    // [MOUSE]==============================================
-    if ( input.mouse.clicked ) {
-        const auto& B = std::find_if(
-            request.vitalButtons.begin(),
-            request.vitalButtons.end(),
-            [&]( const Request::msBinding& B ) {
-                return ( B.btn == input.mouse.btn
-                    && ( B.bounds->contains(input.mouse.pos) )
-                );
-            }
-        );
-        
-        if ( B != request.vitalButtons.end() )
-            return B->act;
+    // [MOUSE]============================================
+    if ( context.input.mouse.clicked ) {
+        for ( const Request& request : reqs ) {
+            // is the current request has a Mouse::Button trigger
+            if ( !(request.trigger.index()) )
+                continue;
+
+            if ( // Does the inputed Mouse::Button matches the request' trigger
+                ( std::get<sf::Mouse::Button>( request.trigger ) == context.input.mouse.btn )
+                && ( request.allowed(context) ) // and the request isn't stopped by any Constraint
+            )
+                return request.act;
+        }
     }
 
     return Action::None;

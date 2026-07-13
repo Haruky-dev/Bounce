@@ -15,17 +15,17 @@
 class SetUI : public BaseUI {
     friend class SetLayer;
 
-    enum class BTNS {
-        DIF_ARW_INC,
-        DIF_ARW_DEC,
-        SCR_ARW_INC,
-        SCR_ARW_DEC,
-        MUSIC_MARK,
-        SFX_MARK,
-        EXIT
-    };
-
     private:
+        enum class BTNS {
+            DIF_ARW_INC,
+            DIF_ARW_DEC,
+            SCR_ARW_INC,
+            SCR_ARW_DEC,
+            MUSIC_MARK,
+            SFX_MARK,
+            EXIT
+        };
+
         sf::Sprite bg, shadow;
         std::array<sf::Sprite, 2> marks_spr;
         std::array<sf::Sprite, 3> modes_spr;

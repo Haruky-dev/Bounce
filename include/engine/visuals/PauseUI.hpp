@@ -15,6 +15,10 @@ class PauseUI : public BaseUI {
     friend class PauseLayer;
 
     private:
+        enum class BTNS {
+          MENU,
+          
+        };
         static constexpr int BTN_COUNT = 2;
         sf::Sprite bg, shadow;
 

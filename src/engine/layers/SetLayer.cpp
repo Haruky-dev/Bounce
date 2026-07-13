@@ -11,16 +11,7 @@ SetLayer::SetLayer() : Layer(), Animation()
 }
 
 void SetLayer::Load() {
-    this->setRequest({
-        { sf::Keyboard::Key::Enter, Action::dropOverlap }
-    });
-    this->setRequest({
-        { sf::Mouse::Button::Left, Action::dropOverlap, this->UI.bounds.at( SetUI::BTNS::EXIT ) },
-        { sf::Mouse::Button::Left, Action::incMaxScr, this->UI.bounds.at( SetUI::BTNS::SCR_ARW_INC) },
-        { sf::Mouse::Button::Left, Action::decMaxScr, this->UI.bounds.at( SetUI::BTNS::SCR_ARW_DEC) },
-        { sf::Mouse::Button::Left, Action::incDiff, this->UI.bounds.at( SetUI::BTNS::DIF_ARW_INC) },
-        { sf::Mouse::Button::Left, Action::decDiff, this->UI.bounds.at( SetUI::BTNS::DIF_ARW_DEC) },
-    });
+    this->form_request();
 }
 
 void SetLayer::Update( const sf::Time& dt ) {
@@ -36,6 +27,33 @@ void SetLayer::Render( sf::RenderWindow& win ) const {
         : (Tool::MODE=="even")? 1
         : (Tool::MODE=="easy")? 0 : 2
     ) );
+}
+
+void SetLayer::form_request() {
+    // Keyboard requests
+    this->requests.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
+
+    // Mouse requests
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::dropOverlap
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::EXIT) )
+    );
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::incMaxScr
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_INC) )
+    );
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::decMaxScr
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_DEC) )
+    );
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::incDiff
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_INC) )
+    );
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::decDiff
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_DEC) )
+    );
 }
 
 bool SetLayer::animated() const { return true; }

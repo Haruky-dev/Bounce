@@ -34,10 +34,7 @@ void GameLayer::Load() {
 
     this->music->setLooping( true );
 
-    this->setRequest({
-        { sf::Keyboard::Key::Escape, Action::raiseMain },
-        { sf::Keyboard::Key::Space, Action::raisePause }
-    });
+    this->form_request();
     
     std::println("[GameLayer] loaded!");
 }
@@ -88,6 +85,12 @@ Action GameLayer::feature() const {
         return Action::raiseGameOv;
     
     return Action::None;
+}
+
+void GameLayer::form_request() {
+    // Keyboard request
+    this->requests.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
+    this->requests.emplace_back( sf::Keyboard::Key::Space, Action::raisePause );
 }
 
 void GameLayer::updateBall( const sf::Time& dt ) {

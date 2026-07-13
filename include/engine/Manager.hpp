@@ -13,7 +13,7 @@ enum class Action;
 
 
 class Manager {
-    friend class ActDispatcher;
+    friend class Dispatcher;
 
     private:
         struct State {

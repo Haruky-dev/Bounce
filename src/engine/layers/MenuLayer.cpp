@@ -1,7 +1,7 @@
 #include <engine/layers/MenuLayer.hpp>
 
 #include <engine/visuals/MenuUI.hpp>
-#include <engine/input/Request.hpp>
+#include <engine/request/Request.hpp>
 
 #include <cache/SoundCache.hpp>
 
@@ -25,18 +25,7 @@ void MenuLayer::Load() {
     this->music->setLooping( true );
     this->music->setVolume(20);
 
-    this->setRequest({
-        { sf::Keyboard::Key::P, Action::raisePlay },
-        { sf::Keyboard::Key::M, Action::raiseSett },
-        { sf::Keyboard::Key::Q, Action::raiseQuit },
-
-        { sf::Keyboard::Key::H, Action::raiseHold }
-    });
-    this->setRequest({
-        { sf::Mouse::Button::Left, Action::raisePlay, UI.btn_bound( 0 ) },
-        { sf::Mouse::Button::Left, Action::raiseSett, UI.btn_bound( 1 ) },
-        { sf::Mouse::Button::Left, Action::raiseQuit, UI.btn_bound( 2 ) }
-    });
+    this->form_request();
 
     std::cout << "[MenuLayer] Loaded!\n";
 }
@@ -61,6 +50,24 @@ void MenuLayer::Render( sf::RenderWindow& win ) const {
 
         win.draw( this->UI.credit );
         win.draw( this->UI.version );
+}
+
+void MenuLayer::form_request() {
+    // Keyboard requests
+    this->requests.emplace_back( sf::Keyboard::Key::P, Action::raisePlay );
+    this->requests.emplace_back( sf::Keyboard::Key::M, Action::raiseSett );
+    this->requests.emplace_back( sf::Keyboard::Key::Q, Action::raiseQuit );
+
+    // Mouse requests
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::raisePlay
+        ).require( Constraint::bounds( this->UI.btn_bound(0) ) );
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::raiseSett
+        ).require( Constraint::bounds( this->UI.btn_bound(1) ) );
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::raiseQuit
+        ).require( Constraint::bounds( this->UI.btn_bound(2) ) );
 }
 
 Layer::Type MenuLayer::type() const { return Layer::Type::MainMenu; }

@@ -11,6 +11,9 @@ class EndLayer : public Layer {
         EndUI UI;
         sf::Time accTime;
 
+    private:
+        void form_request() override;
+
     public:
         EndLayer();
 

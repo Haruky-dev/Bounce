@@ -12,7 +12,7 @@
 #include <engine/input/Action.hpp>
 #include <engine/input/InputEv.hpp>
 
-#include <engine/handles/ActDispatcher.hpp>
+#include <engine/Dispatcher.hpp>
 
 #include <tools/Tool.hpp>
 #include <tools/Json.hpp>
@@ -42,12 +42,15 @@ void Manager::Update( sf::Time& dt, sf::RenderWindow& win ) {
     this->updateLayers( dt );
 
     Layer& curr = *(this->__stack.back().layer);
-    Input in;
 
-    in.mouse = InputEv::MouseClick( curr.buttons(), win );
-    in.keyb  = InputEv::keybClick( curr.keys() );
-
-    this->controlOut( curr.Read( in ) );
+    this->controlOut(
+        curr.Read({
+            std::chrono::steady_clock::now(),
+            Input(
+                InputEv::mouseClick( curr.buttons(),win ),
+                InputEv::keybClick( curr.keys() )
+            )
+        }) );
 }
 
 void Manager::Render( sf::RenderWindow& win ) const {
@@ -76,8 +79,7 @@ void Manager::pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
 }
 
 void Manager::controlOut( const Action out ) {
-    ActDispatcher::handleOutput( *this, out );
-
+    Dispatcher::handleOutput( *this, out );
 }
 
 void Manager::updateLayers( sf::Time& dt ) {

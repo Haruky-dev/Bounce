@@ -30,7 +30,9 @@ class GameLayer : public Layer, public Transition {
 
         std::unique_ptr<sf::Music> music;
 
+    private:
         Action feature() const override;
+        void form_request() override;
         void updateBall( const sf::Time& dt );
         void refresh_entities();
         // match player.direction with ball.direction

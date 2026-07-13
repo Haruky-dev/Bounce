@@ -11,6 +11,9 @@ class SetLayer : public Layer, public Animation {
     private:
         SetUI UI;
 
+    private:
+        void form_request() override;
+
     public:
         SetLayer();
         void Load() override;

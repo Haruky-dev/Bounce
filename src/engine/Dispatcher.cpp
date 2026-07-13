@@ -1,10 +1,10 @@
-#include <engine/handles/ActDispatcher.hpp>
+#include <engine/Dispatcher.hpp>
 
 #include <engine/Layer.hpp>
 #include <tools/Tool.hpp>
 
 
-bool ActDispatcher::handleOutput( Manager& manager, const Action act ) {
+bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
     Layer* lastLayer = manager.__stack.back().layer.get();
     switch ( act ) {
 

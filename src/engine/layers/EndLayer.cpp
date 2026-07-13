@@ -14,15 +14,7 @@ void EndLayer::Load() {
 
     this->accTime = sf::Time::Zero;
 
-
-    this->setRequest({
-        { sf::Keyboard::Key::Enter, Action::dropOverlap },
-        { sf::Keyboard::Key::Escape, Action::raiseMain }
-    });
-    this->setRequest({
-        { sf::Mouse::Button::Left, Action::dropOverlap, this->UI.bounds.at(0) },
-        { sf::Mouse::Button::Left, Action::raiseMain, this->UI.bounds.at(1) }
-    });
+    this->form_request();
 
     std::cout << "[EndLayer] Loaded!\n";
 }
@@ -43,6 +35,20 @@ void EndLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.winner );
     win.draw( this->UI.scores.at(0) );
     win.draw( this->UI.scores.at(1) );
+}
+
+void EndLayer::form_request() {
+    // Keyboard requests
+    this->requests.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
+    this->requests.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
+
+    // Mouse requests
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::dropOverlap
+        ).require( Constraint::bounds( this->UI.bounds.at(0) ) );
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::raiseMain
+        ).require( Constraint::bounds( this->UI.bounds.at(1) ) );
 }
 
 bool EndLayer::animated() const { return true; }

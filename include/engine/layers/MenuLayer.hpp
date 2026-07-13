@@ -15,6 +15,9 @@ class MenuLayer : public Layer {
         std::unique_ptr<sf::Music> music; // should be a ref as well, held by 'SoundCache'
         sf::Time accTime;
 
+    private:
+        void form_request() override;
+
     public:
         MenuLayer();
         void Load() override;

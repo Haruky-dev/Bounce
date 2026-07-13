@@ -16,15 +16,7 @@ void PauseLayer::Load() {
 
     this->accTime = sf::Time::Zero;
 
-    this->setRequest({
-        { sf::Keyboard::Key::Enter, Action::dropOverlap },
-        { sf::Keyboard::Key::Escape, Action::raiseMain },
-    });
-    this->setRequest({
-        { sf::Mouse::Button::Left, Action::dropOverlap, this->UI.btn_bound(0) },
-        { sf::Mouse::Button::Left, Action::raiseMain, this->UI.btn_bound(1) }
-
-    });
+    this->form_request();
 
     std::cout << "[Pause] Loaded!\n";
 }
@@ -44,6 +36,22 @@ void PauseLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.bg );
     for ( int i = 0; i < this->UI.BTN_COUNT; i++ )
         win.draw( this->UI.buttons.at( i ) );
+}
+
+void PauseLayer::form_request() {
+    // Keyboard requests
+    this->requests.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
+    this->requests.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
+
+    // Mouse requests
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::dropOverlap
+        ).require( Constraint::bounds( this->UI.btn_bound(0) )
+    );
+    this->requests.emplace_back(
+            sf::Mouse::Button::Left, Action::raiseMain
+        ).require( Constraint::bounds( this->UI.btn_bound(1) )
+    );
 }
 
 bool PauseLayer::animated() const { return true; }

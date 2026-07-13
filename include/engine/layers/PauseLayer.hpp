@@ -13,6 +13,9 @@ class PauseLayer : public Layer, public Animation {
         PauseUI UI;
         sf::Time accTime;
 
+    private:
+        void form_request() override;
+
     public:
         PauseLayer();
 

@@ -3,6 +3,8 @@
 #include <engine/Layer.hpp>
 #include <tools/Tool.hpp>
 
+#include <iostream>
+
 
 bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
     Layer* lastLayer = manager.__stack.back().layer.get();
@@ -54,19 +56,25 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
             break;
 
         case Action::incDiff:
-            Tool::MODE = ( Tool::MODE == "hard" )? "easy"
-                : (Tool::MODE == "easy")? "even"
-                : (Tool::MODE == "even")? "hard" : "easy";
+            switch ( Tool::MODE.at(0) ) {
+                case 'E': Tool::MODE = 'M'; break;
+                case 'M': Tool::MODE = 'H'; break;
+                case 'H': Tool::MODE = 'E'; break;
 
+                default: throw std::runtime_error("Invalid [Tool::MODE]!");
+            }
             Tool::MODE += ".";
             break;
 
         case Action::decDiff:
-            Tool::MODE = (Tool::MODE == "hard")? "even"
-                : (Tool::MODE == "even")? "easy"
-                : (Tool::MODE == "easy")? "hard" : "easy";
+            switch ( Tool::MODE.at(0) ) {
+                case 'E': Tool::MODE = 'H'; break;
+                case 'M': Tool::MODE = 'E'; break;
+                case 'H': Tool::MODE = 'M'; break;
 
-            Tool::MODE += ".";            
+                default: throw std::runtime_error("Invalid [Tool::MODE]!");
+            }
+            Tool::MODE += ".";
             break;
 
         case Action::dropOverlap: // dropOverLayer

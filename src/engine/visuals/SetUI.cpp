@@ -32,6 +32,7 @@ void SetUI::configure( const std::optional<Progressive*>& prog ) {
              this->__normalize<float>(this->bg_rect, {72, 175}) // or just bounds+margin
         );
 
+    this->modes_i.insert({ {'E', 0}, {'M', 1}, {'H', 2} });
     // // this->max_score.setPosition(Vector2f position)
     
     if ( prog.has_value() ) (*prog)->increment_by( 5 );

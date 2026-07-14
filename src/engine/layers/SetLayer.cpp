@@ -22,11 +22,7 @@ void SetLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.shadow );
     win.draw( this->UI.bg );
 
-    win.draw( this->UI.modes_spr.at(
-        (Tool::MODE=="hard")? 2
-        : (Tool::MODE=="even")? 1
-        : (Tool::MODE=="easy")? 0 : 2
-    ) );
+    win.draw( this->UI.modes_spr.at(this->UI.modes_i.at(Tool::MODE.at(0))) );
 }
 
 void SetLayer::form_request() {
@@ -40,7 +36,7 @@ void SetLayer::form_request() {
     );
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::incMaxScr
-        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_INC) )
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_INC))
     );
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::decMaxScr
@@ -48,11 +44,11 @@ void SetLayer::form_request() {
     );
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::incDiff
-        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_INC) )
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_INC)), Constraint::cooldown(200)  
     );
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::decDiff
-        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_DEC) )
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_DEC)), Constraint::cooldown(200) 
     );
 }
 

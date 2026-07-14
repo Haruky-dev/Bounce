@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Text.hpp>
 
+#include <map>
 #include <array>
 #include <unordered_map>
 
@@ -31,6 +32,7 @@ class SetUI : public BaseUI {
         std::array<sf::Sprite, 2> marks_spr;
         std::array<sf::Sprite, 3> modes_spr;
         std::unordered_map< SetUI::BTNS, sf::Rect<int> > bounds;
+        std::map<char, int> modes_i;
 
         sf::Text max_score;
 

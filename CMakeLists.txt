@@ -29,7 +29,6 @@ add_executable( ${PROJECT_NAME}
     src/cache/TextureCache.cpp
 
     src/engine/visuals/LoadUI.cpp
-    src/engine/visuals/HoldUI.cpp
     src/engine/visuals/MenuUI.cpp
     src/engine/visuals/GameUI.cpp
     src/engine/visuals/PauseUI.cpp
@@ -45,7 +44,6 @@ add_executable( ${PROJECT_NAME}
     src/engine/layers/PauseLayer.cpp
     src/engine/layers/SetLayer.cpp
     src/engine/layers/EndLayer.cpp
-    src/engine/layers/HoldLayer.cpp
     # src/engine/layers/QuitLayer.cpp
     
     src/engine/request/Constraint.cpp

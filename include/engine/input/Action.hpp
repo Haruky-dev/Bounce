@@ -10,8 +10,6 @@ enum class Action {
     raiseQuit,
     raiseGameOv,
     
-    raiseHold,
-
     incDiff,
     decDiff,
     incMaxScr,

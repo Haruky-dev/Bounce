@@ -2,7 +2,6 @@
 
 #include <engine/Layer.hpp>
 #include <engine/layers/LoadLayer.hpp>
-#include <engine/layers/HoldLayer.hpp>
 #include <engine/layers/GameLayer.hpp>
 #include <engine/layers/PauseLayer.hpp>
 #include <engine/layers/SetLayer.hpp>
@@ -22,7 +21,6 @@
 Manager::Manager() : __stack() {
     // register all states
     this->__register[Layer::Type::Loading]  = []() { return std::make_unique<LoadLayer>(); };
-    this->__register[Layer::Type::Holding]  = []() { return std::make_unique<HoldLayer>(); };
     this->__register[Layer::Type::MainMenu] = []() { return std::make_unique<MenuLayer>(); };
     this->__register[Layer::Type::Setting]  = []() { return std::make_unique<SetLayer>(); };
     this->__register[Layer::Type::Play]     = []() { return std::make_unique<GameLayer>(); };

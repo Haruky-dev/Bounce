@@ -20,8 +20,6 @@ void TextureCache::Load( Progressive& prog ) {
         { "assets/UI/Menu/menu.png", "mm/btn/set", 3 },
         { "assets/UI/Menu/quit.png", "mm/btn/q", 3 },
 
-        { "assets/holdBg.png", "h/bg", 4 },                     /* Hold Layer assets */
-
         { "assets/UI/Setting/bg.png", "set/bg", 2 },           /* Setting layer assets */
         { "assets/UI/Setting/shadow.png", "set/shad", 20 },
         { "assets/UI/Setting/mark.png", "set/mark", 2},

@@ -44,9 +44,6 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
             manager.pushLayer( Layer::Type::GameOver, true, true );
             break;
 
-        case Action::raiseHold:
-            manager.pushLayer( Layer::Type::Holding, true );
-            break;
 
         case Action::incMaxScr:
             ( Tool::maxScore < 9 )? Tool::maxScore++ : 1;

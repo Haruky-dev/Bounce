@@ -27,7 +27,6 @@ class Layer {
     public:
         enum class Type {
             Loading,
-            Holding,
             MainMenu,
             Setting,
             Play,

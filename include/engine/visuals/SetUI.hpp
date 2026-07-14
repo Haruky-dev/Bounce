@@ -27,14 +27,10 @@ class SetUI : public BaseUI {
         };
 
         sf::Sprite bg, shadow;
+        sf::Rect<int> bg_rect;
         std::array<sf::Sprite, 2> marks_spr;
         std::array<sf::Sprite, 3> modes_spr;
         std::unordered_map< SetUI::BTNS, sf::Rect<int> > bounds;
-        // std::array<sf::Rect<int>, 2>
-        //     modes_arrow,
-        //     score_arrow,
-        //     marks_box;
-        // sf::Rect<int> exit_btn;
 
         sf::Text max_score;
 
@@ -43,7 +39,6 @@ class SetUI : public BaseUI {
         float bg_init_y;
 
     private:
-        sf::Vector2<int>        __normalize( const sf::Vector2<int>& ) const;
         std::array<sf::Sprite, 3> __init_modes() const;
         std::array<sf::Sprite, 2> __init_marks() const;
         void __init_bounds();

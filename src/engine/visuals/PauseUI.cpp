@@ -8,7 +8,8 @@
 PauseUI::PauseUI() :
     animation(), buttons( __make_btns() ),
     bg(TextureCache::inst().get("pause/bg")),
-    shadow(TextureCache::inst().get("pause/shad"))
+    shadow(TextureCache::inst().get("pause/shad")),
+    bg_rect(bg.getTextureRect())
     {}
 
 void PauseUI::configure( const std::optional<Progressive*>& prog ) {
@@ -19,14 +20,12 @@ void PauseUI::configure( const std::optional<Progressive*>& prog ) {
     this->bg.setPosition( {Tool::W_CTR.x, this->bg_init_y});
 
     // init buttons bounds to their final position
-    for ( int i = 0; i < this->BTN_COUNT; i++ ) {
-        static const int width = this->buttons.at(0).getTexture().getSize().x;
-        static const int h_dist = 20; // horizontal distance between the two buttons
-        this->bounds.at( i ) = sf::Rect<int>(
-            sf::Vector2<int>( Tool::W_CTR.x + ( (h_dist+width)*i - (width+h_dist/2.f) ), Tool::W_CTR.y + 40 ),
-            this->buttons.at( i ).getTextureRect().size
-        );
-    }
+    this->bounds[PauseUI::BTNS::QUIT] = sf::Rect<int>(
+        this->__normalize<int>( this->bg_rect, {20, 190} ), {190, 70}
+    );
+    this->bounds[PauseUI::BTNS::RESUME] = sf::Rect<int>(
+        this->__normalize<int>( this->bg_rect, {240, 190} ), {190, 70}
+    );
 
     this->__move_btns();
 
@@ -65,19 +64,13 @@ const bool PauseUI::anim_finished() const {
     return this->animation.finished();
 }
 
-const sf::Rect<int>& PauseUI::btn_bound( const int id ) const {
-    assert( id >= 0 && id < BTN_COUNT );
-
-    return this->bounds.at( id );
-}
-
 void PauseUI::__move_btns() {
     for ( int i = 0; i < this->BTN_COUNT; i++ ) {
         static const int width = this->buttons.at(i).getTexture().getSize().x;
 
         this->buttons.at( i ).setPosition({
-           this->bg.getPosition().x + ( (20 + width)*i - (width+10) ), // 20: horizontal distance between btns, 10: half of it
-           this->bg.getPosition().y + 40                             // 40: vertical distance between btns and bg center
+           this->bg.getPosition().x + ( (30 + width)*i - (width+15) ), // 30: horizontal distance between btns, 15: half of it
+           this->bg.getPosition().y + 40                               // 40: vertical distance between btns and bg center
         });
     }
 }

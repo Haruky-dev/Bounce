@@ -10,7 +10,8 @@ EndUI::EndUI() :
     animation(),
     scores( __init_scores() ),
     bg(TextureCache::inst().get("end/bg")),
-    winner(TextureCache::inst().get("end/winner"))
+    winner(TextureCache::inst().get("end/winner")),
+    bg_rect(bg.getTextureRect())
     {}
     
 void EndUI::configure( const std::optional<Progressive*>& prog ) {
@@ -21,25 +22,17 @@ void EndUI::configure( const std::optional<Progressive*>& prog ) {
     this->bg.setPosition( Tool::W_CTR );
 
     // init buttons bounds to their final position
-    for ( int i = 0; i < this->BTN_COUNT; i++ ) {
-        static const int width = 180, height = 40; // hardcoded since buttons are pre-drawn into the bg, and not a stand-alone sprite
-        // static const int h_dist = 32; // horizontal distance between the two butttons
-        this->bounds.at( i ) = sf::Rect<int>(
-            sf::Vector2<int>( this->__normalize({
-                25 + 215*i, 210
-            }) ),
-            { width, height }
-        );
-        // this->bounds.at( i ) = sf::Rect<int>(
-        //     sf::Vector2<int>( Tool::W_CTR.x + ( (width+h_dist)*i - (width+h_dist/2.f) ), Tool::W_CTR.y +  60 ),
-        //     { width, height }
-        // );
+    this->bounds[EndUI::BTNS::QUIT] = sf::Rect<int>(
+        this->__normalize<int>( this->bg_rect, {25, 210} ), {185, 60}
+    );
+    this->bounds[EndUI::BTNS::RESTART] = sf::Rect<int>(
+        this->__normalize<int>( this->bg_rect, {240, 210} ), {185, 60}
+    );
 
-    }
-    this->winner.setPosition( this->__normalize({
-        60 + 220 * ( Tool::P1_SCORE < Tool::P2_SCORE ),
+    this->winner.setPosition( this->__normalize<float>( this->bg_rect, {
+        60.0f + 220 * ( Tool::P1_SCORE < Tool::P2_SCORE ),
         175
-    }));
+    }) );
 
     if ( prog.has_value() ) (*prog)->increment_by( 20 );
 }
@@ -58,17 +51,7 @@ void EndUI::update( const sf::Time& dt ) {
     this->winner.setScale( {s, s} );
 }
 
-sf::Vector2<float> EndUI::__normalize( const sf::Vector2<int>& pos ) const {
-    static const int X = (Tool::WIDTH - this->bg.getTextureRect().size.x) / 2.f;
-    static const int Y = (Tool::HEIGHT - this->bg.getTextureRect().size.y) / 2.f;
-
-    return sf::Vector2<float>(
-      X + pos.x,
-      Y + pos.y
-    );
-}
-
-std::array<sf::Text, 2> EndUI::__init_scores() const {
+std::array<sf::Text, 2> EndUI::__init_scores() {
     std::array<sf::Text, 2> arr({
         sf::Text( FontCache::MineCraf, std::to_string(Tool::P1_SCORE) ),
         sf::Text( FontCache::MineCraf, std::to_string(Tool::P2_SCORE) )
@@ -76,9 +59,9 @@ std::array<sf::Text, 2> EndUI::__init_scores() const {
 
     for ( int i = 0; i < arr.size(); i++ ) {
         arr.at( i ).setFillColor( sf::Color( 26, 26, 46, 255) );
-        arr.at( i ).setPosition( this->__normalize({
-            175 + 80*i, 140
-        }) );
+        arr.at( i ).setPosition( this->__normalize<float>( this->bg_rect,
+            { (float) 175 + i*80, 140 }
+        ) );
         arr.at( i ).setScale({ 0.8f, 0.8f });
     }
 

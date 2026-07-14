@@ -61,13 +61,13 @@ void MenuLayer::form_request() {
     // Mouse requests
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::raisePlay
-        ).require( Constraint::bounds( this->UI.btn_bound(0) ) );
+        ).require( Constraint::bounds( this->UI.bounds.at(MenuUI::BTNS::PLAY) ) );
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::raiseSett
-        ).require( Constraint::bounds( this->UI.btn_bound(1) ) );
+        ).require( Constraint::bounds( this->UI.bounds.at(MenuUI::BTNS::MENU) ) );
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::raiseQuit
-        ).require( Constraint::bounds( this->UI.btn_bound(2) ) );
+        ).require( Constraint::bounds( this->UI.bounds.at(MenuUI::BTNS::QUIT) ) );
 }
 
 Layer::Type MenuLayer::type() const { return Layer::Type::MainMenu; }

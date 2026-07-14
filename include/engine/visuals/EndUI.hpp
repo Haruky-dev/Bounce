@@ -16,17 +16,21 @@ class EndUI : public BaseUI {
     friend class EndLayer;
 
     private:
+        enum class BTNS {
+            QUIT,
+            RESTART
+        };
         static constexpr int BTN_COUNT = 2;
         sf::Sprite bg, winner;
+        sf::Rect<int> bg_rect;
 
-        std::array<sf::Rect<int>, BTN_COUNT> bounds;
+        std::unordered_map<EndUI::BTNS, sf::Rect<int>> bounds;
         std::array<sf::Text, 2> scores;
 
         Animation animation;
 
     private:
-         sf::Vector2<float>      __normalize( const sf::Vector2<int>& ) const;
-         std::array<sf::Text, 2> __init_scores() const;
+         std::array<sf::Text, 2> __init_scores();
 
     public:
         EndUI();

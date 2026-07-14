@@ -46,11 +46,11 @@ void PauseLayer::form_request() {
     // Mouse requests
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::dropOverlap
-        ).require( Constraint::bounds( this->UI.btn_bound(0) )
+        ).require( Constraint::bounds( this->UI.bounds.at(PauseUI::BTNS::RESUME) )
     );
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::raiseMain
-        ).require( Constraint::bounds( this->UI.btn_bound(1) )
+        ).require( Constraint::bounds( this->UI.bounds.at(PauseUI::BTNS::QUIT) )
     );
 }
 

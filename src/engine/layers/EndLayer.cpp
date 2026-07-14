@@ -45,10 +45,10 @@ void EndLayer::form_request() {
     // Mouse requests
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::dropOverlap
-        ).require( Constraint::bounds( this->UI.bounds.at(0) ) );
+        ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::QUIT) ) );
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::raiseMain
-        ).require( Constraint::bounds( this->UI.bounds.at(1) ) );
+        ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::RESTART) ) );
 }
 
 bool EndLayer::animated() const { return true; }

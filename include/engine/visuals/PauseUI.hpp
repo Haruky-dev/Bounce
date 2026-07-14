@@ -4,6 +4,7 @@
 #include <SFML/Graphics/Rect.hpp>
 
 #include <array>
+#include <unordered_map>
 
 #include <engine/visuals/BaseUI.hpp>
 #include <engine/features/Animation.hpp>
@@ -16,14 +17,16 @@ class PauseUI : public BaseUI {
 
     private:
         enum class BTNS {
-          MENU,
-          
+          QUIT,
+          RESUME
         };
-        static constexpr int BTN_COUNT = 2;
         sf::Sprite bg, shadow;
+        static const int BTN_COUNT = 2;
 
         std::array<sf::Sprite, BTN_COUNT> buttons;
-        std::array<sf::Rect<int>, BTN_COUNT> bounds;
+        std::unordered_map<PauseUI::BTNS, sf::Rect<int>> bounds;
+
+        sf::Rect<int> bg_rect;
 
         Animation animation;
 
@@ -36,8 +39,6 @@ class PauseUI : public BaseUI {
         void update( const sf::Time& ) override;
         void configure( const std::optional<Progressive*>& ) override;
 
-        const sf::Rect<int>& btn_bound( const int id ) const;
-
         void exit_animation();
         const bool anim_finished() const;
 
@@ -46,9 +47,10 @@ class PauseUI : public BaseUI {
             const TextureCache& inst = TextureCache::inst();
 
             return {
-                sf::Sprite( inst.get("pause/btn/resume") ),
-                sf::Sprite( inst.get("pause/btn/quit") )
+                sf::Sprite( inst.get("pause/btn/quit") ),
+                sf::Sprite( inst.get("pause/btn/resume") )
             };
         }
+
         void __move_btns();
 };

@@ -17,7 +17,10 @@ class Tool {
         static int CD;
         static int maxCD;
         static int maxScore;
+        static int DELAY_t;
         static bool goalScored;
+        static bool musicON;
+        static bool sfxON;
         static char ballOrient;
 
         static int WIDTH;

@@ -29,17 +29,28 @@ void SetUI::configure( const std::optional<Progressive*>& prog ) {
 
     for ( int i = 0; i < this->modes_spr.size(); i++ )
         this->modes_spr.at(i).setPosition(
-             this->__normalize<float>(this->bg_rect, {72, 175}) // or just bounds+margin
+             this->__normalize<float>(this->bg_rect, {82, 175}) // or just bounds+margin
         );
 
+    this->marks_spr.at(0).setPosition(sf::Vector2f(this->bounds.at(SetUI::BTNS::MUSIC_MARK).position));
+    this->marks_spr.at(1).setPosition(sf::Vector2f(this->bounds.at(SetUI::BTNS::SFX_MARK).position));
+
     this->modes_i.insert({ {'E', 0}, {'M', 1}, {'H', 2} });
-    // // this->max_score.setPosition(Vector2f position)
+
+    this->max_score.setFillColor(sf::Color(48, 49, 52, 255));
+    this->max_score.setOutlineThickness(2.0f);
+    this->max_score.setOutlineColor(sf::Color::Black);
+    this->max_score.setScale({0.5f, 0.5f});
+    this->max_score.setPosition( this->__normalize<float>(this->bg_rect, {108, 221}) );
+    // this->max_score.setPosition( Tool::W_CTR );
     
     if ( prog.has_value() ) (*prog)->increment_by( 5 );
 }
 
 void SetUI::update( const sf::Time& dt ) {
     this->animation.update( dt );
+
+    this->max_score.setString(std::to_string(Tool::maxScore));
 
     const double p = this->animation.progress();
 
@@ -56,6 +67,8 @@ void SetUI::update( const sf::Time& dt ) {
     this->bg.setPosition( {this->bg.getPosition().x, y} );
     this->bg.setColor( bg_c );
     this->shadow.setColor( shadow_c );
+
+    this->__move_elements();
 }
 
 void SetUI::exit_animation() {
@@ -86,4 +99,16 @@ void SetUI::__init_bounds() {
     this->bounds[BTNS::MUSIC_MARK]  = sf::Rect<int>( this->__normalize<int>( this->bg_rect, {327, 171} ), {20, 20} );
     this->bounds[BTNS::SFX_MARK]    = sf::Rect<int>( this->__normalize<int>( this->bg_rect, {327, 215} ), {20, 20} );
     this->bounds[BTNS::EXIT]        = sf::Rect<int>( this->__normalize<int>( this->bg_rect, {400, 20} ),  {30, 30} );
+}
+void SetUI::__move_elements() {
+    const sf::Vector2<float> bg_pos = this->bg.getPosition();
+
+    for ( int i = 0; i < 2; i++ )
+        this->marks_spr.at(i).setPosition({bg_pos.x + 103, bg_pos.y + 23 + 44*i});
+
+    this->max_score.setPosition({bg_pos.x - 117, bg_pos.y + 71});
+
+    this->modes_spr.at(
+            this->modes_i.at(Tool::MODE.front())
+        ).setPosition({bg_pos.x - 143, bg_pos.y + 25});
 }

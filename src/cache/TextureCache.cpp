@@ -40,7 +40,9 @@ void TextureCache::Load( Progressive& prog ) {
         { "assets/UI/Pause/resume.png", "pause/btn/resume", 1 },
 
         { "assets/UI/End/bg.png", "end/bg", 2 },                   /* End layer assets */
-        { "assets/winner.png", "end/winner", 1 }
+        { "assets/winner.png", "end/winner", 1 },
+
+        { "assets/UI/Quit/bg.png", "quit/bg", 2 }                  /* Quit layer assets  */
     };
 
     prog.add_to_total(

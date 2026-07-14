@@ -14,7 +14,10 @@ int Tool::maxCD = Json::Int("setting.maxCD");
 int Tool::P1_SCORE = 0;
 int Tool::P2_SCORE = 0;
 int Tool::maxScore = Json::Int("setting.maxScore");
+int Tool::DELAY_t = 200;
 bool Tool::goalScored = false;
+bool Tool::musicON = true;
+bool Tool::sfxON = true;
 char Tool::ballOrient = '?';
 
 int Tool::WIDTH = Json::Int("win.W");

@@ -44,6 +44,7 @@ class SetUI : public BaseUI {
         std::array<sf::Sprite, 3> __init_modes() const;
         std::array<sf::Sprite, 2> __init_marks() const;
         void __init_bounds();
+        void __move_elements();
 
     private:
         SetUI();

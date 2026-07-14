@@ -16,6 +16,8 @@ enum class Action {
     decDiff,
     incMaxScr,
     decMaxScr,
+    toggleMusic,
+    toggleSFX,
 
     dropOverlap
 };

@@ -12,11 +12,11 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
 
         case Action::None:
             break;
-    
+
         case Action::raiseMain:
             manager.__stack.clear();
 
-            manager.pushLayer( Layer::Type::MainMenu );            
+            manager.pushLayer( Layer::Type::MainMenu );
             // manager.__stack.back().layer->enter();
             break;
 
@@ -77,6 +77,12 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
             Tool::MODE += ".";
             break;
 
+        case Action::toggleMusic:
+            Tool::musicON = !Tool::musicON; break;
+
+        case Action::toggleSFX:
+            Tool::sfxON = !Tool::sfxON; break;
+
         case Action::dropOverlap: // dropOverLayer
             assert(
                 manager.__stack.back().onOverlap
@@ -90,6 +96,6 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
         default:
             return false;
     }
-    
+
     return true;
 }

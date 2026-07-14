@@ -9,7 +9,6 @@
 #include <engine/input/Action.hpp>
 #include <engine/request/Request.hpp>
 #include <engine/request/Constraint.hpp>
-#include <engine/input/InputManager.hpp>
 
 #include <engine/request/constraints/Bounds.hpp>
 #include <engine/request/constraints/Cooldown.hpp>
@@ -49,8 +48,11 @@ class Layer {
         virtual Action Read( const Context& context ) const {
             Action act = this->feature();
 
-            if ( act == Action::None )
-                act = InputManager::verifyInput( this->requests, context );
+            if ( act == Action::None ) {
+                for ( const Request& request : this->requests )
+                    if ( request.matches(context.input) && request.allowed(context) )
+                        act = request.action();
+            }
 
             return act;
         }

@@ -3,6 +3,7 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 
+#include <engine/input/Input.hpp>
 #include <engine/input/Action.hpp>
 #include <engine/request/Constraint.hpp>
 
@@ -12,7 +13,6 @@
 
 
 class Request {
-    friend class InputManager;
     friend class Layer;
 
     std::variant<sf::Keyboard::Key, sf::Mouse::Button> trigger;
@@ -38,4 +38,14 @@ class Request {
 
             return true;
         }
+
+        bool matches( const Input& in ) const {
+            if ( this->trigger.index() ) { // Mouse button trigger
+                return in.mouse.clicked && ( in.mouse.btn == std::get<sf::Mouse::Button>(this->trigger) );
+            } else { // Keyboard button trigger
+                return in.keyb.clicked && ( in.keyb.key == std::get<sf::Keyboard::Key>(this->trigger) );
+            }
+        }
+
+        Action action() const { return this->act; }
 };

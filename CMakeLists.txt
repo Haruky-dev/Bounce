@@ -53,8 +53,6 @@ add_executable( ${PROJECT_NAME}
     src/engine/features/Motion.cpp
     src/engine/features/Animation.cpp
     src/engine/features/Transition.cpp
-    
-    src/engine/input/InputManager.cpp
 )
 
 # link SFML libs

@@ -12,6 +12,7 @@
 
 #include <engine/request/constraints/Bounds.hpp>
 #include <engine/request/constraints/Cooldown.hpp>
+#include <engine/request/constraints/Predicate.hpp>
 
 #include <vector>
 

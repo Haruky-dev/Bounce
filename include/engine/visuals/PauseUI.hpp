@@ -40,7 +40,6 @@ class PauseUI : public BaseUI {
         void configure( const std::optional<Progressive*>& ) override;
 
         void exit_animation();
-        const bool anim_finished() const;
 
     protected:
         static std::array<sf::Sprite, BTN_COUNT> __make_btns() {

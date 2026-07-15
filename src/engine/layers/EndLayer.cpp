@@ -31,6 +31,7 @@ void EndLayer::Update( const sf::Time& dt ) {
 }
 
 void EndLayer::Render( sf::RenderWindow& win ) const {
+    win.draw( this->UI.shadow );
     win.draw( this->UI.bg );
     win.draw( this->UI.winner );
     win.draw( this->UI.scores.at(0) );

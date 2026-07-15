@@ -9,7 +9,7 @@ enum class Action {
     raiseSett,
     raiseQuit,
     raiseGameOv,
-    
+
     incDiff,
     decDiff,
     incMaxScr,
@@ -17,5 +17,7 @@ enum class Action {
     toggleMusic,
     toggleSFX,
 
-    dropOverlap
+    dropOverlap,
+
+    QUIT
 };

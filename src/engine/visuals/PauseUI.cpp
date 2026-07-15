@@ -8,7 +8,7 @@
 PauseUI::PauseUI() :
     animation(), buttons( __make_btns() ),
     bg(TextureCache::inst().get("pause/bg")),
-    shadow(TextureCache::inst().get("pause/shad")),
+    shadow(TextureCache::inst().get("shad_1")),
     bg_rect(bg.getTextureRect())
     {}
 
@@ -59,9 +59,6 @@ void PauseUI::update( const sf::Time& dt ) {
 
 void PauseUI::exit_animation() {
     this->animation.exit();
-}
-const bool PauseUI::anim_finished() const {
-    return this->animation.finished();
 }
 
 void PauseUI::__move_btns() {

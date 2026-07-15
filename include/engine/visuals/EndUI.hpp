@@ -21,7 +21,7 @@ class EndUI : public BaseUI {
             RESTART
         };
         static constexpr int BTN_COUNT = 2;
-        sf::Sprite bg, winner;
+        sf::Sprite bg, shadow, winner;
         sf::Rect<int> bg_rect;
 
         std::unordered_map<EndUI::BTNS, sf::Rect<int>> bounds;

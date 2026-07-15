@@ -43,18 +43,12 @@ int main( void ) {
             if (onFocus) {
                 if ( ev->is<sf::Event::Closed>() )
                     win->close();
-                else if ( ev->is<sf::Event::KeyPressed>() ) {
-                    if ( ev->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Q ) 
-                        win->close();
-
-                // DBG: refresh conf.json
-                    else if ( ev->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::R )
-                        Json::reLoad();
-                }
             }
         }
 
         if (onFocus) manager.Update( dt, *win );
+
+        if ( manager.quit_flag ) win->close();
 
         win->clear();
 

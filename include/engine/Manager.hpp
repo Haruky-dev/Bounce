@@ -38,10 +38,12 @@ class Manager {
         void renderLayers( sf::RenderWindow& win  ) const;
 
     public:
+        bool quit_flag;
+
+    public:
         Manager();
         ~Manager() = default;
 
-    public:
         void Update( sf::Time& dt, sf::RenderWindow& win );
         void Render( sf::RenderWindow& win ) const;
 };

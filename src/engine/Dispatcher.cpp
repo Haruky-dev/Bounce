@@ -5,7 +5,6 @@
 
 #include <iostream>
 
-
 bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
     Layer* lastLayer = manager.__stack.back().layer.get();
     switch ( act ) {
@@ -36,7 +35,8 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
             break;
 
         case Action::raiseQuit:
-            // std::cout << "Wanna quit?\n";
+            lastLayer->pause();
+            manager.pushLayer( Layer::Type::Quit, true );
             break;
 
         case Action::raiseGameOv:

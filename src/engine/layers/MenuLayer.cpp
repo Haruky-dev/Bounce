@@ -83,4 +83,4 @@ void MenuLayer::exit() {
 void MenuLayer::pause() {
     if ( this->music->getStatus() != sf::Music::Status::Stopped )
         this->music->setVolume( 40.f );
-}
+    }

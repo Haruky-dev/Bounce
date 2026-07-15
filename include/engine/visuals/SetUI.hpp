@@ -54,5 +54,4 @@ class SetUI : public BaseUI {
         void configure( const std::optional<Progressive*>& ) override;
 
         void exit_animation();
-        const bool anim_finished() const;
 };

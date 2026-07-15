@@ -61,6 +61,6 @@ bool SetLayer::animated() const { return true; }
 
 void SetLayer::exit() { this->UI.exit_animation(); }
 
-bool SetLayer::popable() const { return this->UI.anim_finished(); }
+bool SetLayer::popable() const { return this->UI.animation.finished(); }
 
 Layer::Type SetLayer::type() const { return Layer::Type::Setting; }

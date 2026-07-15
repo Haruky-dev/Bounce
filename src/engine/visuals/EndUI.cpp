@@ -10,6 +10,7 @@ EndUI::EndUI() :
     animation(),
     scores( __init_scores() ),
     bg(TextureCache::inst().get("end/bg")),
+    shadow(TextureCache::inst().get("shad_2")),
     winner(TextureCache::inst().get("end/winner")),
     bg_rect(bg.getTextureRect())
     {}
@@ -42,10 +43,13 @@ void EndUI::update( const sf::Time& dt ) {
 
     const double p = this->animation.progress();
 
-    sf::Color bg_c = this->bg.getColor();
-    bg_c.a = static_cast<std::uint8_t>( 255 * Math::easeIn( p ) );
+    sf::Color bg_c = this->bg.getColor(), shad_clr = this->shadow.getColor(), win_clr = this->winner.getColor();
+    bg_c.a = win_clr.a = static_cast<std::uint8_t>( 255 * Math::easeIn( p ) );
+    shad_clr.a  = static_cast<std::uint8_t>( 180 * Math::easeIn( p ) );
 
     this->bg.setColor(bg_c);
+    this->shadow.setColor(shad_clr);
+    this->winner.setColor(win_clr);
 
     const float s = Math::easeElastic(p) + 1;
     this->winner.setScale( {s, s} );

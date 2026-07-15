@@ -7,6 +7,7 @@
 #include <engine/layers/SetLayer.hpp>
 #include <engine/layers/MenuLayer.hpp>
 #include <engine/layers/EndLayer.hpp>
+#include <engine/layers/QuitLayer.hpp>
 
 #include <engine/input/Action.hpp>
 #include <engine/input/InputEv.hpp>
@@ -26,10 +27,13 @@ Manager::Manager() : __stack() {
     this->__register[Layer::Type::Play]     = []() { return std::make_unique<GameLayer>(); };
     this->__register[Layer::Type::Pause]    = []() { return std::make_unique<PauseLayer>(); };
     this->__register[Layer::Type::GameOver] = []() { return std::make_unique<EndLayer>(); };
+    this->__register[Layer::Type::Quit]     = []() { return std::make_unique<QuitLayer>(); };
 
     __stack.push_back( {this->__register[Layer::Type::Loading]()} );
     __stack.back().layer->Load();
     this->__stack.back().Loaded = true;
+
+    this->quit_flag = false;
 }
 
 // -- PUBLIC FUNCs SECTION
@@ -77,7 +81,10 @@ void Manager::pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
 }
 
 void Manager::controlOut( const Action out ) {
-    Dispatcher::handleOutput( *this, out );
+    if ( out == Action::QUIT )
+        this->quit_flag = true;
+    else
+        Dispatcher::handleOutput( *this, out );
 }
 
 void Manager::updateLayers( sf::Time& dt ) {

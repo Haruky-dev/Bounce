@@ -34,6 +34,7 @@ add_executable( ${PROJECT_NAME}
     src/engine/visuals/PauseUI.cpp
     src/engine/visuals/SetUI.cpp
     src/engine/visuals/EndUI.cpp
+    src/engine/visuals/QuitUI.cpp
 
     src/engine/Manager.cpp
     src/engine/Dispatcher.cpp
@@ -44,7 +45,7 @@ add_executable( ${PROJECT_NAME}
     src/engine/layers/PauseLayer.cpp
     src/engine/layers/SetLayer.cpp
     src/engine/layers/EndLayer.cpp
-    # src/engine/layers/QuitLayer.cpp
+    src/engine/layers/QuitLayer.cpp
     
     src/engine/request/Constraint.cpp
 

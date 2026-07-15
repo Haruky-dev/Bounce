@@ -12,7 +12,7 @@ SetUI::SetUI() :
     marks_spr( __init_marks() ),
     max_score(FontCache::MineCraf, std::to_string(Tool::maxScore)),
     bg(TextureCache::inst().get("set/bg")),
-    shadow(TextureCache::inst().get("set/shad")),
+    shadow(TextureCache::inst().get("shad_1")),
     bg_rect(bg.getTextureRect()),
     bg_init_y(1.5f*Tool::HEIGHT)
     {}
@@ -73,9 +73,6 @@ void SetUI::update( const sf::Time& dt ) {
 
 void SetUI::exit_animation() {
     this->animation.exit();
-}
-const bool SetUI::anim_finished() const {
-    return this->animation.finished();
 }
 
 std::array<sf::Sprite, 3> SetUI::__init_modes() const {

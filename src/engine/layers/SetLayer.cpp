@@ -40,22 +40,34 @@ void SetLayer::form_request() {
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::EXIT) ) );
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::incMaxScr
-        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_INC)), Constraint::cooldown(Constants::DELAY_t) );
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_INC)),
+                Constraint::cooldown(Constants::DELAY_t),
+                Constraint::predicate( [this]() { return this->UI.animation.finished(); }));
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::decMaxScr
-        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_DEC) ), Constraint::cooldown(Constants::DELAY_t) );
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_DEC) ),
+                Constraint::cooldown(Constants::DELAY_t),
+                Constraint::predicate( [this]() { return this->UI.animation.finished(); }));
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::incDiff
-        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_INC)), Constraint::cooldown(Constants::DELAY_t) );
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_INC)),
+                Constraint::cooldown(Constants::DELAY_t),
+                Constraint::predicate( [this]() { return this->UI.animation.finished(); }));
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::decDiff
-        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_DEC)), Constraint::cooldown(Constants::DELAY_t) );
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_DEC)),
+                Constraint::cooldown(Constants::DELAY_t),
+                Constraint::predicate( [this]() { return this->UI.animation.finished(); }));
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::toggleMusic
-        ).require( Constraint::bounds(this->UI.bounds.at(SetUI::BTNS::MUSIC_MARK)), Constraint::cooldown(Constants::DELAY_t) );
+        ).require( Constraint::bounds(this->UI.bounds.at(SetUI::BTNS::MUSIC_MARK)),
+                Constraint::cooldown(Constants::DELAY_t),
+                Constraint::predicate( [this]() { return this->UI.animation.finished(); }));
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::toggleSFX
-        ).require( Constraint::bounds(this->UI.bounds.at(SetUI::BTNS::SFX_MARK)), Constraint::cooldown(Constants::DELAY_t) );
+        ).require( Constraint::bounds(this->UI.bounds.at(SetUI::BTNS::SFX_MARK)),
+                Constraint::cooldown(Constants::DELAY_t),
+                Constraint::predicate( [this]() { return this->UI.animation.finished(); }));
 }
 
 bool SetLayer::animated() const { return true; }

@@ -46,10 +46,14 @@ void EndLayer::form_request() {
     // Mouse requests
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::dropOverlap
-        ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::QUIT) ) );
+        ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::QUIT) ),
+                Constraint::predicate( [this]() { return this->UI.animation.finished(); })
+        );
     this->requests.emplace_back(
             sf::Mouse::Button::Left, Action::raiseMain
-        ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::RESTART) ) );
+        ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::RESTART) ),
+                Constraint::predicate( [this]() { return this->UI.animation.finished(); })
+        );
 }
 
 bool EndLayer::animated() const { return true; }

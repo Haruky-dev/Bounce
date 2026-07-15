@@ -17,9 +17,7 @@ SetUI::SetUI() :
     bg_init_y(1.5f*Tool::HEIGHT)
     {}
 
-void SetUI::configure( const std::optional<Progressive*>& prog ) {
-    if ( prog.has_value() ) (*prog)->add_to_total( 5 );
-
+void SetUI::configure() {
     this->bg.setOrigin(
         sf::Vector2f(this->bg.getTexture().getSize()) / 2.f
     );
@@ -43,8 +41,6 @@ void SetUI::configure( const std::optional<Progressive*>& prog ) {
     this->max_score.setScale({0.5f, 0.5f});
     this->max_score.setPosition( this->__normalize<float>(this->bg_rect, {108, 221}) );
     // this->max_score.setPosition( Tool::W_CTR );
-    
-    if ( prog.has_value() ) (*prog)->increment_by( 5 );
 }
 
 void SetUI::update( const sf::Time& dt ) {
@@ -84,7 +80,7 @@ std::array<sf::Sprite, 3> SetUI::__init_modes() const {
 }
 std::array<sf::Sprite, 2> SetUI::__init_marks() const {
     return std::array<sf::Sprite, 2>({
-       sf::Sprite(TextureCache::inst().get("set/mark")), 
+       sf::Sprite(TextureCache::inst().get("set/mark")),
        sf::Sprite(TextureCache::inst().get("set/mark"))
     });
 }

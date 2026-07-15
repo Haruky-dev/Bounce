@@ -15,9 +15,7 @@ EndUI::EndUI() :
     bg_rect(bg.getTextureRect())
     {}
     
-void EndUI::configure( const std::optional<Progressive*>& prog ) {
-    if ( prog.has_value() ) (*prog)->add_to_total( 20 );
-
+void EndUI::configure() {
     this->animation.set_duration( .4f );
     this->bg.setOrigin( sf::Vector2f(this->bg.getTexture().getSize()) / 2.f );
     this->bg.setPosition( Tool::W_CTR );
@@ -34,8 +32,6 @@ void EndUI::configure( const std::optional<Progressive*>& prog ) {
         60.0f + 220 * ( Tool::P1_SCORE < Tool::P2_SCORE ),
         175
     }) );
-
-    if ( prog.has_value() ) (*prog)->increment_by( 20 );
 }
 
 void EndUI::update( const sf::Time& dt ) {

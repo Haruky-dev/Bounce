@@ -8,7 +8,6 @@
 
 #include <cache/TextureCache.hpp>
 #include <engine/visuals/BaseUI.hpp>
-#include <engine/features/Progressive.hpp>
 #include <tools/Tool.hpp>
 
 
@@ -34,7 +33,7 @@ class MenuUI : public BaseUI {
         ~MenuUI() = default;
 
         void update( const sf::Time& ) override {}
-        void configure( const std::optional<Progressive*>& ) override;
+        void configure() override;
 
     protected:
         // helper initializer for 'btns' (std::array<sf::Sprite>)

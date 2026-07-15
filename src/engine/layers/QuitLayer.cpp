@@ -2,7 +2,7 @@
 
 
 QuitLayer::QuitLayer() : Layer(), accTime(sf::Time::Zero), T(std::chrono::seconds(2)) {
-    this->UI.configure( std::nullopt );
+    this->UI.configure();
 }
 
 void QuitLayer::Load() {}

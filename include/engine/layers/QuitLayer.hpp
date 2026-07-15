@@ -11,7 +11,7 @@
 class QuitLayer : public Layer {
     private:
         QuitUI UI;
-        std::chrono::milliseconds T;
+        std::chrono::seconds T;
         sf::Time accTime;
 
     public:

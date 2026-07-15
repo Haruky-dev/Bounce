@@ -6,7 +6,7 @@
 
 
 EndLayer::EndLayer() : Layer(), UI() {
-    this->UI.configure( std::nullopt );
+    this->UI.configure();
 }
 
 void EndLayer::Load() {

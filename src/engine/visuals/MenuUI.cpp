@@ -16,11 +16,9 @@ MenuUI::MenuUI() :
     bg_rect(bg.getTextureRect()),
     btns( this->__make_btns() )
     {}
-    
 
-void MenuUI::configure( const std::optional<Progressive*>& prog ) {
-    if ( prog.has_value() ) (*prog)->add_to_total( 10 );
 
+void MenuUI::configure() {
     for (int i{}; i < BTN_COUNT; i++) {
         this->btns.at( i ).setOrigin( sf::Vector2f(this->btns.at( i ).getTexture().getSize()) / 2.f );
         this->btns.at( i ).setPosition({ Tool::W_CTR.x, Tool::W_CTR.y - 90.f * (1-i) });
@@ -28,14 +26,12 @@ void MenuUI::configure( const std::optional<Progressive*>& prog ) {
     }
 
     this->__init_bounds();
-    
+
     this->credit.setOrigin( sf::Vector2f(this->credit.getTexture().getSize()) / 2.0f );
     this->credit.setPosition( {Tool::WIDTH - this->credit.getTexture().getSize().x/2.0f , Tool::HEIGHT - 20.0f} );
 
     // this->version.setOrigin( sf::Vector2f(this->version.getTexture().getSize()) / 2.0f );
     this->version.setPosition( {5.0f, 5.0f} );
-
-    if ( prog.has_value() ) (*prog)->increment_by( 10 );
 }
 
 void MenuUI::__init_bounds() {

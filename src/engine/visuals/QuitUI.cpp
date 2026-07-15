@@ -13,14 +13,10 @@ QuitUI::QuitUI() :
     shadow(TextureCache::inst().get("shad_2"))
     {}
 
-void QuitUI::configure( const std::optional<Progressive*>& prog ) {
-    if ( prog.has_value() ) (*prog)->add_to_total( 10 );
-
+void QuitUI::configure() {
     this->bg.setOrigin( sf::Vector2<float>(this->bg.getTextureRect().size / 2) );
     this->bg.setPosition(Tool::W_CTR);
     this->bg.setScale({1.5f, 1.5f});
-
-    if ( prog.has_value() ) (*prog)->increment_by( 10 );
 }
 
 void QuitUI::update( const sf::Time& dt ) {

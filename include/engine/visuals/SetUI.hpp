@@ -10,7 +10,6 @@
 
 #include <engine/visuals/BaseUI.hpp>
 #include <engine/features/Animation.hpp>
-#include <engine/features/Progressive.hpp>
 
 
 class SetUI : public BaseUI {
@@ -51,7 +50,7 @@ class SetUI : public BaseUI {
         ~SetUI() = default;
 
         void update( const sf::Time& ) override;
-        void configure( const std::optional<Progressive*>& ) override;
+        void configure() override;
 
         void exit_animation();
 };

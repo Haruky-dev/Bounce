@@ -1,18 +1,15 @@
 #pragma once
 
-#include <engine/features/Progressive.hpp>
 #include <tools/Tool.hpp>
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
-#include <optional>
-
 
 class BaseUI {
     public:
         virtual void update( const sf::Time& ) = 0;
-        virtual void configure( const std::optional<Progressive*>& ) = 0;
+        virtual void configure() = 0;
 
         virtual ~BaseUI() = default;
 

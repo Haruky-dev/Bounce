@@ -5,7 +5,6 @@
 #include <SFML/Graphics/Text.hpp>
 
 #include <engine/visuals/BaseUI.hpp>
-#include <engine/features/Progressive.hpp>
 
 
 class LoadUI : BaseUI {
@@ -22,6 +21,6 @@ class LoadUI : BaseUI {
         ~LoadUI() = default;
 
         void update( const sf::Time& ) override;
-        void configure( const std::optional<Progressive*>& ) override;
+        void configure() override;
         void setValue( const float value ) { this->v = value; }
 };

@@ -12,9 +12,7 @@ PauseUI::PauseUI() :
     bg_rect(bg.getTextureRect())
     {}
 
-void PauseUI::configure( const std::optional<Progressive*>& prog ) {
-    if ( prog.has_value() ) (*prog)->add_to_total( 10 );
-
+void PauseUI::configure() {
     this->bg.setOrigin( sf::Vector2f(bg.getTexture().getSize()) / 2.f );
     this->bg_init_y = 1.5f * Tool::HEIGHT;
     this->bg.setPosition( {Tool::W_CTR.x, this->bg_init_y});
@@ -28,8 +26,6 @@ void PauseUI::configure( const std::optional<Progressive*>& prog ) {
     );
 
     this->__move_btns();
-
-    if ( prog.has_value() ) (*prog)->increment_by( 10 );
 }
 
 void PauseUI::update( const sf::Time& dt ) {

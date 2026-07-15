@@ -10,7 +10,7 @@
 
 MenuLayer::MenuLayer() : Layer() {
 
-    this->UI.configure( std::nullopt );
+    this->UI.configure();
 }
 
 void MenuLayer::Load() {

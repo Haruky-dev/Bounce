@@ -5,7 +5,6 @@
 #include <cache/TextureCache.hpp>
 #include <engine/visuals/BaseUI.hpp>
 #include <engine/features/Animation.hpp>
-#include <engine/features/Progressive.hpp>
 
 
 class QuitUI : public BaseUI {
@@ -20,7 +19,7 @@ class QuitUI : public BaseUI {
         ~QuitUI() = default;
 
         void update( const sf::Time& ) override;
-        void configure( const std::optional<Progressive*>& ) override;
+        void configure() override;
 
         void exit_animation();
 };

@@ -6,7 +6,6 @@
 #include <SFML/System/Time.hpp>
 
 #include <engine/visuals/BaseUI.hpp>
-#include <engine/features/Progressive.hpp>
 
 
 class GameUI : public BaseUI {
@@ -33,7 +32,7 @@ class GameUI : public BaseUI {
         ~GameUI() = default;
 
         void update( const sf::Time& dt ) override;
-        void configure( const std::optional<Progressive*>& ) override;
+        void configure() override;
         void sync();
         void set_players_ready( const bool, const bool );
 };

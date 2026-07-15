@@ -8,7 +8,7 @@
 
 PauseLayer::PauseLayer() : Layer(), Animation()
     {
-        this->UI.configure( std::nullopt );
+        this->UI.configure();
 }
 
 void PauseLayer::Load() {

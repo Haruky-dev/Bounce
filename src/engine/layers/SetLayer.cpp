@@ -7,7 +7,7 @@
     
 SetLayer::SetLayer() : Layer(), Animation()
     {
-        this->UI.configure( std::nullopt );
+        this->UI.configure();
 }
 
 void SetLayer::Load() {

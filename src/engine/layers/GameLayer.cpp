@@ -16,7 +16,7 @@ GameLayer::GameLayer() :
     P1(this->UI.pad, 0),
     P2(this->UI.pad, 1),
     ball(this->UI.ball) {
-        this->UI.configure( std::nullopt );
+        this->UI.configure();
 
         char orients[2] = {'1', '2'};
         Tool::ballOrient = '1';

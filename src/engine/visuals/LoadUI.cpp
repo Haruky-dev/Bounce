@@ -9,9 +9,7 @@ LoadUI::LoadUI() :
     progressText(__font, "")
     {}
 
-void LoadUI::configure( const std::optional<Progressive*>& prog ) {
-    if ( prog.has_value() ) (*prog)->add_to_total( 10 );
-
+void LoadUI::configure() {
     this->progressText.setString("[ 0 % ]");
     this->progressText.setOrigin( this->progressText.getGlobalBounds().getCenter() );
     this->progressText.setPosition( Tool::W_CTR );
@@ -20,8 +18,6 @@ void LoadUI::configure( const std::optional<Progressive*>& prog ) {
 
     this->bg.setSize( Tool::W_CTR );
     this->bg.setFillColor( sf::Color::Black );
-
-    if ( prog.has_value() ) (*prog)->increment_by( 10 );
 }
 
 void LoadUI::update( const sf::Time& dt ) {

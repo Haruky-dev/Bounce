@@ -7,7 +7,7 @@
 
 
 LoadLayer::LoadLayer() : Layer(), UI() {
-    this->UI.configure( std::nullopt );
+    this->UI.configure();
 }
 
 void LoadLayer::Load() {

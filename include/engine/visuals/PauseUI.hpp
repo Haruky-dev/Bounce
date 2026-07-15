@@ -8,7 +8,6 @@
 
 #include <engine/visuals/BaseUI.hpp>
 #include <engine/features/Animation.hpp>
-#include <engine/features/Progressive.hpp>
 #include <cache/TextureCache.hpp>
 
 
@@ -37,7 +36,7 @@ class PauseUI : public BaseUI {
         ~PauseUI() = default;
 
         void update( const sf::Time& ) override;
-        void configure( const std::optional<Progressive*>& ) override;
+        void configure() override;
 
         void exit_animation();
 

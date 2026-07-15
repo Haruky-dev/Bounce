@@ -7,7 +7,6 @@
 #include <array>
 
 #include <engine/visuals/BaseUI.hpp>
-#include <engine/features/Progressive.hpp>
 
 #include <engine/features/Animation.hpp>
 
@@ -37,5 +36,5 @@ class EndUI : public BaseUI {
         ~EndUI() = default;
 
         void update( const sf::Time& ) override;
-        void configure( const std::optional<Progressive*>& ) override;
+        void configure() override;
 };

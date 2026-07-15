@@ -1,7 +1,6 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <tools/Tool.hpp>
 
 #include <random>
 
@@ -11,6 +10,7 @@ class Math {
         static int randi( const int min=0, const int max=0 );
         static float randf( const float min=0.0f, const float max=1.0f );
         static sf::Vector2f Normalize( const sf::Vector2f& A );
+        static sf::Rect<int> getBound( const sf::Sprite& spr );
         static const double Dot( const sf::Vector2f& A, const sf::Vector2f& B );
         static double Lerp( const double A, const double B, const double t );
         static sf::Vector2f Lerp( const sf::Vector2f& A, const sf::Vector2f& B, const double t );

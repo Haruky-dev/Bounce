@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Time.hpp>
 
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
 
 
 class Player : public sf::Drawable {
@@ -29,7 +29,7 @@ class Player : public sf::Drawable {
         // used on bounces to update imperfections and such values
         virtual void refresh() = 0;
 
-        virtual const bool ready() const { return (this->bar.getPosition().y == Tool::W_CTR.y); }
+        virtual const bool ready() const { return (this->bar.getPosition().y == Constants::W_CTR.y); }
 
         virtual sf::Rect<float> bounds() { return this->bar.getGlobalBounds(); } // return this->hitBox;
         virtual sf::Vector2<float> position() { return this->bounds().position; }

@@ -2,7 +2,7 @@
 
 #include <cache/TextureCache.hpp>
 #include <cache/FontCache.hpp>
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
 #include <tools/Math.hpp>
 
 
@@ -10,18 +10,18 @@ SetUI::SetUI() :
     animation(),
     modes_spr( __init_modes() ),
     marks_spr( __init_marks() ),
-    max_score(FontCache::MineCraf, std::to_string(Tool::maxScore)),
+    max_score(FontCache::MineCraf, std::to_string(Constants::maxScore)),
     bg(TextureCache::inst().get("set/bg")),
     shadow(TextureCache::inst().get("shad_1")),
     bg_rect(bg.getTextureRect()),
-    bg_init_y(1.5f*Tool::HEIGHT)
+    bg_init_y(1.5f*Constants::HEIGHT)
     {}
 
 void SetUI::configure() {
     this->bg.setOrigin(
         sf::Vector2f(this->bg.getTexture().getSize()) / 2.f
     );
-    this->bg.setPosition( {Tool::W_CTR.x, this->bg_init_y} );
+    this->bg.setPosition( {Constants::W_CTR.x, this->bg_init_y} );
 
     this->__init_bounds();
 
@@ -40,19 +40,19 @@ void SetUI::configure() {
     this->max_score.setOutlineColor(sf::Color::Black);
     this->max_score.setScale({0.5f, 0.5f});
     this->max_score.setPosition( this->__normalize<float>(this->bg_rect, {108, 221}) );
-    // this->max_score.setPosition( Tool::W_CTR );
+    // this->max_score.setPosition( Constants::W_CTR );
 }
 
 void SetUI::update( const sf::Time& dt ) {
     this->animation.update( dt );
 
-    this->max_score.setString(std::to_string(Tool::maxScore));
+    this->max_score.setString(std::to_string(Constants::maxScore));
 
     const double p = this->animation.progress();
 
     float y = Math::Lerp(
         this->bg_init_y,
-        Tool::W_CTR.y,
+        Constants::W_CTR.y,
         Math::easeOut( p )
     );
     sf::Color bg_c = this->bg.getColor(),
@@ -102,6 +102,6 @@ void SetUI::__move_elements() {
     this->max_score.setPosition({bg_pos.x - 117, bg_pos.y + 71});
 
     this->modes_spr.at(
-            this->modes_i.at(Tool::MODE.front())
+            this->modes_i.at(Constants::MODE.front())
         ).setPosition({bg_pos.x - 143, bg_pos.y + 25});
 }

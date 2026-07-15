@@ -3,7 +3,7 @@
 #include <cache/FontCache.hpp>
 
 #include <tools/Json.hpp>
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
 
 
 FrameRate::FrameRate()
@@ -31,7 +31,7 @@ void FrameRate::update( const sf::Time& dt ) {
 }
 
 void FrameRate::adjTxt() {
-    this->txt.setPosition( {Tool::W_CTR.x - this->txt.getGlobalBounds().size.x / 2.0f, 8.0f} );
+    this->txt.setPosition( {Constants::W_CTR.x - this->txt.getGlobalBounds().size.x / 2.0f, 8.0f} );
     // txt.setPosition( {10.f, 10.f} );
 }
 

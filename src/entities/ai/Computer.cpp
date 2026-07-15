@@ -2,7 +2,8 @@
 
 #include <math.h>
 
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
+#include <tools/Flags.hpp>
 #include <tools/Json.hpp>
 #include <tools/Math.hpp>
 
@@ -12,7 +13,7 @@ Computer::Computer( const sf::Sprite& bar, const bool id ) : Player( bar, id ), 
     delayTimer(0.0f),
     actAllowed(false) {
 
-        this->bar.setPosition( {20.f, Tool::W_CTR.y} );
+        this->bar.setPosition( {20.f, Constants::W_CTR.y} );
         this->bar.setRotation( sf::Angle(sf::degrees(180.f)) );
 }
 
@@ -66,7 +67,7 @@ void Computer::update( const sf::Time& dt, const Ball& ball ) {
         this->centerTimer += dt.asSeconds();
 
         const float K       = std::clamp( this->centerTimer / this->neuron.returnDur, 0.0f, 1.0f );
-        const float targetY = Math::Lerp( compPos.y, Tool::W_CTR.y, Math::easeInOut(K) );
+        const float targetY = Math::Lerp( compPos.y, Constants::W_CTR.y, Math::easeInOut(K) );
         const float step    = std::clamp( targetY - compPos.y, -mov, mov );
 
         this->bar.move( {0.0f, step} );
@@ -74,25 +75,25 @@ void Computer::update( const sf::Time& dt, const Ball& ball ) {
     //---------------------- [IDLE] Not moving (excluding the case where the ball isn't comming towards AI)
     } else if ( this->direction ) { this->direction = 0; }
 
-    const bool resettable = ((ball.unitDirec.x < 0.0f) || Tool::goalScored) && ( this->centerTimer != 0.0f);
+    const bool resettable = ((ball.unitDirec.x < 0.0f) || Flags::goalScored) && ( this->centerTimer != 0.0f);
 
     if ( resettable && (this->centerTimer != 0.0f) )
         this->centerTimer = 0.0f;
 }
 
 float Computer::correct_estimation( float y ) const {
-    if ( !(std::isfinite(y)) ) return Tool::W_CTR.y;
+    if ( !(std::isfinite(y)) ) return Constants::W_CTR.y;
 
     int maxBounces{5};
 
-    while ( ((y < 0) || (y > Tool::HEIGHT)) && (maxBounces-- > 0)) {
+    while ( ((y < 0) || (y > Constants::HEIGHT)) && (maxBounces-- > 0)) {
         if ( y < 0 )
             y = -y;
         else
-            y = Tool::HEIGHT * 2.0f - y;
+            y = Constants::HEIGHT * 2.0f - y;
     }
 
-    assert( ( y >= 0 ) && ( y <= Tool::HEIGHT ) );
+    assert( ( y >= 0 ) && ( y <= Constants::HEIGHT ) );
 
     return y;
 }

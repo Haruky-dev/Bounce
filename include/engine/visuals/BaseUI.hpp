@@ -1,6 +1,6 @@
 #pragma once
 
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
 
 #include <SFML/System/Time.hpp>
 #include <SFML/Graphics/Rect.hpp>
@@ -16,8 +16,8 @@ class BaseUI {
     protected:
         template <typename T>
         sf::Vector2<T> __normalize( const sf::Rect<int>& bounds, const sf::Vector2<T>& pos ) {
-            const T X = Tool::W_CTR.x - bounds.size.x / 2.0f;
-            const T Y = Tool::W_CTR.y - bounds.size.y / 2.0f;
+            const T X = Constants::W_CTR.x - bounds.size.x / 2.0f;
+            const T Y = Constants::W_CTR.y - bounds.size.y / 2.0f;
 
             return sf::Vector2<T>(
                 X + pos.x,

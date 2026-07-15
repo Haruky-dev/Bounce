@@ -15,7 +15,7 @@ QuitUI::QuitUI() :
 
 void QuitUI::configure() {
     this->bg.setOrigin( sf::Vector2<float>(this->bg.getTextureRect().size / 2) );
-    this->bg.setPosition(Tool::W_CTR);
+    this->bg.setPosition(Constants::W_CTR);
     this->bg.setScale({1.5f, 1.5f});
 }
 

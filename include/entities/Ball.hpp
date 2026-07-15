@@ -3,7 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
 
 class Computer;
 
@@ -43,8 +43,8 @@ class Ball : public sf::Drawable {
         void launch();
         void move( const sf::Vector2f& position );
         void rotate( const sf::Time& dt );
-        void reflect( const Tool::Sides side );
-        void adjust( const Tool::Sides, const sf::Rect<float>& );
+        void reflect( const Constants::Sides side );
+        void adjust( const Constants::Sides, const sf::Rect<float>& );
         void reset();
 
         sf::Rect<float> bounds() const;

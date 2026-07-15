@@ -1,9 +1,9 @@
 #include <engine/Dispatcher.hpp>
 
 #include <engine/Layer.hpp>
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
+#include <tools/Flags.hpp>
 
-#include <iostream>
 
 bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
     Layer* lastLayer = manager.__stack.back().layer.get();
@@ -46,39 +46,39 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
 
 
         case Action::incMaxScr:
-            ( Tool::maxScore < 9 )? Tool::maxScore++ : 1;
+            ( Constants::maxScore < 9 )? Constants::maxScore++ : 1;
             break;
         case Action::decMaxScr:
-            ( Tool::maxScore > 1 )? Tool::maxScore-- : 9;
+            ( Constants::maxScore > 1 )? Constants::maxScore-- : 9;
             break;
 
         case Action::incDiff:
-            switch ( Tool::MODE.at(0) ) {
-                case 'E': Tool::MODE = 'M'; break;
-                case 'M': Tool::MODE = 'H'; break;
-                case 'H': Tool::MODE = 'E'; break;
+            switch ( Constants::MODE.at(0) ) {
+                case 'E': Constants::MODE = 'M'; break;
+                case 'M': Constants::MODE = 'H'; break;
+                case 'H': Constants::MODE = 'E'; break;
 
-                default: throw std::runtime_error("Invalid [Tool::MODE]!");
+                default: throw std::runtime_error("Invalid [Constants::MODE]!");
             }
-            Tool::MODE += ".";
+            Constants::MODE += ".";
             break;
 
         case Action::decDiff:
-            switch ( Tool::MODE.at(0) ) {
-                case 'E': Tool::MODE = 'H'; break;
-                case 'M': Tool::MODE = 'E'; break;
-                case 'H': Tool::MODE = 'M'; break;
+            switch ( Constants::MODE.at(0) ) {
+                case 'E': Constants::MODE = 'H'; break;
+                case 'M': Constants::MODE = 'E'; break;
+                case 'H': Constants::MODE = 'M'; break;
 
-                default: throw std::runtime_error("Invalid [Tool::MODE]!");
+                default: throw std::runtime_error("Invalid [Constants::MODE]!");
             }
-            Tool::MODE += ".";
+            Constants::MODE += ".";
             break;
 
         case Action::toggleMusic:
-            Tool::musicON = !Tool::musicON; break;
+            Flags::musicON = !Flags::musicON; break;
 
         case Action::toggleSFX:
-            Tool::sfxON = !Tool::sfxON; break;
+            Flags::sfxON = !Flags::sfxON; break;
 
         case Action::dropOverlap: // dropOverLayer
             assert(

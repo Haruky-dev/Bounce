@@ -1,7 +1,7 @@
 #include <engine/visuals/PauseUI.hpp>
 
 #include <cache/TextureCache.hpp>
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
 #include <tools/Math.hpp>
 
 
@@ -14,8 +14,8 @@ PauseUI::PauseUI() :
 
 void PauseUI::configure() {
     this->bg.setOrigin( sf::Vector2f(bg.getTexture().getSize()) / 2.f );
-    this->bg_init_y = 1.5f * Tool::HEIGHT;
-    this->bg.setPosition( {Tool::W_CTR.x, this->bg_init_y});
+    this->bg_init_y = 1.5f * Constants::HEIGHT;
+    this->bg.setPosition( {Constants::W_CTR.x, this->bg_init_y});
 
     // init buttons bounds to their final position
     this->bounds[PauseUI::BTNS::QUIT] = sf::Rect<int>(
@@ -35,7 +35,7 @@ void PauseUI::update( const sf::Time& dt ) {
 
     float y = Math::Lerp(
         this->bg_init_y,
-        Tool::W_CTR.y,
+        Constants::W_CTR.y,
         Math::easeOut( p )
     );
 

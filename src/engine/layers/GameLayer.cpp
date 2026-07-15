@@ -3,8 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include <cache/SoundCache.hpp>
-#include <tools/Json.hpp>
-#include <tools/Tool.hpp>
+#include <tools/Flags.hpp>
 #include <tools/Math.hpp>
 #include <tools/Collision.hpp>
 
@@ -19,15 +18,13 @@ GameLayer::GameLayer() :
         this->UI.configure();
 
         char orients[2] = {'1', '2'};
-        Tool::ballOrient = '1';
-        // Tool::ballOrient = orients[ Math::randi(0, 1) ];
+        Constants::ballOrient = '1';
+        // Constants::ballOrient = orients[ Math::randi(0, 1) ];
     }
 
 GameLayer::~GameLayer() = default;
 
 void GameLayer::Load() {
-    std::println("[GameLayer] loading..");
-
     this->music = std::make_unique<sf::Music>();
     if (!(this->music->openFromFile( "assets/musics/Toejam_and_Earl.ogg" )))
         throw std::runtime_error("Failure");
@@ -35,8 +32,6 @@ void GameLayer::Load() {
     this->music->setLooping( true );
 
     this->form_request();
-    
-    std::println("[GameLayer] loaded!");
 }
 
 void GameLayer::Update( const sf::Time& dt ) {
@@ -54,7 +49,7 @@ void GameLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.bg );
     win.draw( this->FR );
 
-    if ( Tool::CD != -1 )
+    if ( Constants::CD != -1 )
         win.draw( this->UI.countD );
 
     win.draw( this->UI.score_1 ); // score 0
@@ -79,8 +74,8 @@ Layer::Type GameLayer::type() const { return Layer::Type::Play; }
 
 Action GameLayer::feature() const {
     if (
-        ( Tool::P1_SCORE >= Tool::maxScore ) 
-        || ( Tool::P2_SCORE >= Tool::maxScore )
+        ( Constants::P1_SCORE >= Constants::maxScore ) 
+        || ( Constants::P2_SCORE >= Constants::maxScore )
     )
         return Action::raiseGameOv;
     
@@ -95,10 +90,10 @@ void GameLayer::form_request() {
 
 void GameLayer::updateBall( const sf::Time& dt ) {
     if ( !(this->ball.onMove) && this->ball.onStart ) {
-        if ( Tool::CD >= Tool::maxCD ) {
+        if ( Constants::CD >= Constants::maxCD ) {
             this->ball.launch();
             this->ball.onStart = false;
-        } else if ( Tool::CD == 0 ) {
+        } else if ( Constants::CD == 0 ) {
             this->UI.set_players_ready(
                 this->P1.ready(), this->P2.ready()
             );
@@ -115,8 +110,8 @@ void GameLayer::updateBall( const sf::Time& dt ) {
      || Collision::player( this->P1.bounds(), this->ball.bounds(), this->norme )
      || Collision::computer( this->P2.bounds(), this->ball.bounds(), this->norme )
     ) {
-            if ( Tool::goalScored ) {
-                assert( Tool::ballOrient == '1' || Tool::ballOrient == '2' );
+            if ( Flags::goalScored ) {
+                assert( Constants::ballOrient == '1' || Constants::ballOrient == '2' );
     
                 this->ball.reset();
                 return;
@@ -125,9 +120,9 @@ void GameLayer::updateBall( const sf::Time& dt ) {
         this->refresh_entities();            
         this->ball.reflect( this->norme );
 
-        sf::Rect<float> padBounds = (this->norme == Tool::Sides::RIGHT)?
+        sf::Rect<float> padBounds = (this->norme == Constants::Sides::RIGHT)?
                                     P1.bounds()
-                                    : (this->norme == Tool::Sides::LEFT)?
+                                    : (this->norme == Constants::Sides::LEFT)?
                                     P2.bounds() : sf::Rect<float>();
 
         this->ball.adjust( this->norme, padBounds );
@@ -136,7 +131,7 @@ void GameLayer::updateBall( const sf::Time& dt ) {
 
 void GameLayer::refresh_entities() {
     switch ( this->norme ) {
-        case Tool::Sides::RIGHT: {
+        case Constants::Sides::RIGHT: {
             this->UI.paddleSFX.play();
             this->P1.refresh();
             const int factor = this->guide_direcion(this->P1.id);
@@ -150,7 +145,7 @@ void GameLayer::refresh_entities() {
         }
             break;
 
-        case Tool::Sides::LEFT: {
+        case Constants::Sides::LEFT: {
             this->UI.paddleSFX.play();
             this->P2.refresh();
             const int factor = this->guide_direcion(this->P2.id);

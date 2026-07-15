@@ -2,13 +2,11 @@
 
 #include <tools/Json.hpp>
 #include <tools/Math.hpp>
-#include <tools/Tool.hpp>
-
-#include <print>
+#include <tools/Constants.hpp>
 
 
 Neuron::Neuron() :
-    path( "modes." + Tool::MODE + "computer."),
+    path( "modes." + Constants::MODE + "computer."),
     returnDur( Json::Float( path + "returnDuration" ) ),
     returnTime( Json::Float( path + "returnTime" ) ),
     deadZone( Json::Float( path + "deadZone" ) ),
@@ -37,8 +35,6 @@ void Neuron::refresh() {
     this->delay = Math::randi(
         this->delayRange.first, this->delayRange.second
     );
-
-    std::println("refreshed [Computer]");
 
     this->speed += this->accel;
 }

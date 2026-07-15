@@ -5,19 +5,12 @@
 
 #include <cache/SoundCache.hpp>
 
-#include <iostream>
-
 
 MenuLayer::MenuLayer() : Layer() {
-
     this->UI.configure();
 }
 
 void MenuLayer::Load() {
-    std::cout << "[MenuLayer] Loading..\n";
-
-    this->accTime = sf::Time::Zero;
-
     this->music = std::make_unique<sf::Music>();
     if (!(this->music->openFromFile( "assets/musics/Yoshis_Story-Games_of_Happiness.ogg" )))
         throw std::runtime_error("Failure");
@@ -26,19 +19,11 @@ void MenuLayer::Load() {
     this->music->setVolume(20);
 
     this->form_request();
-
-    std::cout << "[MenuLayer] Loaded!\n";
 }
 
 void MenuLayer::Update( const sf::Time& dt ) {
     if (this->music->getStatus() != sf::Music::Status::Playing) {
         this->music->play();
-    }
-
-    this->accTime+=dt;
-    if (accTime.asSeconds() >= 2.0f) {
-        std::cout << "[MenuLayer]\n";
-        accTime = sf::Time::Zero;
     }
 }
 
@@ -73,7 +58,7 @@ void MenuLayer::form_request() {
 Layer::Type MenuLayer::type() const { return Layer::Type::MainMenu; }
 
 void MenuLayer::enter() {
-    Tool::P1_SCORE = Tool::P2_SCORE = 0;
+    Constants::P1_SCORE = Constants::P2_SCORE = 0;
 }
 
 void MenuLayer::exit() {

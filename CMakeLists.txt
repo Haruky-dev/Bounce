@@ -18,9 +18,10 @@ add_executable( ${PROJECT_NAME}
     src/entities/ai/Computer.cpp
     src/entities/ai/Neuron.cpp
 
-    src/tools/Tool.cpp
     src/tools/Math.cpp
     src/tools/Json.cpp
+    src/tools/Flags.cpp
+    src/tools/Constants.cpp
     src/tools/FrameRate.cpp
     src/tools/Collision.cpp
 

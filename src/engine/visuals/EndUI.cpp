@@ -2,7 +2,7 @@
 
 #include <cache/TextureCache.hpp>
 #include <cache/FontCache.hpp>
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
 #include <tools/Math.hpp>
 
 
@@ -18,7 +18,7 @@ EndUI::EndUI() :
 void EndUI::configure() {
     this->animation.set_duration( .4f );
     this->bg.setOrigin( sf::Vector2f(this->bg.getTexture().getSize()) / 2.f );
-    this->bg.setPosition( Tool::W_CTR );
+    this->bg.setPosition( Constants::W_CTR );
 
     // init buttons bounds to their final position
     this->bounds[EndUI::BTNS::QUIT] = sf::Rect<int>(
@@ -29,7 +29,7 @@ void EndUI::configure() {
     );
 
     this->winner.setPosition( this->__normalize<float>( this->bg_rect, {
-        60.0f + 220 * ( Tool::P1_SCORE < Tool::P2_SCORE ),
+        60.0f + 220 * ( Constants::P1_SCORE < Constants::P2_SCORE ),
         175
     }) );
 }
@@ -53,8 +53,8 @@ void EndUI::update( const sf::Time& dt ) {
 
 std::array<sf::Text, 2> EndUI::__init_scores() {
     std::array<sf::Text, 2> arr({
-        sf::Text( FontCache::MineCraf, std::to_string(Tool::P1_SCORE) ),
-        sf::Text( FontCache::MineCraf, std::to_string(Tool::P2_SCORE) )
+        sf::Text( FontCache::MineCraf, std::to_string(Constants::P1_SCORE) ),
+        sf::Text( FontCache::MineCraf, std::to_string(Constants::P2_SCORE) )
     });
 
     for ( int i = 0; i < arr.size(); i++ ) {

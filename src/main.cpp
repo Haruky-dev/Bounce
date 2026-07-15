@@ -3,7 +3,7 @@
 #include <SFML/System.hpp>
 
 #include <engine/Manager.hpp>
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
 #include <tools/Json.hpp>
 
 #include <memory>
@@ -13,7 +13,7 @@ int main( void ) {
 
     std::unique_ptr<sf::RenderWindow> win;
     win = std::make_unique<sf::RenderWindow>(
-        sf::VideoMode( sf::Vector2u(Tool::WIDTH, Tool::HEIGHT) ),
+        sf::VideoMode( sf::Vector2u(Constants::WIDTH, Constants::HEIGHT) ),
         Json::String("win.title"),
         sf::Style::Default & ~sf::Style::Resize
     );
@@ -21,7 +21,7 @@ int main( void ) {
     // center win
     win->setPosition(
         ( sf::Vector2i(sf::VideoMode::getDesktopMode().size) -
-          sf::Vector2i({Tool::WIDTH, Tool::HEIGHT}) )
+          sf::Vector2i({Constants::WIDTH, Constants::HEIGHT}) )
         / 2);
     
     Manager manager{};

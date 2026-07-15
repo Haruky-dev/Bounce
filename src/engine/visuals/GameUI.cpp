@@ -3,7 +3,8 @@
 #include <cache/TextureCache.hpp>
 #include <cache/SoundCache.hpp>
 #include <cache/FontCache.hpp>
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
+#include <tools/Flags.hpp>
 #include <tools/Json.hpp>
 
 
@@ -15,8 +16,8 @@ GameUI::GameUI() :
     ball(TextureCache::inst().get("play/ball")),
 
     countD(FontCache::RASTER, "3"),
-    score_1(FontCache::KA, std::to_string(Tool::P1_SCORE)),
-    score_2(score_1.getFont(), std::to_string(Tool::P2_SCORE)),
+    score_1(FontCache::KA, std::to_string(Constants::P1_SCORE)),
+    score_2(score_1.getFont(), std::to_string(Constants::P2_SCORE)),
     P1_ready(false), P2_ready(false), // true?
 
     paddleSFX( SoundCache::paddleBUF ),
@@ -27,50 +28,50 @@ GameUI::GameUI() :
 void GameUI::configure() {
     // scores conf
     this->score_1.setOrigin( this->score_1.getLocalBounds().getCenter() );
-    this->score_1.setPosition( {Tool::WIDTH /3.f, Tool::HEIGHT /3.f} );
+    this->score_1.setPosition( {Constants::WIDTH /3.f, Constants::HEIGHT /3.f} );
     this->score_1.setFillColor( sf::Color(94, 159, 224, 255) );
     this->score_1.setScale( {2.f, 2.f} );
 
     this->score_2.setOrigin( this->score_2.getLocalBounds().getCenter() );
-    this->score_2.setPosition({ sf::Vector2f(Tool::WIDTH, Tool::HEIGHT) - this->score_1.getPosition() });
+    this->score_2.setPosition({ sf::Vector2f(Constants::WIDTH, Constants::HEIGHT) - this->score_1.getPosition() });
     this->score_2.setFillColor( this->score_1.getFillColor() );
     this->score_2.setScale( this->score_1.getScale() );
 
     // countdown sprite conf
     this->countD.setOrigin( this->countD.getLocalBounds().getCenter() );
-    this->countD.setPosition( {Tool::W_CTR.x, Tool::W_CTR.y /2.f} );
+    this->countD.setPosition( {Constants::W_CTR.x, Constants::W_CTR.y /2.f} );
     this->countD.setFillColor( sf::Color( 12, 32, 36, 150 ));
     this->countD.setScale( {1.5f, 1.5f} );
 }
 
 void GameUI::update( const sf::Time& dt ) {
-    if ( Tool::goalScored ) {
-        Tool::goalScored = false;
+    if ( Flags::goalScored ) {
+        Flags::goalScored = false;
         this->_cdTime = sf::Time::Zero;
-        Tool::CD = 0;
+        Constants::CD = 0;
 
-        this->score_1.setString( std::to_string(Tool::P1_SCORE) );
-        this->score_2.setString( std::to_string(Tool::P2_SCORE) );
+        this->score_1.setString( std::to_string(Constants::P1_SCORE) );
+        this->score_2.setString( std::to_string(Constants::P2_SCORE) );
     }
 
-    if ( Tool::CD >= Tool::maxCD ) {
+    if ( Constants::CD >= Constants::maxCD ) {
         this->_cdTime = sf::Time::Zero;
-        Tool::CD = -1;
+        Constants::CD = -1;
 
-        this->countD.setString( std::to_string( Tool::maxCD ) );
+        this->countD.setString( std::to_string( Constants::maxCD ) );
 
-    } else if ( Tool::CD != -1 ) {
+    } else if ( Constants::CD != -1 ) {
         if ( !(P1_ready && P2_ready) ) return;
 
-        Tool::CD = static_cast<int>( this->_cdTime.asSeconds() );
-        this->countD.setString( std::to_string( Tool::maxCD - Tool::CD ) );
+        Constants::CD = static_cast<int>( this->_cdTime.asSeconds() );
+        this->countD.setString( std::to_string( Constants::maxCD - Constants::CD ) );
         this->_cdTime += dt;
     }
 }
 
 void GameUI::sync() {
-    this->score_1.setString( std::to_string( Tool::P1_SCORE) );
-    this->score_2.setString( std::to_string( Tool::P2_SCORE ));
+    this->score_1.setString( std::to_string( Constants::P1_SCORE) );
+    this->score_2.setString( std::to_string( Constants::P2_SCORE ));
 }
 
 void GameUI::set_players_ready( const bool P1, const bool P2 ) {

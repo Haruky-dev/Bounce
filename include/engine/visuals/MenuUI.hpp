@@ -8,7 +8,6 @@
 
 #include <cache/TextureCache.hpp>
 #include <engine/visuals/BaseUI.hpp>
-#include <tools/Tool.hpp>
 
 
 class MenuUI : public BaseUI {

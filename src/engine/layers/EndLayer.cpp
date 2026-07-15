@@ -1,6 +1,6 @@
 #include <engine/layers/EndLayer.hpp>
 
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
 
 #include <iostream>
 
@@ -55,7 +55,7 @@ void EndLayer::form_request() {
 bool EndLayer::animated() const { return true; }
 bool EndLayer::popable() const { return this->UI.animation.finished(); }
 void EndLayer::exit() {
-    Tool::P1_SCORE = Tool::P2_SCORE = 0;
+    Constants::P1_SCORE = Constants::P2_SCORE = 0;
 }
 
 Layer::Type EndLayer::type() const { return Layer::Type::GameOver; }

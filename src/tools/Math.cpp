@@ -23,6 +23,14 @@ sf::Vector2f Math::Normalize( const sf::Vector2f& A ) {
     return UnitVect;
 }
 
+// Probably unnecessary, review it asap
+sf::Rect<int> Math::getBound(const sf::Sprite &spr) {
+    return sf::IntRect(
+        static_cast<sf::Vector2<int>>(spr.getGlobalBounds().position),
+        static_cast<sf::Vector2<int>>(spr.getGlobalBounds().size)
+    );
+}
+
 const double Math::Dot( const sf::Vector2f& A, const sf::Vector2f& B ) {
     return static_cast<double>( A.x * B.x  +  A.y * B.y );
 }

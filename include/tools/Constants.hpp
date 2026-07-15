@@ -1,16 +1,12 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
+#include <string>
 #include <array>
 
-#include <engine/Layer.hpp>
 
-class Ball;
-class Player;
-
-
-class Tool {
+class Constants {
     public:
         static int P1_SCORE;
         static int P2_SCORE;
@@ -18,9 +14,6 @@ class Tool {
         static int maxCD;
         static int maxScore;
         static int DELAY_t;
-        static bool goalScored;
-        static bool musicON;
-        static bool sfxON;
         static char ballOrient;
 
         static int WIDTH;
@@ -34,6 +27,4 @@ class Tool {
         };
 
         static std::array< sf::Vector2f, 4 > Norms;
-
-        static sf::Rect<int> getBound( const sf::Sprite& spr );
 };

@@ -15,6 +15,7 @@
 
 #include <entities/Ball.hpp>
 #include <tools/FrameRate.hpp>
+#include <tools/Constants.hpp>
 
 
 class GameLayer : public Layer, public Transition {
@@ -26,7 +27,7 @@ class GameLayer : public Layer, public Transition {
         Ball ball;
 
         FrameRate FR;
-        Tool::Sides norme;
+        Constants::Sides norme;
 
         std::unique_ptr<sf::Music> music;
 

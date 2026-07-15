@@ -1,7 +1,7 @@
 #include <engine/visuals/LoadUI.hpp>
 
 #include <cache/FontCache.hpp>
-#include <tools/Tool.hpp>
+#include <tools/Constants.hpp>
 
 
 LoadUI::LoadUI() :
@@ -12,11 +12,11 @@ LoadUI::LoadUI() :
 void LoadUI::configure() {
     this->progressText.setString("[ 0 % ]");
     this->progressText.setOrigin( this->progressText.getGlobalBounds().getCenter() );
-    this->progressText.setPosition( Tool::W_CTR );
+    this->progressText.setPosition( Constants::W_CTR );
     this->progressText.setFillColor( sf::Color::White );
     // this->progressText.setScale( {3.0f, 3.0f} );
 
-    this->bg.setSize( Tool::W_CTR );
+    this->bg.setSize( Constants::W_CTR );
     this->bg.setFillColor( sf::Color::Black );
 }
 
@@ -28,5 +28,5 @@ void LoadUI::update( const sf::Time& dt ) {
     );
 
     progressText.setOrigin( this->progressText.getLocalBounds().getCenter() );
-    progressText.setPosition( Tool::W_CTR );
+    progressText.setPosition( Constants::W_CTR );
 }

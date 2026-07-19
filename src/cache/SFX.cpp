@@ -32,11 +32,31 @@ void SFX::Load( Progressive& prog ) {
 
         prog.increment_by( 20 );
     }
+
+    // seed the __pool to the first buffer
+    this->__pool.reserve(this->POOL_SIZE);
+    for (int i = 0; i < this->POOL_SIZE; i++ )
+        this->__pool.emplace_back( this->__cache.begin()->second );
 }
 
 void SFX::play( const SFX::Type T ) {
     if ( !Flags::sfxON || (T==SFX::Type::NONE) ) return;
 
-    this->__sound.emplace( this->__cache.at(T) );
-    this->__sound->play();
+    // Search for free/available slot
+    sf::Sound* slot = nullptr;
+    for ( auto& S : this->__pool )
+        if ( S.getStatus() != sf::Sound::Status::Playing ) {
+            slot = &S; break;
+        }
+
+    // Not found? then use the oldest one
+    if ( !slot ) {
+        slot = &this->__pool[this->next_slot];
+
+        // circle next slot index. 0 -> 1 -> .. -> POOL_SIZE-1 -> 0
+        this->next_slot = (this->next_slot+1) % this->POOL_SIZE; 
+    }
+
+    slot->setBuffer( this->__cache.at(T) );
+    slot->play();
 }

@@ -4,7 +4,7 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 
 #include <unordered_map>
-#include <utility>
+#include <vector>
 
 
 class Progressive;
@@ -31,5 +31,7 @@ class SFX {
         void Load( Progressive& );
 
         std::unordered_map<SFX::Type, sf::SoundBuffer> __cache;
-        std::optional<sf::Sound> __sound;
+        std::vector<sf::Sound> __pool; // A pool providing playback machines for concurent buffer play
+        static constexpr size_t POOL_SIZE = 3; // # of possilbe concurent playbacks
+        size_t next_slot = 0;
 };

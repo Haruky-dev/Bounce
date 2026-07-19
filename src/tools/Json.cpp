@@ -4,7 +4,6 @@
 #include <fstream>
 #include <stdexcept>
 
-#include <iostream>
 
 json Json::confData = json::object(); // Init as empty obj
 
@@ -23,7 +22,6 @@ void Json::Load( const str& filePath ) {
 }
 
 void Json::reLoad() {
-    std::cout << "[Json] R\n";
     Json::Load();
 };
 
@@ -94,13 +92,3 @@ str Json::String( const str& key ) {
 
     throw std::runtime_error("Invalid Value [T=str] Found for key=" + key);
 }
-
-// json Json::getArray( const str& key ) const {
-//     auto val = Json::getVal( key );
-
-//     if (val.is_array()) {
-//         return val;
-//     }
-
-//     throw std::runtime_error("lsdkfj");
-// }

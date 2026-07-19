@@ -1,6 +1,7 @@
 #include <engine/visuals/SetUI.hpp>
 
 #include <cache/TextureCache.hpp>
+#include <cache/SFX.hpp>
 #include <cache/FontCache.hpp>
 #include <tools/Constants.hpp>
 #include <tools/Math.hpp>
@@ -40,7 +41,6 @@ void SetUI::configure() {
     this->max_score.setOutlineColor(sf::Color::Black);
     this->max_score.setScale({0.5f, 0.5f});
     this->max_score.setPosition( this->__normalize<float>(this->bg_rect, {108, 221}) );
-    // this->max_score.setPosition( Constants::W_CTR );
 }
 
 void SetUI::update( const sf::Time& dt ) {

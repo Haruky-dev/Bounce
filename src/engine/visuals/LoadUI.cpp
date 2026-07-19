@@ -14,7 +14,6 @@ void LoadUI::configure() {
     this->progressText.setOrigin( this->progressText.getGlobalBounds().getCenter() );
     this->progressText.setPosition( Constants::W_CTR );
     this->progressText.setFillColor( sf::Color::White );
-    // this->progressText.setScale( {3.0f, 3.0f} );
 
     this->bg.setSize( Constants::W_CTR );
     this->bg.setFillColor( sf::Color::Black );

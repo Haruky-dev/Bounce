@@ -3,32 +3,18 @@
 #include <tools/Math.hpp>
 #include <engine/input/Action.hpp>
 
-#include <iostream>
 
-
-PauseLayer::PauseLayer() : Layer(), Animation()
+PauseLayer::PauseLayer() : Layer()
     {
         this->UI.configure();
 }
 
 void PauseLayer::Load() {
-    std::cout << "[Pause] Loading..\n";
-
-    this->accTime = sf::Time::Zero;
-
     this->form_request();
-
-    std::cout << "[Pause] Loaded!\n";
 }
 
 void PauseLayer::Update( const sf::Time& dt ) {
     this->UI.update( dt );
-
-    accTime+=dt;
-    if (accTime.asSeconds() > 2.0f) {
-        std::cout << "[Pause]\n";
-        accTime = sf::Time::Zero;
-    }
 }
 
 void PauseLayer::Render( sf::RenderWindow& win ) const {

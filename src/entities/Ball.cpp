@@ -7,8 +7,6 @@
 #include <tools/Math.hpp>
 #include <tools/Json.hpp>
 
-#include <cache/SoundCache.hpp>
-
 #include <math.h>
 
 
@@ -46,7 +44,6 @@ void Ball::launch() {
         targetPt.y = Math::randi( 0, 200 );
     }
 
-    // direction = targetPos - currPos;
     this->unitDirec = Math::Normalize( targetPt - this->spr.getPosition() );
     this->validate_direc();
     this->velocity = this->unitDirec * static_cast<float>(this->speed);

@@ -4,15 +4,12 @@
 
 
 bool Collision::wall( const sf::Rect<float>& ballB, Constants::Sides& side ) {
-    // only check if ball.y is somewhat near TOP/BOTTOM wall
-    // 
     // -------- TOP/BOTTOM wall CASE
     if ( ballB.position.y <= 5.0f ) { // bg edge
     // if ( ballB.position.y <= Constants::W_EDGE ) {
     side = Constants::Sides::TOP;
         return true;
     } else if ( (ballB.position.y + ballB.size.y) >= Constants::HEIGHT - 5.0f ) {
-    // } else if ( (ballB.position.y + ballB.size.y) >= (Constants::HEIGHT - Constants::W_EDGE) ) {
     side = Constants::Sides::BOTTOM;
         return true;
     }

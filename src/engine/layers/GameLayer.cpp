@@ -2,12 +2,10 @@
     
 #include <SFML/Graphics.hpp>
 
-#include <cache/SoundCache.hpp>
 #include <tools/Flags.hpp>
 #include <tools/Math.hpp>
 #include <tools/Collision.hpp>
-
-#include <print>
+#include <cache/SFX.hpp>
 
 
 GameLayer::GameLayer() :
@@ -35,7 +33,7 @@ void GameLayer::Load() {
 }
 
 void GameLayer::Update( const sf::Time& dt ) {
-    if ( this->music->getStatus() != sf::Music::Status::Playing )
+    if ( this->music->getStatus() != sf::Music::Status::Playing || !(Flags::musicON) )
         this->music->play();
 
     this->updateBall( dt );
@@ -64,6 +62,7 @@ void GameLayer::resume() { this->UI.sync(); }
 
 void GameLayer::exit() {
     this->music.reset();
+    Constants::P1_SCORE = Constants::P2_SCORE = Constants::CD = 0;
 }
 void GameLayer::pause() {
     // this->initT();
@@ -132,13 +131,11 @@ void GameLayer::updateBall( const sf::Time& dt ) {
 void GameLayer::refresh_entities() {
     switch ( this->norme ) {
         case Constants::Sides::RIGHT: {
-            this->UI.paddleSFX.play();
+            SFX::inst().play(SFX::Type::PAD);
             this->P1.refresh();
             const int factor = this->guide_direcion(this->P1.id);
             if ( factor ) {
                 const int unit = this->P1.bounce_acceleration() * factor;
-                if (unit>0) std::println("increased");
-                else std::println("decreased");
 
                 this->ball.speed += unit;
             }
@@ -146,22 +143,19 @@ void GameLayer::refresh_entities() {
             break;
 
         case Constants::Sides::LEFT: {
-            this->UI.paddleSFX.play();
+            SFX::inst().play(SFX::Type::PAD);
             this->P2.refresh();
             const int factor = this->guide_direcion(this->P2.id);
             if ( factor ) {
                 const int unit = this->P2.bounce_acceleration() * factor;
                 this->ball.speed += unit;
-                
-                if (unit>0) std::println("[AI] increased");
-                else std::println("[AI] decreased");
             }
             
         }
             break;
 
         default:
-            this->UI.wallSFX.play();
+            SFX::inst().play(SFX::Type::WALL);
     }
 }
 

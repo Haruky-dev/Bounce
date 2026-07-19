@@ -30,7 +30,6 @@ void MenuUI::configure() {
     this->credit.setOrigin( sf::Vector2f(this->credit.getTexture().getSize()) / 2.0f );
     this->credit.setPosition( {Constants::WIDTH - this->credit.getTexture().getSize().x/2.0f , Constants::HEIGHT - 20.0f} );
 
-    // this->version.setOrigin( sf::Vector2f(this->version.getTexture().getSize()) / 2.0f );
     this->version.setPosition( {5.0f, 5.0f} );
 }
 

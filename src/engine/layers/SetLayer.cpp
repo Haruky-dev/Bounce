@@ -6,7 +6,7 @@
 #include <tools/Math.hpp>
 
     
-SetLayer::SetLayer() : Layer(), Animation()
+SetLayer::SetLayer() : Layer()
     {
         this->UI.configure();
 }

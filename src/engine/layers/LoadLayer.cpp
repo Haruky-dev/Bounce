@@ -2,7 +2,7 @@
 
 #include <tools/Json.hpp>
 #include <cache/FontCache.hpp>
-#include <cache/SoundCache.hpp>
+#include <cache/SFX.hpp>
 #include <cache/TextureCache.hpp>
 
 
@@ -18,7 +18,7 @@ void LoadLayer::Load() {
 
             Json::reLoad();
             TextureCache::inst().Load( *this );
-            SoundCache::Load( *this );
+            SFX::inst().Load( *this );
             FontCache::Load( *this );
 
             this->done.store(true);

@@ -4,6 +4,8 @@
 #include <tools/Constants.hpp>
 #include <tools/Flags.hpp>
 
+#include <cache/SFX.hpp>
+
 
 bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
     Layer* lastLayer = manager.__stack.back().layer.get();
@@ -31,7 +33,7 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
 
         case Action::raiseSett:
             lastLayer->pause();
-            manager.pushLayer( Layer::Type::Setting, true, true );
+            manager.pushLayer( Layer::Type::Setting, true );
             break;
 
         case Action::raiseQuit:
@@ -47,9 +49,11 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
 
         case Action::incMaxScr:
             ( Constants::maxScore < 9 )? Constants::maxScore++ : 1;
+            SFX::inst().play(SFX::Type::CLICK);
             break;
         case Action::decMaxScr:
             ( Constants::maxScore > 1 )? Constants::maxScore-- : 9;
+            SFX::inst().play(SFX::Type::CLICK);
             break;
 
         case Action::incDiff:
@@ -60,6 +64,7 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
 
                 default: throw std::runtime_error("Invalid [Constants::MODE]!");
             }
+            SFX::inst().play(SFX::Type::CLICK);
             Constants::MODE += ".";
             break;
 
@@ -72,13 +77,18 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
                 default: throw std::runtime_error("Invalid [Constants::MODE]!");
             }
             Constants::MODE += ".";
+            SFX::inst().play(SFX::Type::CLICK);
             break;
 
         case Action::toggleMusic:
-            Flags::musicON = !Flags::musicON; break;
+            Flags::musicON = !Flags::musicON;
+            SFX::inst().play(SFX::Type::CLICK);
+            break;
 
         case Action::toggleSFX:
-            Flags::sfxON = !Flags::sfxON; break;
+            Flags::sfxON = !Flags::sfxON;
+            SFX::inst().play(SFX::Type::CLICK);
+            break;
 
         case Action::dropOverlap: // dropOverLayer
             assert(

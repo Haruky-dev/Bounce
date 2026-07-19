@@ -8,10 +8,9 @@
 #include <engine/visuals/PauseUI.hpp>
 
 
-class PauseLayer : public Layer, public Animation {
+class PauseLayer : public Layer {
     private:
         PauseUI UI;
-        sf::Time accTime;
 
     private:
         void form_request() override;

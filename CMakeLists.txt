@@ -26,7 +26,7 @@ add_executable( ${PROJECT_NAME}
     src/tools/Collision.cpp
 
     src/cache/FontCache.cpp
-    src/cache/SoundCache.cpp
+    src/cache/SFX.cpp
     src/cache/TextureCache.cpp
 
     src/engine/visuals/LoadUI.cpp

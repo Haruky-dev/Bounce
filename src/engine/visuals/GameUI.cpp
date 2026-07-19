@@ -1,7 +1,7 @@
 #include <engine/visuals/GameUI.hpp>
 
 #include <cache/TextureCache.hpp>
-#include <cache/SoundCache.hpp>
+#include <cache/SFX.hpp>
 #include <cache/FontCache.hpp>
 #include <tools/Constants.hpp>
 #include <tools/Flags.hpp>
@@ -18,10 +18,7 @@ GameUI::GameUI() :
     countD(FontCache::RASTER, "3"),
     score_1(FontCache::KA, std::to_string(Constants::P1_SCORE)),
     score_2(score_1.getFont(), std::to_string(Constants::P2_SCORE)),
-    P1_ready(false), P2_ready(false), // true?
-
-    paddleSFX( SoundCache::paddleBUF ),
-    wallSFX( SoundCache::wallBUF )
+    P1_ready(false), P2_ready(false) // true?
     {}
 
 

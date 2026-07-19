@@ -32,13 +32,9 @@ void Neuron::refresh() {
         this->errorRange.first, this->errorRange.second
     );
 
-    this->delay = Math::randi(
+    this->delay = Math::randf(
         this->delayRange.first, this->delayRange.second
     );
 
     this->speed += this->accel;
 }
-
-// void Neuron::general_refresh() {
-//     // Neuron(); can you do something like this?? lol
-// }

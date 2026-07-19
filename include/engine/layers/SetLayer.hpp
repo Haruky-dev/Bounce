@@ -7,7 +7,7 @@
 #include <engine/features/Animation.hpp>
 
 
-class SetLayer : public Layer, public Animation {
+class SetLayer : public Layer {
     private:
         SetUI UI;
 

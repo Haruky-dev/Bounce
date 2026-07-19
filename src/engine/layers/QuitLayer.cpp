@@ -25,6 +25,6 @@ Action QuitLayer::feature() const {
 }
 bool QuitLayer::animated() const { return true; }
 bool QuitLayer::popable()  const { return this->UI.animation.finished(); }
-void QuitLayer::exit()           { this->UI.animation.finished(); }
+void QuitLayer::exit()           { this->UI.exit_animation(); }
 
 Layer::Type QuitLayer::type() const { return Layer::Type::Quit; }

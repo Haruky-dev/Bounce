@@ -2,8 +2,8 @@
 
 #include <engine/visuals/MenuUI.hpp>
 #include <engine/request/Request.hpp>
+#include <tools/Flags.hpp>
 
-#include <cache/SoundCache.hpp>
 
 
 MenuLayer::MenuLayer() : Layer() {
@@ -16,13 +16,13 @@ void MenuLayer::Load() {
         throw std::runtime_error("Failure");
 
     this->music->setLooping( true );
-    this->music->setVolume(20);
+    this->music->setVolume(100);
 
     this->form_request();
 }
 
 void MenuLayer::Update( const sf::Time& dt ) {
-    if (this->music->getStatus() != sf::Music::Status::Playing) {
+    if ( this->music->getStatus() != sf::Music::Status::Playing || !(Flags::musicON) ) {
         this->music->play();
     }
 }
@@ -58,7 +58,8 @@ void MenuLayer::form_request() {
 Layer::Type MenuLayer::type() const { return Layer::Type::MainMenu; }
 
 void MenuLayer::enter() {
-    Constants::P1_SCORE = Constants::P2_SCORE = 0;
+    // Constants::P1_SCORE = Constants::P2_SCORE = 0;
+    // Constants::CD = 0; // wtf? should perhaps be on GameLayer::exit() or something
 }
 
 void MenuLayer::exit() {
@@ -68,4 +69,4 @@ void MenuLayer::exit() {
 void MenuLayer::pause() {
     if ( this->music->getStatus() != sf::Music::Status::Stopped )
         this->music->setVolume( 40.f );
-    }
+}

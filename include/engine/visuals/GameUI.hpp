@@ -20,9 +20,6 @@ class GameUI : public BaseUI {
         sf::Text score_1;
         sf::Text score_2;
 
-        sf::Sound paddleSFX;
-        sf::Sound wallSFX;
-
     protected:
         sf::Time _cdTime;
         bool P1_ready, P2_ready;

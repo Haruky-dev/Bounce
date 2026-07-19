@@ -47,8 +47,9 @@ add_executable( ${PROJECT_NAME}
     src/engine/layers/SetLayer.cpp
     src/engine/layers/EndLayer.cpp
     src/engine/layers/QuitLayer.cpp
-    
+
     src/engine/request/Constraint.cpp
+    src/engine/input/Process.cpp
 
     src/engine/features/Motion.cpp
     src/engine/features/Animation.cpp
@@ -64,7 +65,7 @@ target_link_libraries( ${PROJECT_NAME} PRIVATE
 )
 
 target_include_directories( ${PROJECT_NAME} PUBLIC
-    ${PROJECT_SOURCE_DIR}/include 
+    ${PROJECT_SOURCE_DIR}/include
 )
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "game" )

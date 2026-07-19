@@ -7,56 +7,52 @@
 #include <cache/SFX.hpp>
 
 
-bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
+bool Dispatcher::handleOutput( Manager& manager, const Process& P ) {
     Layer* lastLayer = manager.__stack.back().layer.get();
-    switch ( act ) {
+    switch ( P.act() ) {
 
-        case Action::None:
+        case Process::Action::NONE:
             break;
 
-        case Action::raiseMain:
+        case Process::Action::raiseMain:
             manager.__stack.clear();
 
             manager.pushLayer( Layer::Type::MainMenu );
             // manager.__stack.back().layer->enter();
             break;
 
-        case Action::raisePause:
+        case Process::Action::raisePause:
             lastLayer->pause();
             manager.pushLayer( Layer::Type::Pause, true, true );
             break;
 
-        case Action::raisePlay:
+        case Process::Action::raisePlay:
             lastLayer->exit();
             manager.pushLayer( Layer::Type::Play );
             break;
 
-        case Action::raiseSett:
+        case Process::Action::raiseSett:
             lastLayer->pause();
             manager.pushLayer( Layer::Type::Setting, true );
             break;
 
-        case Action::raiseQuit:
+        case Process::Action::raiseQuit:
             lastLayer->pause();
             manager.pushLayer( Layer::Type::Quit, true );
             break;
 
-        case Action::raiseGameOv:
+        case Process::Action::raiseGameOv:
             lastLayer->pause();
             manager.pushLayer( Layer::Type::GameOver, true, true );
             break;
 
+        case Process::Action::incMaxScr:
+            ( Constants::maxScore < 9 )? Constants::maxScore++ : 1; break;
 
-        case Action::incMaxScr:
-            ( Constants::maxScore < 9 )? Constants::maxScore++ : 1;
-            SFX::inst().play(SFX::Type::CLICK);
-            break;
-        case Action::decMaxScr:
-            ( Constants::maxScore > 1 )? Constants::maxScore-- : 9;
-            SFX::inst().play(SFX::Type::CLICK);
-            break;
+        case Process::Action::decMaxScr:
+            ( Constants::maxScore > 1 )? Constants::maxScore-- : 9;break;
 
-        case Action::incDiff:
+        case Process::Action::incDiff:
             switch ( Constants::MODE.at(0) ) {
                 case 'E': Constants::MODE = 'M'; break;
                 case 'M': Constants::MODE = 'H'; break;
@@ -64,11 +60,10 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
 
                 default: throw std::runtime_error("Invalid [Constants::MODE]!");
             }
-            SFX::inst().play(SFX::Type::CLICK);
             Constants::MODE += ".";
             break;
 
-        case Action::decDiff:
+        case Process::Action::decDiff:
             switch ( Constants::MODE.at(0) ) {
                 case 'E': Constants::MODE = 'H'; break;
                 case 'M': Constants::MODE = 'E'; break;
@@ -77,20 +72,17 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
                 default: throw std::runtime_error("Invalid [Constants::MODE]!");
             }
             Constants::MODE += ".";
-            SFX::inst().play(SFX::Type::CLICK);
             break;
 
-        case Action::toggleMusic:
+        case Process::Action::toggleMusic:
             Flags::musicON = !Flags::musicON;
-            SFX::inst().play(SFX::Type::CLICK);
             break;
 
-        case Action::toggleSFX:
+        case Process::Action::toggleSFX:
             Flags::sfxON = !Flags::sfxON;
-            SFX::inst().play(SFX::Type::CLICK);
             break;
 
-        case Action::dropOverlap: // dropOverLayer
+        case Process::Action::dropOverlap: // dropOverLayer
             assert(
                 manager.__stack.back().onOverlap
                 && (manager.__stack.size() > 1)
@@ -103,6 +95,8 @@ bool Dispatcher::handleOutput( Manager& manager, const Action act ) {
         default:
             return false;
     }
+
+    SFX::inst().play( P.sfx() );
 
     return true;
 }

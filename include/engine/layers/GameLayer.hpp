@@ -6,7 +6,7 @@
 
 #include <engine/Layer.hpp>
 #include <engine/visuals/GameUI.hpp>
-#include <engine/input/Action.hpp>
+#include <engine/input/Process.hpp>
 #include <engine/features/Transition.hpp>
 
 #include <entities/Player.hpp>
@@ -32,7 +32,7 @@ class GameLayer : public Layer, public Transition {
         std::unique_ptr<sf::Music> music;
 
     private:
-        Action feature() const override;
+        Process::Action feature() const override;
         void form_request() override;
         void updateBall( const sf::Time& dt );
         void refresh_entities();

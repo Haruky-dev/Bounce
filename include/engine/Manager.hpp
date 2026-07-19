@@ -9,8 +9,6 @@
 
 #include <engine/Layer.hpp>
 
-enum class Action;
-
 
 class Manager {
     friend class Dispatcher;
@@ -33,8 +31,8 @@ class Manager {
 
     private:
         void pushLayer( Layer::Type T, bool overlapping=false, bool freezeLast=false );
-        void updateLayers( sf::Time& dt );
-        void controlOut( const Action out );
+        void updateLayers( const sf::Time& dt );
+        void controlProcess( const Process& P );
         void renderLayers( sf::RenderWindow& win  ) const;
 
     public:
@@ -44,6 +42,6 @@ class Manager {
         Manager();
         ~Manager() = default;
 
-        void Update( sf::Time& dt, sf::RenderWindow& win );
+        void Update( const sf::Time& dt, sf::RenderWindow& win );
         void Render( sf::RenderWindow& win ) const;
 };

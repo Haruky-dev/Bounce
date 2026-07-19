@@ -9,7 +9,7 @@
 #include <engine/layers/EndLayer.hpp>
 #include <engine/layers/QuitLayer.hpp>
 
-#include <engine/input/Action.hpp>
+#include <engine/input/Process.hpp>
 #include <engine/input/InputEv.hpp>
 
 #include <engine/Dispatcher.hpp>
@@ -37,7 +37,7 @@ Manager::Manager() : __stack() {
 }
 
 // -- PUBLIC FUNCs SECTION
-void Manager::Update( sf::Time& dt, sf::RenderWindow& win ) {
+void Manager::Update( const sf::Time& dt, sf::RenderWindow& win ) {
     if ( this->__stack.empty() )
         return;
 
@@ -45,7 +45,7 @@ void Manager::Update( sf::Time& dt, sf::RenderWindow& win ) {
 
     Layer& curr = *(this->__stack.back().layer);
 
-    this->controlOut(
+    this->controlProcess(
         curr.Read({
             std::chrono::steady_clock::now(),
             Input(
@@ -80,14 +80,14 @@ void Manager::pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
     this->__stack.back().layer->enter();
 }
 
-void Manager::controlOut( const Action out ) {
-    if ( out == Action::QUIT )
+void Manager::controlProcess( const Process& P ) {
+    if ( P.act() == Process::Action::QUIT )
         this->quit_flag = true;
     else
-        Dispatcher::handleOutput( *this, out );
+        Dispatcher::handleOutput( *this, P );
 }
 
-void Manager::updateLayers( sf::Time& dt ) {
+void Manager::updateLayers( const sf::Time& dt ) {
     int I = static_cast<int>(this->__stack.size()) - 1;
 
     for ( ; I >= 0; I-- ) {

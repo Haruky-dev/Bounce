@@ -6,7 +6,7 @@
 #include <SFML/Window/Mouse.hpp>
 
 #include <engine/input/Input.hpp>
-#include <engine/input/Action.hpp>
+#include <engine/input/Process.hpp>
 #include <engine/request/Request.hpp>
 #include <engine/request/Constraint.hpp>
 
@@ -17,12 +17,9 @@
 #include <vector>
 
 
-class StateManager;
-
-
 class Layer { 
     private:
-        virtual Action feature() const { return Action::None; }
+        virtual Process::Action feature() const { return Process::Action::NONE; }
         virtual void form_request() {}
 
     public:
@@ -45,16 +42,17 @@ class Layer {
         virtual void   Load() = 0;
         virtual void   Update( const sf::Time& dt ) = 0;
         virtual void   Render( sf::RenderWindow& win ) const = 0; 
-        virtual Action Read( const Context& context ) const {
-            Action act = this->feature();
+        virtual Process Read( const Context& context ) const {
+            Process::Action A = this->feature();
 
-            if ( act == Action::None ) {
-                for ( const Request& request : this->requests )
-                    if ( request.matches(context.input) && request.allowed(context) )
-                        act = request.action();
-            }
+            if ( A != Process::Action::NONE )
+                return Process( A ); // if later on a Layer::feature had an sfx attached to it, this line should change
 
-            return act;
+            for ( const Request& request : this->requests )
+                if ( request.matches(context.input) && request.allowed(context) )
+                    return request.__process;
+
+            return Process();
         }
 
         // getters
@@ -65,8 +63,8 @@ class Layer {
             keys.reserve( this->requests.size() );
 
             for ( const Request& R : this->requests )
-                if ( !(R.trigger.index()) )
-                    keys.push_back( std::get<sf::Keyboard::Key>(R.trigger) );
+                if ( !(R.__trigger.index()) )
+                    keys.push_back( std::get<sf::Keyboard::Key>(R.__trigger) );
 
             return keys;
         }
@@ -76,8 +74,8 @@ class Layer {
             buttons.reserve( this->requests.size() );
 
             for ( const Request& R : this->requests )
-                if ( R.trigger.index() )
-                    buttons.push_back( std::get<sf::Mouse::Button>(R.trigger) );
+                if ( R.__trigger.index() )
+                    buttons.push_back( std::get<sf::Mouse::Button>(R.__trigger) );
 
             return buttons;
         }

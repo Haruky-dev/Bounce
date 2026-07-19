@@ -4,7 +4,7 @@
 #include <SFML/Window/Mouse.hpp>
 
 #include <engine/input/Input.hpp>
-#include <engine/input/Action.hpp>
+#include <engine/input/Process.hpp>
 #include <engine/request/Constraint.hpp>
 
 #include <variant>
@@ -15,24 +15,24 @@
 class Request {
     friend class Layer;
 
-    std::variant<sf::Keyboard::Key, sf::Mouse::Button> trigger;
-    std::vector<std::unique_ptr<Constraint>> constraints;
-    Action act;
+    std::variant<sf::Keyboard::Key, sf::Mouse::Button> __trigger;
+    std::vector<std::unique_ptr<Constraint>> __constraints;
+    Process __process;
 
     public:
-        Request( sf::Keyboard::Key K, Action A )
-            : trigger(K), act(A) , constraints() {}
+        Request( sf::Keyboard::Key K, Process::Action A, SFX::Type sfx=SFX::Type::NONE )
+            : __trigger(K), __process(A, sfx) , __constraints() {}
 
-        Request( sf::Mouse::Button B, Action A)
-            : trigger(B), act(A), constraints() {}
+        Request( sf::Mouse::Button B, Process::Action A, SFX::Type sfx=SFX::Type::CLICK )
+            : __trigger(B), __process(A, sfx), __constraints() {}
 
         template <typename... Cs>
         void require( Cs&&... cs ) {
-            ( constraints.emplace_back(std::forward<Cs>(cs)), ...);
+            ( __constraints.emplace_back(std::forward<Cs>(cs)), ...);
         }
 
         bool allowed( const Context& context ) const {
-            for ( auto& C : this->constraints )
+            for ( auto& C : this->__constraints )
                 if ( !(C->satisfied(context)) )
                     return false;
 
@@ -40,12 +40,10 @@ class Request {
         }
 
         bool matches( const Input& in ) const {
-            if ( this->trigger.index() ) { // Mouse button trigger
-                return in.mouse.clicked && ( in.mouse.btn == std::get<sf::Mouse::Button>(this->trigger) );
-            } else { // Keyboard button trigger
-                return in.keyb.clicked && ( in.keyb.key == std::get<sf::Keyboard::Key>(this->trigger) );
+            if ( this->__trigger.index() ) { // Mouse button __trigger
+                return in.mouse.clicked && ( in.mouse.btn == std::get<sf::Mouse::Button>(this->__trigger) );
+            } else { // Keyboard button __trigger
+                return in.keyb.clicked && ( in.keyb.key == std::get<sf::Keyboard::Key>(this->__trigger) );
             }
         }
-
-        Action action() const { return this->act; }
 };

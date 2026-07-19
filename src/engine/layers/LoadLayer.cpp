@@ -41,11 +41,11 @@ void LoadLayer::Render(sf::RenderWindow &win) const {
     win.draw( this->UI.progressText );
 }
 
-Action LoadLayer::feature() const {
+Process::Action LoadLayer::feature() const {
     if ( this->done.load() )
-        return Action::raiseMain;
+        return Process::Action::raiseMain;
 
-    return Action::None;
+    return Process::Action::NONE;
 }
 
 Layer::Type LoadLayer::type() const { return Layer::Type::Loading; }

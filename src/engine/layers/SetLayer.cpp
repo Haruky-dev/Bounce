@@ -32,39 +32,39 @@ void SetLayer::Render( sf::RenderWindow& win ) const {
 
 void SetLayer::form_request() {
     // Keyboard requests
-    this->requests.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
+    this->requests.emplace_back( sf::Keyboard::Key::Enter, Process::Action::dropOverlap );
 
     // Mouse requests
     this->requests.emplace_back(
-            sf::Mouse::Button::Left, Action::dropOverlap
+            sf::Mouse::Button::Left, Process::Action::dropOverlap
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::EXIT) ) );
     this->requests.emplace_back(
-            sf::Mouse::Button::Left, Action::incMaxScr
+            sf::Mouse::Button::Left, Process::Action::incMaxScr
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_INC)),
                 Constraint::cooldown(Constants::DELAY_t),
                 Constraint::predicate( [this]() { return this->UI.animation.finished(); }));
     this->requests.emplace_back(
-            sf::Mouse::Button::Left, Action::decMaxScr
+            sf::Mouse::Button::Left, Process::Action::decMaxScr
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_DEC) ),
                 Constraint::cooldown(Constants::DELAY_t),
                 Constraint::predicate( [this]() { return this->UI.animation.finished(); }));
     this->requests.emplace_back(
-            sf::Mouse::Button::Left, Action::incDiff
+            sf::Mouse::Button::Left, Process::Action::incDiff
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_INC)),
                 Constraint::cooldown(Constants::DELAY_t),
                 Constraint::predicate( [this]() { return this->UI.animation.finished(); }));
     this->requests.emplace_back(
-            sf::Mouse::Button::Left, Action::decDiff
+            sf::Mouse::Button::Left, Process::Action::decDiff
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_DEC)),
                 Constraint::cooldown(Constants::DELAY_t),
                 Constraint::predicate( [this]() { return this->UI.animation.finished(); }));
     this->requests.emplace_back(
-            sf::Mouse::Button::Left, Action::toggleMusic
+            sf::Mouse::Button::Left, Process::Action::toggleMusic
         ).require( Constraint::bounds(this->UI.bounds.at(SetUI::BTNS::MUSIC_MARK)),
                 Constraint::cooldown(Constants::DELAY_t),
                 Constraint::predicate( [this]() { return this->UI.animation.finished(); }));
     this->requests.emplace_back(
-            sf::Mouse::Button::Left, Action::toggleSFX
+            sf::Mouse::Button::Left, Process::Action::toggleSFX
         ).require( Constraint::bounds(this->UI.bounds.at(SetUI::BTNS::SFX_MARK)),
                 Constraint::cooldown(Constants::DELAY_t),
                 Constraint::predicate( [this]() { return this->UI.animation.finished(); }));

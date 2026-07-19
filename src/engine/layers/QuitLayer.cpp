@@ -17,11 +17,11 @@ void QuitLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.bg );
 }
 
-Action QuitLayer::feature() const {
+Process::Action QuitLayer::feature() const {
     if ( this->accTime.asSeconds() >= this->T.count() )
-        return Action::QUIT;
+        return Process::Action::QUIT;
 
-    return Action::None;
+    return Process::Action::NONE;
 }
 bool QuitLayer::animated() const { return true; }
 bool QuitLayer::popable()  const { return this->UI.animation.finished(); }

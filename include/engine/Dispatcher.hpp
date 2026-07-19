@@ -1,13 +1,11 @@
 #pragma once
 
 #include <engine/Manager.hpp>
-#include <engine/input/Action.hpp>
-
-class Manager;
+#include <engine/input/Process.hpp>
 
 
 class Dispatcher {
     friend class Manager;
 
-    static bool handleOutput( Manager&, const Action );
+    static bool handleOutput( Manager&, const Process& );
 };

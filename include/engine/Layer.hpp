@@ -5,14 +5,14 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/Mouse.hpp>
 
-#include <engine/input/Input.hpp>
-#include <engine/input/Process.hpp>
-#include <engine/request/Request.hpp>
-#include <engine/request/Constraint.hpp>
+#include <engine/io/Input.hpp>
+#include <engine/io/Process.hpp>
+#include <engine/io/Request.hpp>
+#include <engine/io/Constraint.hpp>
 
-#include <engine/request/constraints/Bounds.hpp>
-#include <engine/request/constraints/Cooldown.hpp>
-#include <engine/request/constraints/Predicate.hpp>
+#include <engine/io/constraints/Bounds.hpp>
+#include <engine/io/constraints/Cooldown.hpp>
+#include <engine/io/constraints/Predicate.hpp>
 
 #include <vector>
 #include <span>

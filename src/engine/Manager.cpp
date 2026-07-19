@@ -9,8 +9,8 @@
 #include <engine/layers/EndLayer.hpp>
 #include <engine/layers/QuitLayer.hpp>
 
-#include <engine/input/Process.hpp>
-#include <engine/input/InputEv.hpp>
+#include <engine/io/Process.hpp>
+#include <engine/io/Input.hpp>
 
 #include <engine/Dispatcher.hpp>
 
@@ -49,8 +49,8 @@ void Manager::Update( const sf::Time& dt, sf::RenderWindow& win ) {
         curr.Read({
             std::chrono::steady_clock::now(),
             Input(
-                InputEv::mouseClick( curr.buttons(),win ),
-                InputEv::keybClick( curr.keys() )
+                Input::validateButtons( curr.buttons(),win ),
+                Input::validateKeys( curr.keys() )
             )
         }) );
 }

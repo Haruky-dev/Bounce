@@ -48,8 +48,9 @@ add_executable( ${PROJECT_NAME}
     src/engine/layers/EndLayer.cpp
     src/engine/layers/QuitLayer.cpp
 
-    src/engine/request/Constraint.cpp
-    src/engine/input/Process.cpp
+    src/engine/io/Constraint.cpp
+    src/engine/io/Process.cpp
+    src/engine/io/Input.cpp
 
     src/engine/features/Motion.cpp
     src/engine/features/Animation.cpp

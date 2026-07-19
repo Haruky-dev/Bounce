@@ -1,8 +1,8 @@
-#include <engine/request/Constraint.hpp>
+#include <engine/io/Constraint.hpp>
 
-#include <engine/request/constraints/Bounds.hpp>
-#include <engine/request/constraints/Cooldown.hpp>
-#include <engine/request/constraints/Predicate.hpp>
+#include <engine/io/constraints/Bounds.hpp>
+#include <engine/io/constraints/Cooldown.hpp>
+#include <engine/io/constraints/Predicate.hpp>
 
 std::unique_ptr<Bounds> Constraint::bounds( const sf::Rect<int>& B ) {
     return std::make_unique<Bounds>( B );

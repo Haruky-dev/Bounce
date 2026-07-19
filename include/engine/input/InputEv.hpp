@@ -11,7 +11,7 @@
 struct InputEv {
     public:
         static Input::kbProp
-            keybClick( std::vector<sf::Keyboard::Key> keys ) {
+            keybClick( std::span<sf::Keyboard::Key> keys ) {
 
                 for ( const sf::Keyboard::Key& K : keys )
                     if ( sf::Keyboard::isKeyPressed( K ) )
@@ -23,7 +23,7 @@ struct InputEv {
         }
 
         static Input::msProp
-            mouseClick( std::vector<sf::Mouse::Button> buttons, sf::RenderWindow& win ) {
+            mouseClick( std::span<sf::Mouse::Button> buttons, sf::RenderWindow& win ) {
 
                 for ( const sf::Mouse::Button& B : buttons )
                     if ( sf::Mouse::isButtonPressed( B ) )

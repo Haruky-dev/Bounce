@@ -83,8 +83,8 @@ Process::Action GameLayer::feature() const {
 
 void GameLayer::form_request() {
     // Keyboard request
-    this->requests.emplace_back( sf::Keyboard::Key::Escape, Process::Action::raiseMain );
-    this->requests.emplace_back( sf::Keyboard::Key::Space, Process::Action::raisePause );
+    this->__requests.emplace_back( sf::Keyboard::Key::Escape, Process::Action::raiseMain );
+    this->__requests.emplace_back( sf::Keyboard::Key::Space, Process::Action::raisePause );
 }
 
 void GameLayer::updateBall( const sf::Time& dt ) {

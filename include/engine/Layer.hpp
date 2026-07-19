@@ -15,12 +15,27 @@
 #include <engine/request/constraints/Predicate.hpp>
 
 #include <vector>
+#include <span>
 
 
 class Layer { 
     private:
         virtual Process::Action feature() const { return Process::Action::NONE; }
         virtual void form_request() {}
+        void __build_input() const {
+            this->__keys.clear();
+            this->__buttons.clear();
+
+            this->__keys.reserve( this->__requests.size() );
+            this->__buttons.reserve( this->__requests.size() );
+            
+            for ( const Request& R : this->__requests ) {
+                if ( R.__trigger.index() )
+                    this->__buttons.push_back( std::get<sf::Mouse::Button>(R.__trigger) );
+                else
+                    this->__keys.push_back( std::get<sf::Keyboard::Key>(R.__trigger) );
+            }
+        }
 
     public:
         enum class Type {
@@ -34,21 +49,24 @@ class Layer {
         };
 
     protected:
-        std::vector<Request> requests;
+        std::vector<Request> __requests;
+        mutable std::vector<sf::Keyboard::Key> __keys;
+        mutable std::vector<sf::Mouse::Button> __buttons;
+        mutable bool load_flag = false;
 
-        explicit Layer() : requests() {}
+        explicit Layer() : __requests() {}
 
     public:
         virtual void   Load() = 0;
         virtual void   Update( const sf::Time& dt ) = 0;
         virtual void   Render( sf::RenderWindow& win ) const = 0; 
-        virtual Process Read( const Context& context ) const {
+        Process Read( const Context& context ) const {
             Process::Action A = this->feature();
 
             if ( A != Process::Action::NONE )
                 return Process( A ); // if later on a Layer::feature had an sfx attached to it, this line should change
 
-            for ( const Request& request : this->requests )
+            for ( const Request& request : this->__requests )
                 if ( request.matches(context.input) && request.allowed(context) )
                     return request.__process;
 
@@ -58,26 +76,21 @@ class Layer {
         // getters
         virtual Layer::Type type() const = 0;
 
-        virtual std::vector<sf::Keyboard::Key> keys() const {
-            std::vector<sf::Keyboard::Key> keys;
-            keys.reserve( this->requests.size() );
+        std::span<sf::Keyboard::Key> keys() const {
+            if ( !load_flag ) {
+                this->__build_input();
+                this->load_flag = true;
+            }
 
-            for ( const Request& R : this->requests )
-                if ( !(R.__trigger.index()) )
-                    keys.push_back( std::get<sf::Keyboard::Key>(R.__trigger) );
-
-            return keys;
+            return std::span( this->__keys.begin(), this->__keys.end() );
         }
+        std::span<sf::Mouse::Button> buttons() const {
+            if ( !load_flag ) {
+                this->__build_input();
+                this->load_flag = true;
+            }
 
-        virtual std::vector<sf::Mouse::Button> buttons() const {
-            std::vector<sf::Mouse::Button> buttons;
-            buttons.reserve( this->requests.size() );
-
-            for ( const Request& R : this->requests )
-                if ( R.__trigger.index() )
-                    buttons.push_back( std::get<sf::Mouse::Button>(R.__trigger) );
-
-            return buttons;
+            return std::span( this->__buttons.begin(), this->__buttons.end() );
         }
 
         // actions

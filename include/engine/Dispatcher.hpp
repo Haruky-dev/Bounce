@@ -5,7 +5,15 @@
 
 
 class Dispatcher {
-    friend class Manager;
+    public:
+        static Dispatcher& inst() {
+            static Dispatcher I = Dispatcher();
+            return I;
+        }
 
-    static bool handleOutput( Manager&, const Process& );
+        void handle( Manager&, const Process& );
+
+    private:
+        void __process_settings( const Process::Action );
+        void __process_layers( const Process::Action, Manager& );
 };

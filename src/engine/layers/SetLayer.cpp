@@ -37,7 +37,8 @@ void SetLayer::form_request() {
     // Mouse __requests
     this->__requests.emplace_back(
             sf::Mouse::Button::Left, Process::Action::dropOverlap
-        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::EXIT) ) );
+        ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::EXIT) ),
+                Constraint::predicate( [this]() { return this->UI.animation.finished(); }) );
     this->__requests.emplace_back(
             sf::Mouse::Button::Left, Process::Action::incMaxScr
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_INC)),

@@ -84,7 +84,7 @@ void Manager::controlProcess( const Process& P ) {
     if ( P.act() == Process::Action::QUIT )
         this->quit_flag = true;
     else
-        Dispatcher::handleOutput( *this, P );
+        Dispatcher::inst().handle( *this, P );
 }
 
 void Manager::updateLayers( const sf::Time& dt ) {

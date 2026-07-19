@@ -7,7 +7,7 @@
 #include <cache/SFX.hpp>
 
 
-bool Dispatcher::handleOutput( Manager& manager, const Process& P ) {
+void Dispatcher::handle( Manager& manager, const Process& P ) {
     Layer* lastLayer = manager.__stack.back().layer.get();
     switch ( P.act() ) {
 
@@ -15,42 +15,40 @@ bool Dispatcher::handleOutput( Manager& manager, const Process& P ) {
             break;
 
         case Process::Action::raiseMain:
-            manager.__stack.clear();
-
-            manager.pushLayer( Layer::Type::MainMenu );
-            // manager.__stack.back().layer->enter();
-            break;
-
         case Process::Action::raisePause:
-            lastLayer->pause();
-            manager.pushLayer( Layer::Type::Pause, true, true );
-            break;
-
         case Process::Action::raisePlay:
-            lastLayer->exit();
-            manager.pushLayer( Layer::Type::Play );
-            break;
-
         case Process::Action::raiseSett:
-            lastLayer->pause();
-            manager.pushLayer( Layer::Type::Setting, true );
-            break;
-
         case Process::Action::raiseQuit:
-            lastLayer->pause();
-            manager.pushLayer( Layer::Type::Quit, true );
-            break;
-
         case Process::Action::raiseGameOv:
-            lastLayer->pause();
-            manager.pushLayer( Layer::Type::GameOver, true, true );
+        case Process::Action::dropOverlap:
+            this->__process_layers( P.act(),  manager );
             break;
 
         case Process::Action::incMaxScr:
-            ( Constants::maxScore < 9 )? Constants::maxScore++ : 1; break;
+        case Process::Action::decMaxScr:
+        case Process::Action::incDiff:
+        case Process::Action::decDiff:
+        case Process::Action::toggleMusic:
+        case Process::Action::toggleSFX:
+            __process_settings( P.act() );
+            break;
+
+        default: return;
+    }
+
+    SFX::inst().play( P.sfx() );
+}
+
+
+void Dispatcher::__process_settings( const Process::Action A ) {
+    switch ( A ) {
+        case Process::Action::incMaxScr:
+            ( Constants::maxScore < 9 )? Constants::maxScore++ : 1;
+            break;
 
         case Process::Action::decMaxScr:
-            ( Constants::maxScore > 1 )? Constants::maxScore-- : 9;break;
+            ( Constants::maxScore > 1 )? Constants::maxScore-- : 9;
+            break;
 
         case Process::Action::incDiff:
             switch ( Constants::MODE.at(0) ) {
@@ -82,21 +80,54 @@ bool Dispatcher::handleOutput( Manager& manager, const Process& P ) {
             Flags::sfxON = !Flags::sfxON;
             break;
 
+        default: return;
+    }
+}
+
+void Dispatcher::__process_layers( const Process::Action A, Manager& M ) {
+    Layer* lastLayer = M.__stack.back().layer.get();
+
+    switch ( A ) {
+        case Process::Action::raiseMain:
+            M.__stack.clear();
+            M.pushLayer( Layer::Type::MainMenu );
+            break;
+
+        case Process::Action::raisePause:
+            lastLayer->pause();
+            M.pushLayer( Layer::Type::Pause, true, true );
+            break;
+
+        case Process::Action::raisePlay:
+            lastLayer->exit();
+            M.pushLayer( Layer::Type::Play );
+            break;
+
+        case Process::Action::raiseSett:
+            lastLayer->pause();
+            M.pushLayer( Layer::Type::Setting, true );
+            break;
+
+        case Process::Action::raiseQuit:
+            lastLayer->pause();
+            M.pushLayer( Layer::Type::Quit, true );
+            break;
+
+        case Process::Action::raiseGameOv:
+            lastLayer->pause();
+            M.pushLayer( Layer::Type::GameOver, true, true );
+            break;
+
         case Process::Action::dropOverlap: // dropOverLayer
             assert(
-                manager.__stack.back().onOverlap
-                && (manager.__stack.size() > 1)
+                M.__stack.back().onOverlap
+                && (M.__stack.size() > 1)
             );
 
             lastLayer->exit();
-            manager.__stack.back().onExit = true;
+            M.__stack.back().onExit = true;
             break;
 
-        default:
-            return false;
+        default: return;
     }
-
-    SFX::inst().play( P.sfx() );
-
-    return true;
 }

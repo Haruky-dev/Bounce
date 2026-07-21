@@ -58,5 +58,6 @@ void SFX::play( const SFX::Type T ) {
     }
 
     slot->setBuffer( this->__cache.at(T) );
+    slot->setVolume(150);
     slot->play();
 }

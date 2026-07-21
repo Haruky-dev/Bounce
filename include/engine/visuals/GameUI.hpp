@@ -10,6 +10,7 @@
 
 class GameUI : public BaseUI {
     friend class GameLayer;
+    enum class BTNS { MENU };
 
     private:
         sf::Sprite bg;
@@ -19,6 +20,9 @@ class GameUI : public BaseUI {
         sf::Text countD;
         sf::Text score_1;
         sf::Text score_2;
+
+        static const int BTN_COUNT = 2;
+        std::unordered_map<GameUI::BTNS, sf::Rect<int>> bounds;
 
     protected:
         sf::Time _cdTime;

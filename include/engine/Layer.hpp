@@ -20,7 +20,7 @@
 
 class Layer { 
     private:
-        virtual Process::Action feature() const { return Process::Action::NONE; }
+        virtual Process feature() const { return Process(); }
         virtual void form_request() {}
         void __build_input() const {
             this->__keys.clear();
@@ -61,13 +61,18 @@ class Layer {
         virtual void   Update( const sf::Time& dt ) = 0;
         virtual void   Render( sf::RenderWindow& win ) const = 0; 
         Process Read( const Context& context ) const {
-            Process::Action A = this->feature();
+            Process P = this->feature();
 
-            if ( A != Process::Action::NONE )
-                return Process( A ); // if later on a Layer::feature had an sfx attached to it, this line should change
+            if ( P.act() != Process::Action::NONE )
+                return P; // if later on a Layer::feature had an sfx attached to it, this line should change
+
+            Context context_f = context; // filtered context, to make Request dis-allow mouse interactions-
+                // -for animated layers when their animation has not finished yet
+            if ( this->animated() && !this->popable() )
+                context_f.input.mouse.clicked = false; // white lie lol
 
             for ( const Request& request : this->__requests )
-                if ( request.matches(context.input) && request.allowed(context) )
+                if ( request.matches(context_f.input) && request.allowed(context_f) )
                     return request.__process;
 
             return Process();

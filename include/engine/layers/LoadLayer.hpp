@@ -15,7 +15,7 @@ class LoadLayer : public Layer, public Progressive {
         std::thread loader;
 
     private:
-        Process::Action feature() const override;
+        Process feature() const override;
 
     public:
         LoadLayer();

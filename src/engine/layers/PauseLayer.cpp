@@ -26,20 +26,16 @@ void PauseLayer::Render( sf::RenderWindow& win ) const {
 
 void PauseLayer::form_request() {
     // Keyboard __requests
-    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Process::Action::dropOverlap );
+    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Process::Action::dropOverlap, SFX::Type::WHOOSH );
     this->__requests.emplace_back( sf::Keyboard::Key::Escape, Process::Action::raiseMain );
 
     // Mouse __requests
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::dropOverlap
-        ).require( Constraint::bounds( this->UI.bounds.at(PauseUI::BTNS::RESUME) ),
-            Constraint::predicate( [this]() { return this->UI.animation.finished(); })
-    );
+            sf::Mouse::Button::Left, Process::Action::dropOverlap, SFX::Type::WHOOSH
+        ).require( Constraint::bounds( this->UI.bounds.at(PauseUI::BTNS::RESUME) ) );
     this->__requests.emplace_back(
             sf::Mouse::Button::Left, Process::Action::raiseMain
-        ).require( Constraint::bounds( this->UI.bounds.at(PauseUI::BTNS::QUIT) ),
-            Constraint::predicate( [this]() { return this->UI.animation.finished(); })
-    );
+        ).require( Constraint::bounds( this->UI.bounds.at(PauseUI::BTNS::QUIT) ) );
 }
 
 bool PauseLayer::animated() const { return true; }

@@ -39,8 +39,8 @@ void MenuLayer::Render( sf::RenderWindow& win ) const {
 
 void MenuLayer::form_request() {
     // Keyboard __requests
-    this->__requests.emplace_back( sf::Keyboard::Key::P, Process::Action::raisePlay );
-    this->__requests.emplace_back( sf::Keyboard::Key::M, Process::Action::raiseSett );
+    this->__requests.emplace_back( sf::Keyboard::Key::P, Process::Action::raisePlay  );
+    this->__requests.emplace_back( sf::Keyboard::Key::M, Process::Action::raiseSett, SFX::Type::WHOOSH );
     this->__requests.emplace_back( sf::Keyboard::Key::Q, Process::Action::raiseQuit );
 
     // Mouse __requests
@@ -48,7 +48,7 @@ void MenuLayer::form_request() {
             sf::Mouse::Button::Left, Process::Action::raisePlay
         ).require( Constraint::bounds( this->UI.bounds.at(MenuUI::BTNS::PLAY) ) );
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::raiseSett
+            sf::Mouse::Button::Left, Process::Action::raiseSett, SFX::Type::WHOOSH
         ).require( Constraint::bounds( this->UI.bounds.at(MenuUI::BTNS::MENU) ) );
     this->__requests.emplace_back(
             sf::Mouse::Button::Left, Process::Action::raiseQuit

@@ -11,6 +11,7 @@ FrameRate::FrameRate()
     txt(FontCache::RASTER, ""), delay(Json::Float("setting.fps.delay")) {
 
         this->txt.setFillColor( sf::Color(241, 233, 219, 200) );
+        this->txt.setScale( {0.7f, 0.7f} );
         this->adjTxt();
 }
 
@@ -31,7 +32,10 @@ void FrameRate::update( const sf::Time& dt ) {
 }
 
 void FrameRate::adjTxt() {
-    this->txt.setPosition( {Constants::W_CTR.x - this->txt.getGlobalBounds().size.x / 2.0f, 8.0f} );
+    this->txt.setPosition( {
+        Constants::W_CTR.x - this->txt.getGlobalBounds().size.x / 2.0f,
+        Constants::HEIGHT - 30.f
+    } );
 }
 
 void FrameRate::draw( sf::RenderTarget& target, sf::RenderStates states ) const {

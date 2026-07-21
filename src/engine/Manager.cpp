@@ -81,7 +81,7 @@ void Manager::pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
 }
 
 void Manager::controlProcess( const Process& P ) {
-    if ( P.act() == Process::Action::QUIT )
+    if ( P.act() == Process::Action::Quit )
         this->quit_flag = true;
     else
         Dispatcher::inst().handle( *this, P );
@@ -102,7 +102,7 @@ void Manager::updateLayers( const sf::Time& dt ) {
     // An on-exit + animated, layer has finished its exit animation
     const bool flag = state.layer                // non-nullptr
                    && state.layer->animated()    //
-                   && state.onExit               // Manager requested an exit animation
+                   && state.onExit               // Dispatcher requested an exit animation
                    && state.layer->popable(); // animation done
 
     if ( flag ) {

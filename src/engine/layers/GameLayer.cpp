@@ -71,20 +71,23 @@ void GameLayer::pause() {
 Layer::Type GameLayer::type() const { return Layer::Type::Play; }
 
 
-Process::Action GameLayer::feature() const {
-    if (
-        ( Constants::P1_SCORE >= Constants::maxScore ) 
-        || ( Constants::P2_SCORE >= Constants::maxScore )
-    )
-        return Process::Action::raiseGameOv;
-    
-    return Process::Action::NONE;
+Process GameLayer::feature() const {
+    if ( Constants::P1_SCORE >= Constants::maxScore ) {
+        return Process(Process::Action::raiseGameOv, SFX::Type::LOSE );
+
+    } else if ( Constants::P2_SCORE >= Constants::maxScore )
+        return Process(Process::Action::raiseGameOv, SFX::Type::WIN );
+
+    return Process();
 }
 
 void GameLayer::form_request() {
     // Keyboard request
     this->__requests.emplace_back( sf::Keyboard::Key::Escape, Process::Action::raiseMain );
-    this->__requests.emplace_back( sf::Keyboard::Key::Space, Process::Action::raisePause );
+    this->__requests.emplace_back( sf::Keyboard::Key::Space, Process::Action::raisePause, SFX::Type::WHOOSH );
+
+    this->__requests.emplace_back( sf::Mouse::Button::Left, Process::Action::raiseMain
+        ).require( Constraint::bounds( this->UI.bounds.at(GameUI::BTNS::MENU) ) );
 }
 
 void GameLayer::updateBall( const sf::Time& dt ) {

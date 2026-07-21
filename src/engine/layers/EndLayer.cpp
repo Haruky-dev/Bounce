@@ -25,20 +25,16 @@ void EndLayer::Render( sf::RenderWindow& win ) const {
 
 void EndLayer::form_request() {
     // Keyboard __requests
-    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Process::Action::dropOverlap );
+    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Process::Action::dropOverlap, SFX::Type::WHOOSH );
     this->__requests.emplace_back( sf::Keyboard::Key::Escape, Process::Action::raiseMain );
 
     // Mouse __requests
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::dropOverlap
-        ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::QUIT) ),
-                Constraint::predicate( [this]() { return this->UI.animation.finished(); })
-        );
+            sf::Mouse::Button::Left, Process::Action::dropOverlap, SFX::Type::WHOOSH
+        ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::QUIT) ) );
     this->__requests.emplace_back(
             sf::Mouse::Button::Left, Process::Action::raiseMain
-        ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::RESTART) ),
-                Constraint::predicate( [this]() { return this->UI.animation.finished(); })
-        );
+        ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::RESTART) ) );
 }
 
 bool EndLayer::animated() const { return true; }

@@ -5,11 +5,20 @@ QuitLayer::QuitLayer() : Layer(), accTime(sf::Time::Zero), T(std::chrono::second
     this->UI.configure();
 }
 
-void QuitLayer::Load() {}
+void QuitLayer::Load() {
+    this->__requests.emplace_back(
+        sf::Keyboard::Key::C, Process::Action::dropOverlap, SFX::Type::WHOOSH
+    );
+    this->__requests.emplace_back( 
+        sf::Mouse::Button::Left, Process::Action::dropOverlap, SFX::Type::WHOOSH
+    ).require( Constraint::bounds( this->UI.bounds.at(QuitUI::BTNS::CANCEL)) );
+}
 
 void QuitLayer::Update( const sf::Time& dt ) {
     this->UI.update(dt);
-    this->accTime += dt;
+
+    if ( this->UI.animation.finished() )
+        this->accTime += dt;
 }
 
 void QuitLayer::Render( sf::RenderWindow& win ) const {
@@ -17,11 +26,11 @@ void QuitLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.bg );
 }
 
-Process::Action QuitLayer::feature() const {
+Process QuitLayer::feature() const {
     if ( this->accTime.asSeconds() >= this->T.count() )
-        return Process::Action::QUIT;
+        return Process(Process::Action::Quit);
 
-    return Process::Action::NONE;
+    return Process();
 }
 bool QuitLayer::animated() const { return true; }
 bool QuitLayer::popable()  const { return this->UI.animation.finished(); }

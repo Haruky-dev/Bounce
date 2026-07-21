@@ -16,7 +16,7 @@ class Process {
             incDiff, decDiff, incMaxScr,
             decMaxScr, toggleMusic, toggleSFX,
     
-            QUIT
+            Quit
         };
 
     public:

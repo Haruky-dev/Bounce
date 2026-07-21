@@ -32,7 +32,7 @@ class GameLayer : public Layer, public Transition {
         std::unique_ptr<sf::Music> music;
 
     private:
-        Process::Action feature() const override;
+        Process feature() const override;
         void form_request() override;
         void updateBall( const sf::Time& dt );
         void refresh_entities();

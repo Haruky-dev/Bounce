@@ -6,13 +6,19 @@
 #include <engine/visuals/BaseUI.hpp>
 #include <engine/features/Animation.hpp>
 
+#include <unordered_map>
+
 
 class QuitUI : public BaseUI {
     friend class QuitLayer;
+    enum class BTNS { CANCEL };
 
     private:
         sf::Sprite bg, shadow;
+        static const int BTN_COUNT = 2;
         Animation animation;
+
+        std::unordered_map<QuitUI::BTNS, sf::Rect<int>> bounds;
 
     private:
         QuitUI();

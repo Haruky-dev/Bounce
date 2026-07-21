@@ -17,6 +17,11 @@ void QuitUI::configure() {
     this->bg.setOrigin( sf::Vector2<float>(this->bg.getTextureRect().size / 2) );
     this->bg.setPosition(Constants::W_CTR);
     this->bg.setScale({1.5f, 1.5f});
+
+    this->bounds[QuitUI::BTNS::CANCEL] = sf::Rect<int>(
+        this->__normalize<int>( this->bg.getTextureRect(), {165, 125} ),
+        {47, 13}
+    );
 }
 
 void QuitUI::update( const sf::Time& dt ) {

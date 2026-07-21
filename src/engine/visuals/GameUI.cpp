@@ -39,6 +39,10 @@ void GameUI::configure() {
     this->countD.setPosition( {Constants::W_CTR.x, Constants::W_CTR.y /2.f} );
     this->countD.setFillColor( sf::Color( 12, 32, 36, 150 ));
     this->countD.setScale( {1.5f, 1.5f} );
+
+    this->bounds[GameUI::BTNS::MENU] = sf::Rect<int>(
+        {350, 12}, {20, 20}
+    );
 }
 
 void GameUI::update( const sf::Time& dt ) {

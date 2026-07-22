@@ -1,21 +1,25 @@
 #include <engine/Manager.hpp>
 
+#include <SFML/Window/Event.hpp>
+
 #include <engine/Layer.hpp>
 #include <engine/layers/LoadLayer.hpp>
-#include <engine/layers/GameLayer.hpp>
+#include <engine/layers/PlayLayer.hpp>
 #include <engine/layers/PauseLayer.hpp>
 #include <engine/layers/SetLayer.hpp>
 #include <engine/layers/MenuLayer.hpp>
 #include <engine/layers/EndLayer.hpp>
 #include <engine/layers/QuitLayer.hpp>
 
-#include <engine/io/Process.hpp>
+#include <engine/io/Action.hpp>
 #include <engine/io/Input.hpp>
 
 #include <engine/Dispatcher.hpp>
 
 #include <tools/Constants.hpp>
 #include <tools/Json.hpp>
+
+#include <algorithm>
 
 
 // -- CONSTRUCTOR/DEST SECTION
@@ -24,7 +28,7 @@ Manager::Manager() : __stack() {
     this->__register[Layer::Type::Loading]  = []() { return std::make_unique<LoadLayer>(); };
     this->__register[Layer::Type::MainMenu] = []() { return std::make_unique<MenuLayer>(); };
     this->__register[Layer::Type::Setting]  = []() { return std::make_unique<SetLayer>(); };
-    this->__register[Layer::Type::Play]     = []() { return std::make_unique<GameLayer>(); };
+    this->__register[Layer::Type::Play]     = []() { return std::make_unique<PlayLayer>(); };
     this->__register[Layer::Type::Pause]    = []() { return std::make_unique<PauseLayer>(); };
     this->__register[Layer::Type::GameOver] = []() { return std::make_unique<EndLayer>(); };
     this->__register[Layer::Type::Quit]     = []() { return std::make_unique<QuitLayer>(); };
@@ -37,32 +41,34 @@ Manager::Manager() : __stack() {
 }
 
 // -- PUBLIC FUNCs SECTION
-void Manager::Update( const sf::Time& dt, sf::RenderWindow& win ) {
+void Manager::Update( const sf::Time& dt, std::span<const sf::Event> events ) {
     if ( this->__stack.empty() )
         return;
 
-    this->updateLayers( dt );
+    this->_updateLayers( dt );
 
     Layer& curr = *(this->__stack.back().layer);
 
-    this->controlProcess(
+    this->_controlExit( events );
+
+    this->_controlAction(
         curr.Read({
             std::chrono::steady_clock::now(),
             Input(
-                Input::validateButtons( curr.buttons(),win ),
-                Input::validateKeys( curr.keys() )
+                Input::validateButtons( curr.buttons(), events ),
+                Input::validateKeys( curr.keys(), events )
             )
         }) );
 }
 
 void Manager::Render( sf::RenderWindow& win ) const {
     if ( !(this->__stack.empty()) )
-        this->renderLayers( win );
+        this->_renderLayers( win );
 }
 
 
 // -- PRIVATE Func Section
-void Manager::pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
+void Manager::_pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
     if ( !(this->__stack.empty()) )
         if ( this->__stack.back().layer->type() == T )
             return;
@@ -80,14 +86,29 @@ void Manager::pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
     this->__stack.back().layer->enter();
 }
 
-void Manager::controlProcess( const Process& P ) {
-    if ( P.act() == Process::Action::Quit )
+void Manager::_controlAction( const Action A ) {
+    if ( A == Action::Quit )
         this->quit_flag = true;
     else
-        Dispatcher::inst().handle( *this, P );
+        Dispatcher::inst().handle( *this, A );
 }
 
-void Manager::updateLayers( const sf::Time& dt ) {
+void Manager::_controlExit( std::span<const sf::Event> events ) {
+    const bool exit_requested = std::ranges::find_if(
+        events.begin(), events.end(),
+        [] ( const sf::Event& E ) { return E.is<sf::Event::Closed>(); }
+    ) != events.end();
+
+    if ( exit_requested ) {
+        if ( this->__stack.back().layer->type() != Layer::Type::MainMenu )
+            this->quit_flag = true;
+
+        this->__stack.back().layer->pause();
+        this->_pushLayer(Layer::Type::Quit, true);
+    }
+}
+
+void Manager::_updateLayers( const sf::Time& dt ) {
     int I = static_cast<int>(this->__stack.size()) - 1;
 
     for ( ; I >= 0; I-- ) {
@@ -114,7 +135,7 @@ void Manager::updateLayers( const sf::Time& dt ) {
     }
 }
 
-void Manager::renderLayers( sf::RenderWindow& win ) const {
+void Manager::_renderLayers( sf::RenderWindow& win ) const {
     // render all (top + overlapping) states in __stack starting from the first
     int currIndex = static_cast<int>(this->__stack.size()) - 1;
 

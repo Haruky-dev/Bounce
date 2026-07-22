@@ -32,6 +32,6 @@ class Input {
         keyboardBind keyb;
 
     public:
-        static Input::mouseBind    validateButtons( std::span<sf::Mouse::Button>, const sf::RenderWindow& );
-        static Input::keyboardBind validateKeys( std::span<sf::Keyboard::Key> );
+        static Input::mouseBind    validateButtons( std::span<sf::Mouse::Button>, std::span<const sf::Event> );
+        static Input::keyboardBind validateKeys( std::span<sf::Keyboard::Key>, std::span<const sf::Event> );
 };

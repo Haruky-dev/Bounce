@@ -4,7 +4,7 @@
 #include <SFML/Window/Mouse.hpp>
 
 #include <engine/io/Input.hpp>
-#include <engine/io/Process.hpp>
+#include <engine/io/Action.hpp>
 #include <engine/io/Constraint.hpp>
 
 #include <variant>
@@ -17,14 +17,14 @@ class Request {
 
     std::variant<sf::Keyboard::Key, sf::Mouse::Button> __trigger;
     std::vector<std::unique_ptr<Constraint>> __constraints;
-    Process __process;
+    Action __act;
 
     public:
-        Request( sf::Keyboard::Key K, Process::Action A, SFX::Type sfx=SFX::Type::NONE )
-            : __trigger(K), __process(A, sfx) , __constraints() {}
+        Request( sf::Keyboard::Key K, Action A )
+            : __trigger(K), __act(A) , __constraints() {}
 
-        Request( sf::Mouse::Button B, Process::Action A, SFX::Type sfx=SFX::Type::CLICK )
-            : __trigger(B), __process(A, sfx), __constraints() {}
+        Request( sf::Mouse::Button B, Action A )
+            : __trigger(B), __act(A), __constraints() {}
 
         template <typename... Cs>
         void require( Cs&&... cs ) {
@@ -46,4 +46,7 @@ class Request {
                 return in.keyb.clicked && ( in.keyb.key == std::get<sf::Keyboard::Key>(this->__trigger) );
             }
         }
+
+        bool keyTriggered()    const { return !this->__trigger.index(); }
+        bool buttonTriggered() const { return this->__trigger.index(); }
 };

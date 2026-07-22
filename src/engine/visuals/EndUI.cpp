@@ -7,7 +7,7 @@
 
 
 EndUI::EndUI() :
-    animation(),
+    animation(.4f),
     scores( __init_scores() ),
     bg(TextureCache::inst().get("end/bg")),
     shadow(TextureCache::inst().get("shad_2")),
@@ -16,7 +16,6 @@ EndUI::EndUI() :
     {}
     
 void EndUI::configure() {
-    this->animation.set_duration( .4f );
     this->bg.setOrigin( sf::Vector2f(this->bg.getTexture().getSize()) / 2.f );
     this->bg.setPosition( Constants::W_CTR );
 

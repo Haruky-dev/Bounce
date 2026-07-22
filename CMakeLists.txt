@@ -12,6 +12,7 @@ find_package( SFML 3 REQUIRED COMPONENTS Graphics Window System Audio REQUIRED )
 # src files (.cpp)
 add_executable( ${PROJECT_NAME}
     src/main.cpp
+    src/Game.cpp
 
     src/entities/Ball.cpp
     src/entities/Human.cpp
@@ -31,7 +32,7 @@ add_executable( ${PROJECT_NAME}
 
     src/engine/visuals/LoadUI.cpp
     src/engine/visuals/MenuUI.cpp
-    src/engine/visuals/GameUI.cpp
+    src/engine/visuals/PlayUI.cpp
     src/engine/visuals/PauseUI.cpp
     src/engine/visuals/SetUI.cpp
     src/engine/visuals/EndUI.cpp
@@ -42,19 +43,17 @@ add_executable( ${PROJECT_NAME}
 
     src/engine/layers/LoadLayer.cpp
     src/engine/layers/MenuLayer.cpp
-    src/engine/layers/GameLayer.cpp
+    src/engine/layers/PlayLayer.cpp
     src/engine/layers/PauseLayer.cpp
     src/engine/layers/SetLayer.cpp
     src/engine/layers/EndLayer.cpp
     src/engine/layers/QuitLayer.cpp
 
     src/engine/io/Constraint.cpp
-    src/engine/io/Process.cpp
     src/engine/io/Input.cpp
 
     src/engine/features/Motion.cpp
     src/engine/features/Animation.cpp
-    src/engine/features/Transition.cpp
 )
 
 # link SFML libs

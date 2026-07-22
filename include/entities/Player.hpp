@@ -7,7 +7,7 @@
 
 
 class Player : public sf::Drawable {
-    friend class GameLayer;
+    friend class PlayLayer;
 
     protected:
         sf::Sprite bar;

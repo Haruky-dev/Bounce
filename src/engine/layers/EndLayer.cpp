@@ -25,20 +25,21 @@ void EndLayer::Render( sf::RenderWindow& win ) const {
 
 void EndLayer::form_request() {
     // Keyboard __requests
-    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Process::Action::dropOverlap, SFX::Type::WHOOSH );
-    this->__requests.emplace_back( sf::Keyboard::Key::Escape, Process::Action::raiseMain );
+    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
+    this->__requests.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
 
     // Mouse __requests
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::dropOverlap, SFX::Type::WHOOSH
+            sf::Mouse::Button::Left, Action::dropOverlap
         ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::QUIT) ) );
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::raiseMain
+            sf::Mouse::Button::Left, Action::raiseMain
         ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::RESTART) ) );
 }
 
 bool EndLayer::animated() const { return true; }
 bool EndLayer::popable() const { return this->UI.animation.finished(); }
+void EndLayer::enter() { SFX::inst().play(SFX::Type::WHOOSH); }
 void EndLayer::exit() {
     Constants::P1_SCORE = Constants::P2_SCORE = 0;
 }

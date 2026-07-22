@@ -1,4 +1,4 @@
-#include <engine/visuals/GameUI.hpp>
+#include <engine/visuals/PlayUI.hpp>
 
 #include <cache/TextureCache.hpp>
 #include <cache/SFX.hpp>
@@ -6,23 +6,26 @@
 #include <tools/Constants.hpp>
 #include <tools/Flags.hpp>
 #include <tools/Json.hpp>
+#include <tools/Math.hpp>
 
 
-GameUI::GameUI() :
+PlayUI::PlayUI() :
     _cdTime(sf::Time::Zero),
 
     bg(TextureCache::inst().get("play/bg")),
     pad(TextureCache::inst().get("play/pad")),
     ball(TextureCache::inst().get("play/ball")),
+    banner(TextureCache::inst().get("play/banner")),
+    banner_anim(.5),
 
     countD(FontCache::RASTER, "3"),
     score_1(FontCache::KA, std::to_string(Constants::P1_SCORE)),
     score_2(score_1.getFont(), std::to_string(Constants::P2_SCORE)),
-    P1_ready(false), P2_ready(false) // true?
+    P1_ready(false), P2_ready(false) // false
     {}
 
 
-void GameUI::configure() {
+void PlayUI::configure() {
     // scores conf
     this->score_1.setOrigin( this->score_1.getLocalBounds().getCenter() );
     this->score_1.setPosition( {Constants::WIDTH /3.f, Constants::HEIGHT /3.f} );
@@ -40,12 +43,14 @@ void GameUI::configure() {
     this->countD.setFillColor( sf::Color( 12, 32, 36, 150 ));
     this->countD.setScale( {1.5f, 1.5f} );
 
-    this->bounds[GameUI::BTNS::MENU] = sf::Rect<int>(
+    this->banner.setPosition( {210, 360} );
+
+    this->bounds[PlayUI::BTNS::MENU] = sf::Rect<int>(
         {350, 12}, {20, 20}
     );
 }
 
-void GameUI::update( const sf::Time& dt ) {
+void PlayUI::update( const sf::Time& dt ) {
     if ( Flags::goalScored ) {
         Flags::goalScored = false;
         this->_cdTime = sf::Time::Zero;
@@ -62,7 +67,12 @@ void GameUI::update( const sf::Time& dt ) {
         this->countD.setString( std::to_string( Constants::maxCD ) );
 
     } else if ( Constants::CD != -1 ) {
-        if ( !(P1_ready && P2_ready) ) return;
+        if ( !P1_ready ) {
+            this->_update_banner(dt);
+            return;
+        }
+        // if ( !(P1_ready && P2_ready) ) return;
+        // if ( !P1_ready || !P2_ready ) return;
 
         Constants::CD = static_cast<int>( this->_cdTime.asSeconds() );
         this->countD.setString( std::to_string( Constants::maxCD - Constants::CD ) );
@@ -70,11 +80,26 @@ void GameUI::update( const sf::Time& dt ) {
     }
 }
 
-void GameUI::sync() {
+void PlayUI::sync() {
     this->score_1.setString( std::to_string( Constants::P1_SCORE) );
     this->score_2.setString( std::to_string( Constants::P2_SCORE ));
 }
 
-void GameUI::set_players_ready( const bool P1, const bool P2 ) {
+void PlayUI::set_players_ready( const bool P1, const bool P2 ) {
     this->P1_ready = P1; this->P2_ready = P2;
+}
+
+void PlayUI::_update_banner( const sf::Time& dt ) {
+    this->banner_anim.update(dt);
+
+    sf::Color b_clr = this->banner.getColor();
+    b_clr.a = static_cast<uint8_t>( Math::easeInOut(this->banner_anim.progress()) * 255 );
+    this->banner.setColor(b_clr);
+
+    if ( this->banner_anim.finished() ) {
+        if ( this->banner_anim.status() == Animation::Status::In )
+            this->banner_anim.exit();
+        else // .status() == Animation::Status::Out
+            this->banner_anim.enter();
+    }
 }

@@ -39,27 +39,27 @@ void MenuLayer::Render( sf::RenderWindow& win ) const {
 
 void MenuLayer::form_request() {
     // Keyboard __requests
-    this->__requests.emplace_back( sf::Keyboard::Key::P, Process::Action::raisePlay  );
-    this->__requests.emplace_back( sf::Keyboard::Key::M, Process::Action::raiseSett, SFX::Type::WHOOSH );
-    this->__requests.emplace_back( sf::Keyboard::Key::Q, Process::Action::raiseQuit );
+    this->__requests.emplace_back( sf::Keyboard::Key::P, Action::raisePlay  );
+    this->__requests.emplace_back( sf::Keyboard::Key::M, Action::raiseSett );
+    this->__requests.emplace_back( sf::Keyboard::Key::Q, Action::raiseQuit );
 
     // Mouse __requests
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::raisePlay
+            sf::Mouse::Button::Left, Action::raisePlay
         ).require( Constraint::bounds( this->UI.bounds.at(MenuUI::BTNS::PLAY) ) );
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::raiseSett, SFX::Type::WHOOSH
+            sf::Mouse::Button::Left, Action::raiseSett
         ).require( Constraint::bounds( this->UI.bounds.at(MenuUI::BTNS::MENU) ) );
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::raiseQuit
+            sf::Mouse::Button::Left, Action::raiseQuit
         ).require( Constraint::bounds( this->UI.bounds.at(MenuUI::BTNS::QUIT) ) );
 }
 
 Layer::Type MenuLayer::type() const { return Layer::Type::MainMenu; }
 
 void MenuLayer::enter() {
-    // Constants::P1_SCORE = Constants::P2_SCORE = 0;
-    // Constants::CD = 0; // wtf? should perhaps be on GameLayer::exit() or something
+    Constants::P1_SCORE = Constants::P2_SCORE = 0;
+    Constants::CD = 0;
 }
 
 void MenuLayer::exit() {

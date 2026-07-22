@@ -32,39 +32,40 @@ void SetLayer::Render( sf::RenderWindow& win ) const {
 
 void SetLayer::form_request() {
     // Keyboard __requests
-    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Process::Action::dropOverlap, SFX::Type::WHOOSH );
+    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
 
     // Mouse __requests
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::dropOverlap, SFX::Type::WHOOSH
+            sf::Mouse::Button::Left, Action::dropOverlap
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::EXIT) ) );
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::incMaxScr
+            sf::Mouse::Button::Left, Action::incMaxScr
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_INC)),
                 Constraint::cooldown(Constants::DELAY_t) );
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::decMaxScr
+            sf::Mouse::Button::Left, Action::decMaxScr
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_DEC) ),
                 Constraint::cooldown(Constants::DELAY_t) );
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::incDiff
+            sf::Mouse::Button::Left, Action::incDiff
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_INC)),
                 Constraint::cooldown(Constants::DELAY_t) );
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::decDiff
+            sf::Mouse::Button::Left, Action::decDiff
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_DEC)),
                 Constraint::cooldown(Constants::DELAY_t) );
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::toggleMusic
+            sf::Mouse::Button::Left, Action::toggleMusic
         ).require( Constraint::bounds(this->UI.bounds.at(SetUI::BTNS::MUSIC_MARK)),
                 Constraint::cooldown(Constants::DELAY_t) );
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::toggleSFX
+            sf::Mouse::Button::Left, Action::toggleSFX
         ).require( Constraint::bounds(this->UI.bounds.at(SetUI::BTNS::SFX_MARK)),
                 Constraint::cooldown(Constants::DELAY_t) );
 }
 bool SetLayer::animated() const { return true; }
 
+void SetLayer::enter() { SFX::inst().play(SFX::Type::WHOOSH); }
 void SetLayer::exit() { this->UI.exit_animation(); }
 
 bool SetLayer::popable() const { return this->UI.animation.finished(); }

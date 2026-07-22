@@ -30,10 +30,11 @@ class Manager {
         std::vector<State> __stack;
 
     private:
-        void pushLayer( Layer::Type T, bool overlapping=false, bool freezeLast=false );
-        void updateLayers( const sf::Time& dt );
-        void controlProcess( const Process& P );
-        void renderLayers( sf::RenderWindow& win  ) const;
+        void _pushLayer( Layer::Type, bool overlapping=false, bool freezeLast=false );
+        void _updateLayers( const sf::Time& );
+        void _controlAction( const Action );
+        void _controlExit( std::span<const sf::Event> );
+        void _renderLayers( sf::RenderWindow&  ) const;
 
     public:
         bool quit_flag;
@@ -42,6 +43,6 @@ class Manager {
         Manager();
         ~Manager() = default;
 
-        void Update( const sf::Time& dt, sf::RenderWindow& win );
-        void Render( sf::RenderWindow& win ) const;
+        void Update( const sf::Time&, std::span<const sf::Event> );
+        void Render( sf::RenderWindow& ) const;
 };

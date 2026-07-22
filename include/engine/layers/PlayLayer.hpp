@@ -5,9 +5,8 @@
 #include <memory>
 
 #include <engine/Layer.hpp>
-#include <engine/visuals/GameUI.hpp>
-#include <engine/io/Process.hpp>
-#include <engine/features/Transition.hpp>
+#include <engine/visuals/PlayUI.hpp>
+#include <engine/io/Action.hpp>
 
 #include <entities/Player.hpp>
 #include <entities/Human.hpp>
@@ -18,9 +17,9 @@
 #include <tools/Constants.hpp>
 
 
-class GameLayer : public Layer, public Transition {
+class PlayLayer : public Layer {
     private:
-        GameUI UI;
+        PlayUI UI;
 
         Human P1;
         Computer P2;
@@ -32,7 +31,7 @@ class GameLayer : public Layer, public Transition {
         std::unique_ptr<sf::Music> music;
 
     private:
-        Process feature() const override;
+        Action feature() const override;
         void form_request() override;
         void updateBall( const sf::Time& dt );
         void refresh_entities();
@@ -43,8 +42,8 @@ class GameLayer : public Layer, public Transition {
         const int guide_direcion( const int id ) const;
 
     public:
-        GameLayer();
-        ~GameLayer();
+        PlayLayer();
+        ~PlayLayer();
 
         void Load() override;
         void Update( const sf::Time& dt ) override;

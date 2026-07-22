@@ -23,6 +23,7 @@ class PauseLayer : public Layer {
         void Render( sf::RenderWindow& win ) const override;
 
         bool animated() const override;
+        void enter() override;
         void exit() override;
         bool popable() const override;
 

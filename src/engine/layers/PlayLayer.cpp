@@ -1,4 +1,4 @@
-#include <engine/layers/GameLayer.hpp>
+#include <engine/layers/PlayLayer.hpp>
     
 #include <SFML/Graphics.hpp>
 
@@ -8,7 +8,7 @@
 #include <cache/SFX.hpp>
 
 
-GameLayer::GameLayer() :
+PlayLayer::PlayLayer() :
     Layer(),
     P1(this->UI.pad, 0),
     P2(this->UI.pad, 1),
@@ -20,9 +20,9 @@ GameLayer::GameLayer() :
         // Constants::ballOrient = orients[ Math::randi(0, 1) ];
     }
 
-GameLayer::~GameLayer() = default;
+PlayLayer::~PlayLayer() = default;
 
-void GameLayer::Load() {
+void PlayLayer::Load() {
     this->music = std::make_unique<sf::Music>();
     if (!(this->music->openFromFile( "assets/musics/Toejam_and_Earl.ogg" )))
         throw std::runtime_error("Failure");
@@ -32,7 +32,7 @@ void GameLayer::Load() {
     this->form_request();
 }
 
-void GameLayer::Update( const sf::Time& dt ) {
+void PlayLayer::Update( const sf::Time& dt ) {
     if ( this->music->getStatus() != sf::Music::Status::Playing || !(Flags::musicON) )
         this->music->play();
 
@@ -43,7 +43,7 @@ void GameLayer::Update( const sf::Time& dt ) {
     this->FR.update( dt );
 }
 
-void GameLayer::Render( sf::RenderWindow& win ) const {
+void PlayLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.bg );
     win.draw( this->FR );
 
@@ -56,41 +56,50 @@ void GameLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->P1 );
     win.draw( this->P2 );
     win.draw( this->ball );
+
+    if ( (Constants::CD!=-1) && !this->P1.ready() )
+        win.draw( this->UI.banner );
 }
 
-void GameLayer::resume() { this->UI.sync(); }
+void PlayLayer::resume() { this->UI.sync(); }
 
-void GameLayer::exit() {
+void PlayLayer::exit() {
     this->music.reset();
     Constants::P1_SCORE = Constants::P2_SCORE = Constants::CD = 0;
 }
-void GameLayer::pause() {
+void PlayLayer::pause() {
     // this->initT();
     // this->music->setVolume( 10 );
 }
-Layer::Type GameLayer::type() const { return Layer::Type::Play; }
+Layer::Type PlayLayer::type() const { return Layer::Type::Play; }
 
 
-Process GameLayer::feature() const {
+Action PlayLayer::feature() const {
     if ( Constants::P1_SCORE >= Constants::maxScore ) {
-        return Process(Process::Action::raiseGameOv, SFX::Type::LOSE );
+        SFX::inst().play(SFX::Type::LOSE);
+        return Action::raiseGameOv;
 
-    } else if ( Constants::P2_SCORE >= Constants::maxScore )
-        return Process(Process::Action::raiseGameOv, SFX::Type::WIN );
+    } else if ( Constants::P2_SCORE >= Constants::maxScore ) {
+        SFX::inst().play(SFX::Type::WIN);
+        return Action::raiseGameOv;
+    }
 
-    return Process();
+    // if ( Flags::goalScored )
+        // SFX::inst().play(SFX::Type::GOAL);
+
+    return Action::NONE;
 }
 
-void GameLayer::form_request() {
+void PlayLayer::form_request() {
     // Keyboard request
-    this->__requests.emplace_back( sf::Keyboard::Key::Escape, Process::Action::raiseMain );
-    this->__requests.emplace_back( sf::Keyboard::Key::Space, Process::Action::raisePause, SFX::Type::WHOOSH );
+    this->__requests.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
+    this->__requests.emplace_back( sf::Keyboard::Key::Space, Action::raisePause );
 
-    this->__requests.emplace_back( sf::Mouse::Button::Left, Process::Action::raiseMain
-        ).require( Constraint::bounds( this->UI.bounds.at(GameUI::BTNS::MENU) ) );
+    this->__requests.emplace_back( sf::Mouse::Button::Left, Action::raiseMain
+        ).require( Constraint::bounds( this->UI.bounds.at(PlayUI::BTNS::MENU) ) );
 }
 
-void GameLayer::updateBall( const sf::Time& dt ) {
+void PlayLayer::updateBall( const sf::Time& dt ) {
     if ( !(this->ball.onMove) && this->ball.onStart ) {
         if ( Constants::CD >= Constants::maxCD ) {
             this->ball.launch();
@@ -131,7 +140,7 @@ void GameLayer::updateBall( const sf::Time& dt ) {
     }
 }
 
-void GameLayer::refresh_entities() {
+void PlayLayer::refresh_entities() {
     switch ( this->norme ) {
         case Constants::Sides::RIGHT: {
             SFX::inst().play(SFX::Type::PAD);
@@ -162,7 +171,7 @@ void GameLayer::refresh_entities() {
     }
 }
 
-const int GameLayer::guide_direcion( const int id ) const {
+const int PlayLayer::guide_direcion( const int id ) const {
     switch ( id ) {
         case 0:
             if ( this->P1.direction ) {
@@ -178,7 +187,7 @@ const int GameLayer::guide_direcion( const int id ) const {
             break;
         
         default:
-            throw std::runtime_error("Invalid given [ID] in 'GameLayer::guide_direction'.\
+            throw std::runtime_error("Invalid given [ID] in 'PlayLayer::guide_direction'.\
                             'id==" + std::to_string(id) + "' !");
     }
 }

@@ -20,7 +20,7 @@ class QuitLayer : public Layer {
         void Update( const sf::Time& ) override;
         void Render( sf::RenderWindow& win ) const override;
 
-        Process feature() const override;
+        Action feature() const override;
         bool animated() const override;
         bool popable() const override;
         void exit() override;

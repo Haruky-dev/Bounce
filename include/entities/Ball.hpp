@@ -9,7 +9,7 @@ class Computer;
 
 
 class Ball : public sf::Drawable {
-    friend class GameLayer;
+    friend class PlayLayer;
     friend class Computer;
 
     private:

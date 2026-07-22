@@ -22,8 +22,9 @@ class EndLayer : public Layer {
 
         bool animated() const override;
         bool popable() const override;
+        void enter() override;
         void exit() override;
-        
+
         Layer::Type type() const override;
 
         ~EndLayer() = default;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <engine/Manager.hpp>
-#include <engine/io/Process.hpp>
+#include <engine/io/Action.hpp>
 
 
 class Dispatcher {
@@ -11,9 +11,9 @@ class Dispatcher {
             return I;
         }
 
-        void handle( Manager&, const Process& );
+        void handle( Manager&, const Action );
 
     private:
-        void __process_settings( const Process::Action );
-        void __process_layers( const Process::Action, Manager& );
+        void __process_settings( const Action );
+        void __process_layers( const Action, Manager& );
 };

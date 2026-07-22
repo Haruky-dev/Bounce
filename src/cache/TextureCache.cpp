@@ -30,9 +30,10 @@ void TextureCache::Load( Progressive& prog ) {
         { "assets/UI/Setting/even.png", "set/mode/even", 2 },
         { "assets/UI/Setting/hard.png", "set/mode/hard", 2 },
 
-        { "assets/UI/Game/bg.png", "play/bg", 3 },              /* Game layer assets */
-        { "assets/UI/Game/paddle.png", "play/pad", 1 },
-        { "assets/UI/Game/ball.png", "play/ball", 1 },
+        { "assets/UI/Play/bg.png", "play/bg", 3 },              /* Play layer assets */
+        { "assets/UI/Play/paddle.png", "play/pad", 1 },
+        { "assets/UI/Play/ball.png", "play/ball", 1 },
+        { "assets/UI/Play/banner.png", "play/banner", 2 },
 
 
         { "assets/UI/Pause/bg.png", "pause/bg", 2 },            /* Pause layer assets */

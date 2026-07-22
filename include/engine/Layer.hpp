@@ -6,7 +6,7 @@
 #include <SFML/Window/Mouse.hpp>
 
 #include <engine/io/Input.hpp>
-#include <engine/io/Process.hpp>
+#include <engine/io/Action.hpp>
 #include <engine/io/Request.hpp>
 #include <engine/io/Constraint.hpp>
 
@@ -14,13 +14,15 @@
 #include <engine/io/constraints/Cooldown.hpp>
 #include <engine/io/constraints/Predicate.hpp>
 
+#include <cache/SFX.hpp>
+
 #include <vector>
 #include <span>
 
 
 class Layer { 
     private:
-        virtual Process feature() const { return Process(); }
+        virtual Action feature() const { return Action::NONE; }
         virtual void form_request() {}
         void __build_input() const {
             this->__keys.clear();
@@ -60,11 +62,11 @@ class Layer {
         virtual void   Load() = 0;
         virtual void   Update( const sf::Time& dt ) = 0;
         virtual void   Render( sf::RenderWindow& win ) const = 0; 
-        Process Read( const Context& context ) const {
-            Process P = this->feature();
+        Action Read( const Context& context ) const {
+            Action A = this->feature();
 
-            if ( P.act() != Process::Action::NONE )
-                return P; // if later on a Layer::feature had an sfx attached to it, this line should change
+            if ( A != Action::NONE )
+                return A;
 
             Context context_f = context; // filtered context, to make Request dis-allow mouse interactions-
                 // -for animated layers when their animation has not finished yet
@@ -72,10 +74,14 @@ class Layer {
                 context_f.input.mouse.clicked = false; // white lie lol
 
             for ( const Request& request : this->__requests )
-                if ( request.matches(context_f.input) && request.allowed(context_f) )
-                    return request.__process;
+                if ( request.matches(context_f.input) && request.allowed(context_f) ) {
+                    if ( request.buttonTriggered() )
+                        SFX::inst().play(SFX::Type::CLICK);
 
-            return Process();
+                    return request.__act;
+                }
+
+            return Action::NONE;
         }
 
         // getters

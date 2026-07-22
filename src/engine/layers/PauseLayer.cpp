@@ -1,7 +1,7 @@
 #include <engine/layers/PauseLayer.hpp>
 
 #include <tools/Math.hpp>
-#include <engine/io/Process.hpp>
+#include <engine/io/Action.hpp>
 
 
 PauseLayer::PauseLayer() : Layer()
@@ -26,20 +26,21 @@ void PauseLayer::Render( sf::RenderWindow& win ) const {
 
 void PauseLayer::form_request() {
     // Keyboard __requests
-    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Process::Action::dropOverlap, SFX::Type::WHOOSH );
-    this->__requests.emplace_back( sf::Keyboard::Key::Escape, Process::Action::raiseMain );
+    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
+    this->__requests.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
 
     // Mouse __requests
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::dropOverlap, SFX::Type::WHOOSH
+            sf::Mouse::Button::Left, Action::dropOverlap
         ).require( Constraint::bounds( this->UI.bounds.at(PauseUI::BTNS::RESUME) ) );
     this->__requests.emplace_back(
-            sf::Mouse::Button::Left, Process::Action::raiseMain
+            sf::Mouse::Button::Left, Action::raiseMain
         ).require( Constraint::bounds( this->UI.bounds.at(PauseUI::BTNS::QUIT) ) );
 }
 
 bool PauseLayer::animated() const { return true; }
 
+void PauseLayer::enter() { SFX::inst().play(SFX::Type::WHOOSH); }
 void PauseLayer::exit() { this->UI.exit_animation(); }
 
 bool PauseLayer::popable() const { return this->UI.animation.finished(); }

@@ -1,53 +1,48 @@
 #include <engine/features/Animation.hpp>
 
 
-Animation::Animation() :
-    motion() {
-        this->forward();
-    }
+Animation::Animation( const float sec ) :
+    __motion() {
+        this->__motion._duration = sf::seconds(sec);
+        this->enter();
+}
 
 void Animation::update( const sf::Time& dt ) {
-    if ( !(this->motion._active) ) return;
+    if ( !(this->__motion._active) ) return;
 
-    this->motion._elapsed += dt * (float) this->motion._direction;
+    this->__motion._elapsed += dt * (float) this->__motion._direction;
 
-    if ( this->motion._elapsed >= this->motion._duration ) {
-        this->motion._elapsed = this->motion._duration;
-        this->motion._active  = false;
-    } else if ( this->motion._elapsed <= sf::Time::Zero ) {
-        this->motion._elapsed = sf::Time::Zero;
-        this->motion._active  = false;
+    if ( this->__motion._elapsed >= this->__motion._duration ) {
+        this->__motion._elapsed = this->__motion._duration;
+        this->__motion._active  = false;
+    } else if ( this->__motion._elapsed <= sf::Time::Zero ) {
+        this->__motion._elapsed = sf::Time::Zero;
+        this->__motion._active  = false;
     }
 }
 
-void Animation::forward() {
-    this->motion._direction = 1;
-    this->motion._active    = true;
+void Animation::__forward() {
+    this->__motion._direction = 1;
+    this->__motion._active    = true;
 }
-void Animation::backward() {
-    this->motion._direction = -1;
-    this->motion._active    = true;
+void Animation::__backward() {
+    this->__motion._direction = -1;
+    this->__motion._active    = true;
 }
 
-void Animation::exit() { this->backward(); }
+void Animation::enter() { this->__forward(); }
+void Animation::exit()  { this->__backward(); }
 
 const double Animation::progress() const {
-    assert( this->motion._duration > sf::Time::Zero );
+    assert( this->__motion._duration > sf::Time::Zero );
     return std::clamp(
-        this->motion._elapsed / this->motion._duration,
+        this->__motion._elapsed / this->__motion._duration,
         0.0f, 1.0f );
 }
 
-const bool Animation::finished() const { return !(this->motion._active); }
+const bool Animation::finished() const { return !(this->__motion._active); }
 
 const Animation::Status Animation::status() const {
-    return ( this->motion._direction == -1 )?
+    return ( this->__motion._direction == -1 )?
         Animation::Status::Out : Animation::Status::In;
-}
-
-void Animation::set_duration( const float sec ) {
-    assert( sec > 0.0f );
-
-    this->motion._duration
-        = sf::seconds( sec );
 }

@@ -14,9 +14,9 @@ Ball::Ball( const sf::Sprite& spr ) :
     spr(spr), onStart(false),
     onMove(false), accTime(sf::Time::Zero),
     path( "modes." + Constants::MODE + "ball." ),
-    speed(Json::Float( path + "speed" )),
-    MAXspeed(Json::Float( path + "MAXspeed" )),
-    rotDelay( Json::Float( path + "rotationDelay" ))
+    speed(Json::Int( path + "speed" )),
+    accel(Json::Int( path + "accel" )),
+    rotDelay(Json::Float( path + "rotationDelay" ))
     {
 
         this->spr.setOrigin( this->spr.getLocalBounds().getCenter() );
@@ -55,7 +55,7 @@ void Ball::draw( sf::RenderTarget& target, sf::RenderStates states ) const  {
     target.draw(spr, states);
 }
 
-void Ball::adjust( const Constants::Sides side, const sf::Rect<float>& padBounds) {
+void Ball::adjust( const Constants::Sides side, const sf::Rect<float>& padBounds ) {
     sf::Vector2f newBallPos = spr.getPosition();
     int ballR = std::floor( this->spr.getGlobalBounds().size.x / 2.0f );
 
@@ -118,6 +118,17 @@ void Ball::reflect( const Constants::Sides side ) {
     this->unitDirec -= 2.0f * DP * N;
     this->validate_direc();
     this->velocity = this->unitDirec * static_cast<float>(this->speed);
+}
+
+void Ball::refresh( const int padDirec ) {
+    if ( padDirec==2 || padDirec==0 ) return; // wall hit || direct hit
+
+    assert(
+        padDirec==1  // same direction hit     -> increase
+     || padDirec==-1 // opposite direction hit -> decrease
+    );
+
+    this->speed = padDirec * std::min<int>( this->speed+this->accel, this->speed*Constants::stretchPercent );
 }
 
 sf::Rect<float> Ball::bounds() const { return this->spr.getGlobalBounds(); }

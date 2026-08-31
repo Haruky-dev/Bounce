@@ -7,16 +7,17 @@ bool Collision::wall( const sf::Rect<float>& ballB, Constants::Sides& side ) {
     // -------- TOP/BOTTOM wall CASE
     if ( ballB.position.y <= 5.0f ) { // bg edge
     // if ( ballB.position.y <= Constants::W_EDGE ) {
-    side = Constants::Sides::TOP;
+        side = Constants::Sides::TOP;
         return true;
     } else if ( (ballB.position.y + ballB.size.y) >= Constants::HEIGHT - 5.0f ) {
-    side = Constants::Sides::BOTTOM;
+        side = Constants::Sides::BOTTOM;
         return true;
     }
 
     // --------- Goal CASE
     if ( ballB.position.x <= 0 ) { // Computer SIDE
         Flags::goalScored = true;
+        side = Constants::Sides::LEFT;
 
         ( Constants::P2_SCORE < Constants::maxScore )?
             Constants::P2_SCORE++
@@ -28,6 +29,7 @@ bool Collision::wall( const sf::Rect<float>& ballB, Constants::Sides& side ) {
 
     } else if ( (ballB.position.x + ballB.size.x) >= Constants::WIDTH ) {
         Flags::goalScored = true;
+        side = Constants::Sides::RIGHT;
 
         ( Constants::P1_SCORE < Constants::maxScore )?
             Constants::P1_SCORE++

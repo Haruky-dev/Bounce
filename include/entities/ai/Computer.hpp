@@ -11,8 +11,6 @@ class Computer : public Player {
     private:
         Neuron neuron;
         float centerTimer;
-        float delayTimer;
-        bool actAllowed; // guardian flag of delay logic
 
     private:
         // correcten the Y values where the ball is estimated to land on
@@ -23,6 +21,4 @@ class Computer : public Player {
 
         void refresh() override;
         void update( const sf::Time& dt, const Ball& );
-        
-        const float bounce_acceleration() const;
 };

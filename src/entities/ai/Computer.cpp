@@ -9,9 +9,7 @@
 
 
 Computer::Computer( const sf::Sprite& bar, const bool id ) : Player( bar, id ), neuron(),
-    centerTimer(0.0f),
-    delayTimer(0.0f),
-    actAllowed(false) {
+    centerTimer(0.0f) {
 
         this->bar.setPosition( {20.f, Constants::W_CTR.y} );
         this->bar.setRotation( sf::Angle(sf::degrees(180.f)) );
@@ -30,23 +28,13 @@ void Computer::update( const sf::Time& dt, const Ball& ball ) {
 
     const float diffrenceY = estimatedY - compPos.y;
 
-
-    //---------------------- [DELAY] logic
-    if ( ball.onStart) {
-        this->actAllowed = false;
-        this->delayTimer = 0.0f;
-    } else {
-        if ( this->delayTimer >= this->neuron.delay )
-            this->actAllowed = true;
-
-        else this->delayTimer += dt.asSeconds();
-    }
+    this->neuron.update( dt, ball.onStart || (ball.unitDirec.x>=0) );
 
     //---------------------- [SET] flags
     const bool onTracking  = ball.onMove
                             && (ball.unitDirec.x <= 0)
                             && (std::abs(diffrenceY) > this->neuron.deadZone)
-                            && this->actAllowed;
+                            && this->neuron.allowed;
     const bool onCentering = !(ball.onMove) || ( (ball.unitDirec.x > 0)
                             && (this->centerTimer <= this->neuron.returnTime) );
 
@@ -61,7 +49,7 @@ void Computer::update( const sf::Time& dt, const Ball& ball ) {
         } else if ( step < 0 ) this->direction = 1;
 
         this->bar.move( {0.0f, step} );
-        
+
     //---------------------- [Return-To-Center] logic
     } else if ( onCentering ) {
         this->centerTimer += dt.asSeconds();
@@ -98,12 +86,4 @@ float Computer::correct_estimation( float y ) const {
     return y;
 }
 
-void Computer::refresh() {
-    
-    this->delayTimer = 0.0f;
-    this->actAllowed = false;
-
-    this->neuron.refresh();
-}
-
-const float Computer::bounce_acceleration() const { return this->neuron.ballBounce; }
+void Computer::refresh() { this->neuron.refresh(); }

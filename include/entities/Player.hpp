@@ -20,17 +20,20 @@ class Player : public sf::Drawable {
                 this->bar.setOrigin( this->bar.getLocalBounds().getCenter() );
         }
 
-        virtual void draw( sf::RenderTarget& target, sf::RenderStates states ) const override {     target.draw( this->bar, states ); }
+        virtual void draw( sf::RenderTarget& target, sf::RenderStates states ) const override { target.draw( this->bar, states ); }
 
     public:
         bool id; // 0: human, 1: computer
 
     public:
-        // used on bounces to update imperfections and such values
         virtual void refresh() = 0;
-
-        virtual const bool ready() const { return (this->bar.getPosition().y == Constants::W_CTR.y); }
-
-        virtual sf::Rect<float> bounds() { return this->bar.getGlobalBounds(); } // return this->hitBox;
         virtual sf::Vector2<float> position() { return this->bounds().position; }
+
+        const bool ready() const {
+            const float y_pos = this->bar.getPosition().y;
+            static const float bar_height = this->bar.getLocalBounds().size.y; // hitbox
+
+            return ( y_pos > Constants::W_CTR.y - bar_height) && (y_pos < Constants::W_CTR.y + bar_height);
+        }
+        sf::Rect<float> bounds() { return this->bar.getGlobalBounds(); } // return this->hitBox;
 };

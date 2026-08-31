@@ -1,5 +1,7 @@
 #pragma once
 
+#include <SFML/System/Time.hpp>
+
 #include <string>
 #include <utility>
 
@@ -16,15 +18,21 @@ class Neuron {
 
         float speed;
         float accel;
-        float ballBounce;
 
-        float delay;
+        int delay;
         int error;
-        std::pair<float, float> delayRange;
-        std::pair<int, int> errorRange;
+
+        int delayPivot;
+        int errorPivot;
+
+        sf::Time delay_timer;
+
+        bool allowed;
 
     public:
         void refresh();
+        void reset();
+        void update( const sf::Time&, const bool );
 
         Neuron();
         ~Neuron() = default;

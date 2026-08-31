@@ -4,37 +4,47 @@
 #include <tools/Math.hpp>
 #include <tools/Constants.hpp>
 
+#include <print>
+
 
 Neuron::Neuron() :
     path( "modes." + Constants::MODE + "computer."),
-    returnDur( Json::Float( path + "returnDuration" ) ),
-    returnTime( Json::Float( path + "returnTime" ) ),
-    deadZone( Json::Float( path + "deadZone" ) ),
-    speed( Json::Float( path + "speed" ) ),
-    accel( Json::Float( path + "accel") ),
-    ballBounce( Json::Float( path + "ballBounce") ),
-
-    errorRange({
-        Json::Float( path + "predictionErr.min" ), 
-        Json::Float( path + "predictionErr.max" )
-        } ),
-    delayRange({
-        Json::Float( path + "reactDelay.min" ), 
-        Json::Float( path + "reactDelay.max" )
-        } )
+    returnDur(Json::Float( path + "returnDuration" )),
+    returnTime(Json::Float( path + "returnTime" )),
+    deadZone(Json::Float( path + "deadZone" )),
+    speed(Json::Float( path + "speed" )),
+    accel(Json::Float( path + "accel")),
+    delay_timer(sf::Time::Zero),
+    allowed(false),
+    delayPivot(Json::Int( path + "delayPivot" )),
+    errorPivot(Json::Int( path + "errorPivot" ))
     {
         this->refresh();
     }
 
 
 void Neuron::refresh() {
-    this->error = Math::randi(
-        this->errorRange.first, this->errorRange.second
-    );
+    this->error = this->errorPivot + Math::randi( 0, this->errorPivot * Constants::offsetPercent, true ); // needs to generate neg values
+    this->delay = this->delayPivot + Math::randi( 0, this->delayPivot * Constants::offsetPercent, true );
+    this->speed = std::min( this->speed+this->accel, this->speed*Constants::stretchPercent );
 
-    this->delay = Math::randf(
-        this->delayRange.first, this->delayRange.second
-    );
+    assert( (this->delay >= 0) );
 
-    this->speed += this->accel;
+    std::println("error={}, delay={}, speed={}", this->error, this->delay, this->speed);
+    this->reset();
+}
+
+void Neuron::reset() {
+    this->allowed = false;
+    this->delay_timer = sf::Time::Zero;
+}
+
+void Neuron::update( const sf::Time& dt, const bool waiting ) {
+    if ( waiting || this->allowed ) return;
+
+    if ( this->delay_timer.asMilliseconds() >= this->delay ) {
+        this->allowed = true;
+    } else {
+        this->delay_timer += dt;
+    }
 }

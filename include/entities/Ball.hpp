@@ -13,7 +13,7 @@ class Ball : public sf::Drawable {
     friend class Computer;
 
     private:
-        sf::Sprite spr;       
+        sf::Sprite spr;
 
         sf::Vector2f unitDirec;
         sf::Vector2f velocity;
@@ -25,15 +25,15 @@ class Ball : public sf::Drawable {
         float rotDelay;
 
         int speed;
-        int MAXspeed;
+        int accel;
         int direction;
 
         bool onStart;
         bool onMove;
-        
+
     private:
         void validate_direc();
-        
+
     protected:
         virtual void draw( sf::RenderTarget& target, sf::RenderStates states ) const override;
 
@@ -44,7 +44,8 @@ class Ball : public sf::Drawable {
         void move( const sf::Vector2f& position );
         void rotate( const sf::Time& dt );
         void reflect( const Constants::Sides side );
-        void adjust( const Constants::Sides, const sf::Rect<float>& );
+        void refresh( const int );
+        void adjust( const Constants::Sides, const sf::Rect<float>& padBounds={} );
         void reset();
 
         sf::Rect<float> bounds() const;

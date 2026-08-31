@@ -67,12 +67,10 @@ void PlayUI::update( const sf::Time& dt ) {
         this->countD.setString( std::to_string( Constants::maxCD ) );
 
     } else if ( Constants::CD != -1 ) {
-        if ( !P1_ready ) {
+        if ( !P1_ready || !P2_ready ) {
             this->_update_banner(dt);
             return;
         }
-        // if ( !(P1_ready && P2_ready) ) return;
-        // if ( !P1_ready || !P2_ready ) return;
 
         Constants::CD = static_cast<int>( this->_cdTime.asSeconds() );
         this->countD.setString( std::to_string( Constants::maxCD - Constants::CD ) );

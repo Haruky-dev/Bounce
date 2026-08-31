@@ -1,5 +1,5 @@
 #include <engine/layers/PlayLayer.hpp>
-    
+
 #include <SFML/Graphics.hpp>
 
 #include <tools/Flags.hpp>
@@ -16,8 +16,8 @@ PlayLayer::PlayLayer() :
         this->UI.configure();
 
         char orients[2] = {'1', '2'};
-        Constants::ballOrient = '1';
-        // Constants::ballOrient = orients[ Math::randi(0, 1) ];
+        // Constants::ballOrient = '1';
+        Constants::ballOrient = orients[ Math::randi(0, 1) ];
     }
 
 PlayLayer::~PlayLayer() = default;
@@ -36,7 +36,7 @@ void PlayLayer::Update( const sf::Time& dt ) {
     if ( this->music->getStatus() != sf::Music::Status::Playing || !(Flags::musicON) )
         this->music->play();
 
-    this->updateBall( dt );
+    this->updateEntities( dt );
     this->UI.update( dt );
     this->P1.update( dt );
     this->P2.update( dt, ball );
@@ -67,10 +67,6 @@ void PlayLayer::exit() {
     this->music.reset();
     Constants::P1_SCORE = Constants::P2_SCORE = Constants::CD = 0;
 }
-void PlayLayer::pause() {
-    // this->initT();
-    // this->music->setVolume( 10 );
-}
 Layer::Type PlayLayer::type() const { return Layer::Type::Play; }
 
 
@@ -84,9 +80,6 @@ Action PlayLayer::feature() const {
         return Action::raiseGameOv;
     }
 
-    // if ( Flags::goalScored )
-        // SFX::inst().play(SFX::Type::GOAL);
-
     return Action::NONE;
 }
 
@@ -99,95 +92,74 @@ void PlayLayer::form_request() {
         ).require( Constraint::bounds( this->UI.bounds.at(PlayUI::BTNS::MENU) ) );
 }
 
-void PlayLayer::updateBall( const sf::Time& dt ) {
+void PlayLayer::moveBall( const sf::Time& dt ) {
     if ( !(this->ball.onMove) && this->ball.onStart ) {
         if ( Constants::CD >= Constants::maxCD ) {
             this->ball.launch();
             this->ball.onStart = false;
-        } else if ( Constants::CD == 0 ) {
-            this->UI.set_players_ready(
-                this->P1.ready(), this->P2.ready()
-            );
-        }
+        } else if ( Constants::CD == 0 )
+            this->UI.set_players_ready( this->P1.ready(), this->P2.ready() );
+
     } else if ( this->ball.onMove ) {
         this->ball.rotate( dt );
         this->ball.spr.move(
             this->ball.speed * dt.asSeconds() * this->ball.unitDirec
         );
     }
-
-    if (
-        Collision::wall( this->ball.bounds(), this->norme )
-     || Collision::player( this->P1.bounds(), this->ball.bounds(), this->norme )
-     || Collision::computer( this->P2.bounds(), this->ball.bounds(), this->norme )
-    ) {
-            if ( Flags::goalScored ) {
-                assert( Constants::ballOrient == '1' || Constants::ballOrient == '2' );
-    
-                this->ball.reset();
-                return;
-            }
-
-        this->refresh_entities();            
-        this->ball.reflect( this->norme );
-
-        sf::Rect<float> padBounds = (this->norme == Constants::Sides::RIGHT)?
-                                    P1.bounds()
-                                    : (this->norme == Constants::Sides::LEFT)?
-                                    P2.bounds() : sf::Rect<float>();
-
-        this->ball.adjust( this->norme, padBounds );
-    }
 }
 
-void PlayLayer::refresh_entities() {
-    switch ( this->norme ) {
-        case Constants::Sides::RIGHT: {
-            SFX::inst().play(SFX::Type::PAD);
-            this->P1.refresh();
-            const int factor = this->guide_direcion(this->P1.id);
-            if ( factor ) {
-                const int unit = this->P1.bounce_acceleration() * factor;
+void PlayLayer::updateEntities( const sf::Time& dt ) {
+    this->moveBall( dt );
 
-                this->ball.speed += unit;
-            }
-        }
-            break;
+    const bool ballCollided = Collision::wall( this->ball.bounds(), this->norme )
+                           || Collision::player( this->P1.bounds(), this->ball.bounds(), this->norme )
+                           || Collision::computer( this->P2.bounds(), this->ball.bounds(), this->norme );
 
-        case Constants::Sides::LEFT: {
-            SFX::inst().play(SFX::Type::PAD);
-            this->P2.refresh();
-            const int factor = this->guide_direcion(this->P2.id);
-            if ( factor ) {
-                const int unit = this->P2.bounce_acceleration() * factor;
-                this->ball.speed += unit;
-            }
+    if ( Flags::goalScored ) {
+        assert( Constants::ballOrient == '1' || Constants::ballOrient == '2' );
+
+        switch (this->norme) {
             
+            case Constants::Sides::RIGHT:
+                this->P1.refresh(); break;
+            case Constants::Sides::LEFT:
+                this->P2.refresh(); break;
+            default: {}
         }
-            break;
 
-        default:
-            SFX::inst().play(SFX::Type::WALL);
+        this->ball.reset();
+        return;
+    }
+
+    if ( ballCollided ) {
+        this->refinePlayers();
+        this->refineBall();
     }
 }
 
-const int PlayLayer::guide_direcion( const int id ) const {
-    switch ( id ) {
-        case 0:
-            if ( this->P1.direction ) {
-                return
-                    ( this->P1.direction == this->ball.direction )? 1 : -1;
-            } else return 0;
+void PlayLayer::refinePlayers() {
+    if ( this->norme == Constants::Sides::RIGHT ) {
+        this->P1.refresh();
+        this->ball.refresh(this->P1.direction);
+        SFX::inst().play(SFX::Type::PAD);
 
-        case 1:
-            if ( this->P2.direction ) {
-                return
-                    ( this->P2.direction == this->ball.direction )? 1 : -1;
-            } else return 0;
-            break;
-        
-        default:
-            throw std::runtime_error("Invalid given [ID] in 'PlayLayer::guide_direction'.\
-                            'id==" + std::to_string(id) + "' !");
+    } else if ( this->norme == Constants::Sides::LEFT ) {
+        this->P2.refresh();
+        this->ball.refresh(this->P2.direction);
+        SFX::inst().play(SFX::Type::PAD);
     }
+}
+
+void PlayLayer::refineBall() {
+    if ( this->norme==Constants::Sides::TOP || this->norme==Constants::Sides::BOTTOM )
+        SFX::inst().play(SFX::Type::WALL);
+
+
+    this->ball.reflect(this->norme);
+    this->ball.adjust(
+        this->norme,
+        (this->norme==Constants::Sides::RIGHT)? P1.bounds()
+        : (this->norme==Constants::Sides::LEFT)? P2.bounds()
+        : sf::Rect<float>()
+    );
 }

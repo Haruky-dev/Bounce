@@ -12,8 +12,7 @@ Human::Human(const sf::Sprite &spr, bool id ) :
     Player(spr, id),
     path( "modes." + Constants::MODE + "player." ),
     speed( Json::Float( path + "speed" ) ),
-    accel( Json::Float( path + "accel" ) ),
-    ballBounce( Json::Float( path + "ballBounce" ) )
+    accel( Json::Float( path + "accel" ) )
     {
 
     this->bar.setPosition( {Constants::WIDTH - 20.f, Constants::W_CTR.y} );
@@ -40,14 +39,5 @@ void Human::update( const sf::Time& dt ) {
 }
 
 void Human::refresh() {
-    this->speed += this->accel;
+    this->speed = std::min( this->speed+this->accel, this->speed*Constants::stretchPercent);
 }
-
-const bool Human::ready() const {
-    const float y_pos = this->bar.getPosition().y;
-    const float bar_height = this->bar.getLocalBounds().size.y; // hitbox
-
-    return ( y_pos > Constants::W_CTR.y - bar_height) && (y_pos < Constants::W_CTR.y + bar_height);
-}
-
-const float Human::bounce_acceleration() const { return this->ballBounce; }

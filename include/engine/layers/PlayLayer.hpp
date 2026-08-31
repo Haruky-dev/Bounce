@@ -33,13 +33,11 @@ class PlayLayer : public Layer {
     private:
         Action feature() const override;
         void form_request() override;
-        void updateBall( const sf::Time& dt );
-        void refresh_entities();
-        // match player.direction with ball.direction
-            // same-> inc ball.speed
-            // diff-> dec ball.speed
-            // (player.direction == 0)-> NOOP
-        const int guide_direcion( const int id ) const;
+
+        void updateEntities( const sf::Time& );
+        void moveBall( const sf::Time& );
+        void refinePlayers();
+        void refineBall();
 
     public:
         PlayLayer();
@@ -49,7 +47,6 @@ class PlayLayer : public Layer {
         void Update( const sf::Time& dt ) override;
         void Render( sf::RenderWindow& win ) const override;
 
-        void pause() override;
         void resume() override;
         void exit() override;
 

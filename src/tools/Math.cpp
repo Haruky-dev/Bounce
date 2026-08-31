@@ -2,15 +2,19 @@
 
 #include <math.h>
 
-int Math::randi( const int min, const int max ) {
+int Math::randi( const int min, const int max, const bool rand_sign ) {
     std::uniform_int_distribution<int> dist( min, max );
-    
-    return dist( Math::randEngine() );
+
+    static const int signs[2] = {1, -1};
+
+    return dist( Math::randEngine() ) * signs[rand()%2 * rand_sign];
 }
-float Math::randf( const float min, const float max ) {
+float Math::randf( const float min, const float max, const bool rand_sign ) {
     std::uniform_real_distribution<float> dist( min, max );
+
+    static const int signs[2] = {1, -1};
     
-    return dist( Math::randEngine() );
+    return dist( Math::randEngine() ) * signs[rand()%2 * rand_sign];
 }
 
 sf::Vector2f Math::Normalize( const sf::Vector2f& A ) {

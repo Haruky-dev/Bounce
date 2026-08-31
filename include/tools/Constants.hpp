@@ -14,7 +14,10 @@ class Constants {
         static int maxCD;
         static int maxScore;
         static int DELAY_t;
+        static int ballAccel;
         static char ballOrient;
+        static float offsetPercent;
+        static float stretchPercent;
 
         static int WIDTH;
         static int HEIGHT;

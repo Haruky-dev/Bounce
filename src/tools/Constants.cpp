@@ -12,8 +12,9 @@ int Constants::P2_SCORE = 0;
 int Constants::maxScore = Json::Int("setting.maxScore");
 int Constants::DELAY_t = 200;
 char Constants::ballOrient = '?';
-float Constants::offsetPercent = Json::Float("modes." + Constants::MODE + "offsetPercent" );
-float Constants::stretchPercent = Json::Float("modes." + Constants::MODE + "stretchPercent" );
+int Constants::buffingPeriod = Json::Float("modes." + Constants::MODE + "settings.buffingPeriod");
+float Constants::offsetPercent = Json::Float("modes." + Constants::MODE + "settings.offsetPercent" );
+float Constants::stretchPercent = Json::Float("modes." + Constants::MODE + "settings.stretchPercent" );
 
 int Constants::WIDTH = Json::Int("win.W");
 int Constants::HEIGHT = Json::Int("win.H");

@@ -6,6 +6,7 @@
 #include <tools/Math.hpp>
 #include <tools/Collision.hpp>
 #include <cache/SFX.hpp>
+#include <buffing/BuffOperator.hpp>
 
 
 PlayLayer::PlayLayer() :
@@ -36,6 +37,7 @@ void PlayLayer::Update( const sf::Time& dt ) {
     if ( this->music->getStatus() != sf::Music::Status::Playing || !(Flags::musicON) )
         this->music->play();
 
+    BuffOperator::inst().update( dt );
     this->updateEntities( dt );
     this->UI.update( dt );
     this->P1.update( dt );

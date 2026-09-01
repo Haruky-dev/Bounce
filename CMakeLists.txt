@@ -54,6 +54,9 @@ add_executable( ${PROJECT_NAME}
 
     src/engine/features/Motion.cpp
     src/engine/features/Animation.cpp
+
+    src/buffing/BuffOperator.cpp
+    src/buffing/Generator.cpp
 )
 
 # link SFML libs

@@ -18,6 +18,12 @@
 
   "modes": {
     "E": {
+      "settings": {
+        "offsetPercent": 0.60,
+        "stretchPercent": 1.50,
+        "buffingPeriod": 3
+      },
+
       "ball": {
         "speed": 220.0,
         "accel": 10.0,
@@ -36,10 +42,7 @@
         "returnTime": 3.0,
         "returnDuration": 2.0,
         "errorPivot": 20,
-        "delayPivot": 1000,
-
-        "offsetPercent": 0.60,
-        "stretchPercent": 1.50
+        "delayPivot": 1000
       }
     },
 

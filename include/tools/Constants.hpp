@@ -16,6 +16,7 @@ class Constants {
         static int DELAY_t;
         static int ballAccel;
         static char ballOrient;
+        static int buffingPeriod;
         static float offsetPercent;
         static float stretchPercent;
 

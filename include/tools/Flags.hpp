@@ -3,7 +3,9 @@
 
 class Flags {
     public:
-        static bool goalScored;
-        static bool musicON;
         static bool sfxON;
+        static bool musicON;
+        static bool goalScored;
+        static bool computFrozen;
+        static bool PlayerFrozen;
 };

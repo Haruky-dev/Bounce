@@ -4,6 +4,7 @@
 #include <SFML/System/Time.hpp>
 
 #include <tools/Constants.hpp>
+#include <tools/Flags.hpp>
 
 
 class Player : public sf::Drawable {

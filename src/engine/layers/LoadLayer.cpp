@@ -16,7 +16,6 @@ void LoadLayer::Load() {
             // create OpenGL/SFML context
             sf::Context context;
 
-            Json::Load();
             TextureCache::inst().Load( *this );
             SFX::inst().Load( *this );
             FontCache::Load( *this );

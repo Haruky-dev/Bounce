@@ -18,6 +18,7 @@ class Constants {
         static int ballAccel;
         static char ballOrient;
         static int buffingPeriod;
+        static int freezeDuration;
         static float offsetPercent;
         static float stretchPercent;
 

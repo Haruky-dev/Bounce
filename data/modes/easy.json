@@ -23,6 +23,12 @@
     "returnTime": 3.0,
     "returnDuration": 2.0,
     "errorPivot": 20,
-    "delayPivot": 1000
+    "delayPivot": 500
+  },
+
+  "buff": {
+    "freeze": {
+      "durPivot": 1500
+    }
   }
 }

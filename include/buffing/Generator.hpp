@@ -6,11 +6,13 @@
 #include <SFML/System/Time.hpp>
 
 #include <memory>
+#include <initializer_list>
 
 
 class Generator {
     public:
         static std::unique_ptr<Buff> yield();
 
-    // private:
+    private:
+        static Buff::Target randTarget( const std::initializer_list<Buff::Target> );
 };

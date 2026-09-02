@@ -23,6 +23,11 @@ void Human::update( const sf::Time& dt ) {
     double Y_pos = bar.getPosition().y;
     double halfHeight = this->bounds().size.y / 2.0f;
 
+    if ( Flags::PlayerFrozen ) {
+        this->direction = 0;
+        return;
+    }
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
         if (Y_pos - halfHeight > Constants::W_EDGE)
             bar.move({0, -this->speed * dt.asSeconds()});

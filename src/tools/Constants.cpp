@@ -12,9 +12,10 @@ int Constants::P2_SCORE = 0;
 int Constants::maxScore = Json::Int("setting.maxScore", Json::Type::SET);
 int Constants::DELAY_t = 200;
 char Constants::ballOrient = '?';
-int Constants::buffingPeriod = Json::Float("settings.buffingPeriod");
-float Constants::offsetPercent = Json::Float("settings.offsetPercent" );
-float Constants::stretchPercent = Json::Float("settings.stretchPercent" );
+int Constants::buffingPeriod = Json::Int("setting.buffingPeriod");
+int Constants::freezeDuration = Json::Int("buff.freeze.durPivot");
+float Constants::offsetPercent = Json::Float("setting.offsetPercent" );
+float Constants::stretchPercent = Json::Float("setting.stretchPercent" );
 
 int Constants::WIDTH = Json::Int("win.W", Json::Type::SET);
 int Constants::HEIGHT = Json::Int("win.H", Json::Type::SET);

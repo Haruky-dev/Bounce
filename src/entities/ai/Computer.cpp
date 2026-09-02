@@ -3,7 +3,6 @@
 #include <math.h>
 
 #include <tools/Constants.hpp>
-#include <tools/Flags.hpp>
 #include <tools/Json.hpp>
 #include <tools/Math.hpp>
 
@@ -39,6 +38,10 @@ void Computer::update( const sf::Time& dt, const Ball& ball ) {
                             && (this->centerTimer <= this->neuron.returnTime) );
 
     const float mov = this->neuron.speed * dt.asSeconds();
+
+    
+    //---------------------- [onFreeze]
+    if ( Flags::computFrozen && !onCentering ) return;
 
     //---------------------- [Tracking]
     if ( onTracking ) {

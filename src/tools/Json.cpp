@@ -6,8 +6,6 @@
 #include <cassert>
 #include <stdexcept>
 
-#include <print>
-
 
 void Json::_init() {
     Json::__settings = json::object();
@@ -61,10 +59,8 @@ void Json::_load( const Json::Type ftype ) {
 }
 
 json Json::_value_at( const Json::Type file, const str& key ) {
-    if (Json::_invalid()) {
-        std::println("called");
+    if (Json::_invalid())
         Json::Load();
-    }
 
     str currK = key;
     json curr = json::object();

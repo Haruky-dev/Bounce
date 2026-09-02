@@ -10,9 +10,8 @@
 
 Human::Human(const sf::Sprite &spr, bool id ) :
     Player(spr, id),
-    path( "modes." + Constants::MODE + "player." ),
-    speed( Json::Float( path + "speed" ) ),
-    accel( Json::Float( path + "accel" ) )
+    speed( Json::Float( "player.speed" ) ),
+    accel( Json::Float( "player.accel" ) )
     {
 
     this->bar.setPosition( {Constants::WIDTH - 20.f, Constants::W_CTR.y} );

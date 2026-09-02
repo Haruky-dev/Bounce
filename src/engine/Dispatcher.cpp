@@ -50,25 +50,23 @@ void Dispatcher::__process_settings( const Action A ) {
             break;
 
         case Action::incDiff:
-            switch ( Constants::MODE.at(0) ) {
-                case 'E': Constants::MODE = 'M'; break;
-                case 'M': Constants::MODE = 'H'; break;
-                case 'H': Constants::MODE = 'E'; break;
+            switch ( Constants::MODE ) {
+                case Json::Type::EASY: Constants::MODE = Json::Type::MED; break;
+                case Json::Type::MED:  Constants::MODE = Json::Type::HARD; break;
+                case Json::Type::HARD: Constants::MODE = Json::Type::EASY; break;
 
                 default: throw std::runtime_error("Invalid [Constants::MODE]!");
             }
-            Constants::MODE += ".";
             break;
 
         case Action::decDiff:
-            switch ( Constants::MODE.at(0) ) {
-                case 'E': Constants::MODE = 'H'; break;
-                case 'M': Constants::MODE = 'E'; break;
-                case 'H': Constants::MODE = 'M'; break;
+            switch ( Constants::MODE ) {
+                case Json::Type::EASY: Constants::MODE = Json::Type::HARD; break;
+                case Json::Type::MED:  Constants::MODE = Json::Type::EASY; break;
+                case Json::Type::HARD: Constants::MODE = Json::Type::MED; break;
 
                 default: throw std::runtime_error("Invalid [Constants::MODE]!");
             }
-            Constants::MODE += ".";
             break;
 
         case Action::toggleMusic:

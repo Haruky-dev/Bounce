@@ -9,7 +9,7 @@
 Game::Game() {
     this->_window = std::make_unique<sf::RenderWindow>(
         sf::VideoMode( sf::Vector2u(Constants::WIDTH, Constants::HEIGHT) ),
-        Json::String("win.title"),
+        Json::String("win.title", Json::Type::SET ),
         sf::Style::Default & ~sf::Style::Resize
     );
     _window->setPosition(

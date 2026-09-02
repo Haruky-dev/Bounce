@@ -73,7 +73,13 @@ target_include_directories( ${PROJECT_NAME} PUBLIC
 
 set_target_properties( ${PROJECT_NAME} PROPERTIES OUTPUT_NAME "game" )
 set_source_files_properties( ${PROJECT_SOURCE_DIR}/src/tools/Json.cpp
-    PROPERTIES OBJECT_DEPENDS ${PROJECT_SOURCE_DIR}/data/conf.json )
+    PROPERTIES OBJECT_DEPENDS ${PROJECT_SOURCE_DIR}/data/settings.json )
+set_source_files_properties( ${PROJECT_SOURCE_DIR}/src/tools/Json.cpp
+    PROPERTIES OBJECT_DEPENDS ${PROJECT_SOURCE_DIR}/data/modes/easy.json )
+set_source_files_properties( ${PROJECT_SOURCE_DIR}/src/tools/Json.cpp
+    PROPERTIES OBJECT_DEPENDS ${PROJECT_SOURCE_DIR}/data/modes/medium.json )
+set_source_files_properties( ${PROJECT_SOURCE_DIR}/src/tools/Json.cpp
+    PROPERTIES OBJECT_DEPENDS ${PROJECT_SOURCE_DIR}/data/modes/hard.json )
 
 # inc assets/ in build
 add_custom_command(

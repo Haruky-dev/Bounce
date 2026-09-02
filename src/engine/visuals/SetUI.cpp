@@ -96,12 +96,25 @@ void SetUI::__init_bounds() {
 void SetUI::__move_elements() {
     const sf::Vector2<float> bg_pos = this->bg.getPosition();
 
-    for ( int i = 0; i < 2; i++ )
-        this->marks_spr.at(i).setPosition({bg_pos.x + 103, bg_pos.y + 23 + 44*i});
+    for ( int i = 0; i < 3; i++ ) {
+        this->modes_spr.at(i).setPosition({bg_pos.x - 143, bg_pos.y + 25});
+        if (i<3) this->marks_spr.at(i).setPosition({bg_pos.x + 103, bg_pos.y + 23 + 44*i});
+    }
 
     this->max_score.setPosition({bg_pos.x - 117, bg_pos.y + 71});
 
-    this->modes_spr.at(
-            this->modes_i.at(Constants::MODE.front())
-        ).setPosition({bg_pos.x - 143, bg_pos.y + 25});
+    // this->modes_spr.at(
+    //         this->modes_i.at(Constants::MODE.front())
+    //     ).setPosition({bg_pos.x - 143, bg_pos.y + 25});
+}
+
+const sf::Sprite& SetUI::get_modeSpr( const Json::Type T ) const {
+    switch (T) {
+        case Json::Type::EASY: return this->modes_spr.at(0);
+        case Json::Type::MED: return this->modes_spr.at(1);
+        case Json::Type::HARD: return this->modes_spr.at(2);
+
+        default:
+            throw std::runtime_error("Invalid 'Constants::MODE' given for 'SetUI::get_modeSpr'");
+    }
 }

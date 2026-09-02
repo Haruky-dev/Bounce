@@ -13,10 +13,9 @@
 Ball::Ball( const sf::Sprite& spr ) :
     spr(spr), onStart(false),
     onMove(false), accTime(sf::Time::Zero),
-    path( "modes." + Constants::MODE + "ball." ),
-    speed(Json::Int( path + "speed" )),
-    accel(Json::Int( path + "accel" )),
-    rotDelay(Json::Float( path + "rotationDelay" ))
+    speed(Json::Int( "ball.speed" )),
+    accel(Json::Int( "ball.accel" )),
+    rotDelay(Json::Float( "ball.rotationDelay" ))
     {
 
         this->spr.setOrigin( this->spr.getLocalBounds().getCenter() );
@@ -80,7 +79,7 @@ void Ball::adjust( const Constants::Sides side, const sf::Rect<float>& padBounds
 void Ball::reset() {
     this->onStart = true;
     this->onMove = false;
-    this->speed = Json::Float( this->path + "speed" );
+    this->speed = Json::Float("ball.speed");
 
     this->unitDirec = this->velocity = sf::Vector2<float>( 0.0f, 0.0f );
     this->direction = 0; // this->validate_direc();

@@ -23,7 +23,8 @@ void SetLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.shadow );
     win.draw( this->UI.bg );
 
-    win.draw( this->UI.modes_spr.at(this->UI.modes_i.at(Constants::MODE.at(0))) );
+    // win.draw( this->UI.modes_spr.at(this->UI.modes_i.at(Constants::MODE.at(0))) );
+    win.draw( this->UI.get_modeSpr(Constants::MODE) );
     win.draw( this->UI.max_score );
 
     if (Flags::musicON) win.draw( this->UI.marks_spr.at(0) );

@@ -8,16 +8,15 @@
 
 
 Neuron::Neuron() :
-    path( "modes." + Constants::MODE + "computer."),
-    returnDur(Json::Float( path + "returnDuration" )),
-    returnTime(Json::Float( path + "returnTime" )),
-    deadZone(Json::Float( path + "deadZone" )),
-    speed(Json::Float( path + "speed" )),
-    accel(Json::Float( path + "accel")),
+    returnDur(Json::Float( "computer.returnDuration" )),
+    returnTime(Json::Float( "computer.returnTime" )),
+    deadZone(Json::Float( "computer.deadZone" )),
+    speed(Json::Float( "computer.speed" )),
+    accel(Json::Float( "computer.accel")),
     delay_timer(sf::Time::Zero),
     allowed(false),
-    delayPivot(Json::Int( path + "delayPivot" )),
-    errorPivot(Json::Int( path + "errorPivot" ))
+    delayPivot(Json::Int( "computer.delayPivot" )),
+    errorPivot(Json::Int( "computer.errorPivot" ))
     {
         this->refresh();
     }

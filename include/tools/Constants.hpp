@@ -2,7 +2,8 @@
 
 #include <SFML/Graphics/Rect.hpp>
 
-#include <string>
+#include <tools/Json.hpp>
+
 #include <array>
 
 
@@ -24,11 +25,14 @@ class Constants {
         static int HEIGHT;
         static int W_EDGE;
         static sf::Vector2f W_CTR;
-        static std::string MODE;
+        static Json::Type MODE;
 
         enum class Sides {
             TOP, LEFT, BOTTOM, RIGHT
         };
 
         static std::array< sf::Vector2f, 4 > Norms;
+
+    private:
+        static Json::Type _match_mode( const std::string_view );
 };

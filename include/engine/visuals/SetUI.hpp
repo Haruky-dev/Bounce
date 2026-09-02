@@ -53,5 +53,7 @@ class SetUI : public BaseUI {
         void update( const sf::Time& ) override;
         void configure() override;
 
+        const sf::Sprite& get_modeSpr( const Json::Type ) const;
+
         void exit_animation();
 };

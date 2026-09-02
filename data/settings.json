@@ -1,0 +1,18 @@
+{
+  "win": {
+    "W": 720,
+    "H": 480,
+    "edge": 5.0,
+    "title": "Bounce"
+  },
+
+  "setting": {
+    "maxScore": 3,
+    "maxCD": 2,
+    "mode": "easy",
+
+    "fps": {
+      "delay": 1.0
+    }
+  }
+}

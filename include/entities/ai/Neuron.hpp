@@ -2,16 +2,11 @@
 
 #include <SFML/System/Time.hpp>
 
-#include <string>
-#include <utility>
-
 
 class Neuron {
     friend class Computer;
 
     private:
-        std::string path;
-
         float returnDur;
         float returnTime;
         float deadZone;

@@ -5,7 +5,6 @@
 
 class Human : public Player {
     private:
-        std::string path;
         float speed, accel;
 
     public:

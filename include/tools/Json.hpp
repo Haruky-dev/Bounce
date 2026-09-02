@@ -1,36 +1,46 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <string>
-
 #include <tools/json.hpp>
+
+#include <string>
 
 using json = nlohmann::json;
 using str  = std::string;
 
 
 class Json {
-    private:
-        static json confData;
-
-        static json getVal( const str& key );
-        // check if config data has loaded seccussfully
-
-        static bool invalid() {
-            return (Json::confData.is_null() ||
-                Json::confData.empty());
-        }
-
-        static void Load( const str& filePath = "data/conf.json" );
+    public:
+        enum class Type { SET, EASY, MED, HARD };
 
     public:
-        static void reLoad();
+        static void Load();
 
-        // getters
-            // Primitive types
-        static int   Int( const str& key );
-        static float Float( const str& key);
-        static bool  Bool( const str& key );
-        static str   String( const str& key );
-        // json  getArray( const str& key )  const;
+        static int   Int( const str& );
+        static float Float( const str& );
+        static bool  Bool( const str& );
+        static str   String( const str& );
+
+        static int   Int( const str&, const Json::Type file );
+        static float Float( const str&, const Json::Type file );
+        static bool  Bool( const str&, const Json::Type file );
+        static str   String( const str&, const Json::Type file );
+
+
+    private:
+        static inline json __settings;
+        static inline json __modes[3];
+
+    private:
+        static void _init();
+        static void _load( const Json::Type );
+        static json _value_at( const Json::Type, const str& );
+        static bool _invalid() {
+            if ( Json::__settings.is_null() || Json::__settings.empty() ) return true;
+
+            for ( int i = 0; i < 3; i++ )
+                if ( Json::__modes[i].is_null() || Json::__modes[i].empty() ) return true;
+
+            return false;
+        }
 };

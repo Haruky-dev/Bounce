@@ -1,40 +1,83 @@
-#include <cassert>
 #include <tools/Json.hpp>
 
+#include <tools/Constants.hpp>
+
 #include <fstream>
+#include <cassert>
 #include <stdexcept>
 
+#include <print>
 
-json Json::confData = json::object(); // Init as empty obj
 
-void Json::Load( const str& filePath ) {
-    std::ifstream file(filePath);
+void Json::_init() {
+    Json::__settings = json::object();
+
+    for ( int i = 0; i < 3; i++ ) Json::__modes[i] = json::object();
+}
+
+void Json::Load() {
+    Json::_init();
+    Json::_load(Json::Type::SET);
+    Json::_load(Json::Type::EASY);
+    Json::_load(Json::Type::MED);
+    Json::_load(Json::Type::HARD);
+};
+
+void Json::_load( const Json::Type ftype ) {
+    std::ifstream file;
+    json* target = nullptr;
+    str file_path = "";
+    
+    switch (ftype) {
+        case Json::Type::SET:
+            file_path = "data/settings.json"; target = &Json::__settings;
+            break;
+        case Json::Type::EASY:
+            file_path = "data/modes/easy.json"; target = &Json::__modes[0];
+            break;
+        case Json::Type::MED:
+            file_path = "data/modes/medium.json"; target = &Json::__modes[1];
+            break;
+        case Json::Type::HARD:
+            file_path = "data/modes/hard.json"; target = &Json::__modes[2];
+            break;
+
+        default: throw std::runtime_error("Invalid 'Json::Type' given for 'Json::_load'");
+    }
+
+    file.open(file_path);
+
+    assert( target );
     assert( !file.fail() );
     assert( file.is_open() );
 
     try {
-        file >> Json::confData;
-        assert( !(Json::confData.is_null() ));
+        file >> *target;
+        assert( !(target->is_null() ));
 
     } catch ( const json::exception& e ) {
         throw std::runtime_error(e.what());
     }
 }
 
-void Json::reLoad() {
-    Json::Load();
-};
-
-json Json::getVal( const str& key ) {
-    if (Json::invalid())
+json Json::_value_at( const Json::Type file, const str& key ) {
+    if (Json::_invalid()) {
+        std::println("called");
         Json::Load();
+    }
+
+    str currK = key;
+    json curr = json::object();
+
+    switch (file) {
+        case Json::Type::SET:  curr = Json::__settings; break;
+        case Json::Type::EASY: curr = Json::__modes[0]; break;
+        case Json::Type::MED:  curr = Json::__modes[1]; break;
+        case Json::Type::HARD: curr = Json::__modes[2]; break;
+    }
 
     try {
         // split key by dots '.' (ai.speed)
-
-        str currK = key;
-        json curr = Json::confData; // Json is composed of nested "json's"
-                                    // we track/define them by 'curr'
 
         size_t dotPos; // curr index of char '.' in the given key
         while ((dotPos=currK.find('.')) != str::npos) {
@@ -57,8 +100,13 @@ json Json::getVal( const str& key ) {
     }
 }
 
-int Json::Int( const str& key ) {
-    auto val = Json::getVal( key );
+int   Json::Int( const str& key )    { return Json::Int(key, Constants::MODE); }
+float Json::Float( const str& key )  { return Json::Float(key, Constants::MODE); }
+str   Json::String( const str& key ) { return Json::String(key, Constants::MODE); }
+bool  Json::Bool( const str& key )   { return Json::Bool(key, Constants::MODE); }
+
+int Json::Int( const str& key, const Json::Type file ) {
+    auto val = Json::_value_at( file, key );
 
     if (val.is_number())
         return val.get<int>();
@@ -66,8 +114,8 @@ int Json::Int( const str& key ) {
     throw std::runtime_error("Invalid Value [T=int] Found for key=" + key);
 }
 
-float Json::Float( const str& key ) {
-    auto val = Json::getVal( key );
+float Json::Float( const str& key, const Json::Type file ) {
+    auto val = Json::_value_at( file, key );
 
     if (val.is_number())
         return val.get<float>();
@@ -75,8 +123,8 @@ float Json::Float( const str& key ) {
     throw std::runtime_error("Invalid Value [T=float] Found for key=" + key);
 }
 
-bool Json::Bool( const str& key ) {
-    auto val = Json::getVal( key );
+bool Json::Bool( const str& key, const Json::Type file ) {
+    auto val = Json::_value_at( file, key );
 
     if (val.is_boolean())
         return val.get<bool>();
@@ -84,8 +132,8 @@ bool Json::Bool( const str& key ) {
     throw std::runtime_error("Invalid Value [T=bool] Found for key=" + key);
 }
 
-str Json::String( const str& key ) {
-    auto val = Json::getVal( key );
+str Json::String( const str& key, const Json::Type file ) {
+    auto val = Json::_value_at( file, key );
 
     if (val.is_string())
         return val.get<str>();

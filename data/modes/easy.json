@@ -1,0 +1,28 @@
+{
+  "setting": {
+    "offsetPercent": 0.60,
+    "stretchPercent": 1.50,
+    "buffingPeriod": 3
+  },
+
+  "ball": {
+    "speed": 220.0,
+    "accel": 10.0,
+    "rotationDelay": 50.0
+  },
+
+  "player": {
+    "speed": 500.0,
+    "accel": 8.0
+  },
+
+  "computer": {
+    "speed": 80.0,
+    "accel": 5.0,
+    "deadZone": 22.0,
+    "returnTime": 3.0,
+    "returnDuration": 2.0,
+    "errorPivot": 20,
+    "delayPivot": 1000
+  }
+}

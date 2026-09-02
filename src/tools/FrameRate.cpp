@@ -8,7 +8,7 @@
 
 FrameRate::FrameRate()
     : accTime(sf::Time::Zero), frames(0), fps(0),
-    txt(FontCache::RASTER, ""), delay(Json::Float("setting.fps.delay")) {
+    txt(FontCache::RASTER, ""), delay(Json::Float("setting.fps.delay", Json::Type::SET)) {
 
         this->txt.setFillColor( sf::Color(241, 233, 219, 200) );
         this->txt.setScale( {0.7f, 0.7f} );

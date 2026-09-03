@@ -1,6 +1,6 @@
 #include <tools/Json.hpp>
 
-#include <tools/Constants.hpp>
+#include <tools/Variables.hpp>
 
 #include <fstream>
 #include <cassert>
@@ -96,10 +96,10 @@ json Json::_value_at( const Json::Type file, const str& key ) {
     }
 }
 
-int   Json::Int( const str& key )    { return Json::Int(key, Constants::MODE); }
-float Json::Float( const str& key )  { return Json::Float(key, Constants::MODE); }
-str   Json::String( const str& key ) { return Json::String(key, Constants::MODE); }
-bool  Json::Bool( const str& key )   { return Json::Bool(key, Constants::MODE); }
+int   Json::Int( const str& key )    { return Json::Int(key, Variables::MODE); }
+float Json::Float( const str& key )  { return Json::Float(key, Variables::MODE); }
+str   Json::String( const str& key ) { return Json::String(key, Variables::MODE); }
+bool  Json::Bool( const str& key )   { return Json::Bool(key, Variables::MODE); }
 
 int Json::Int( const str& key, const Json::Type file ) {
     auto val = Json::_value_at( file, key );

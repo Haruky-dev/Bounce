@@ -3,7 +3,7 @@
 #include <engine/visuals/MenuUI.hpp>
 #include <engine/io/Request.hpp>
 #include <tools/Flags.hpp>
-
+#include <tools/Variables.hpp>
 
 
 MenuLayer::MenuLayer() : Layer() {
@@ -58,8 +58,8 @@ void MenuLayer::form_request() {
 Layer::Type MenuLayer::type() const { return Layer::Type::MainMenu; }
 
 void MenuLayer::enter() {
-    Constants::P1_SCORE = Constants::P2_SCORE = 0;
-    Constants::CD = 0;
+    Variables::P1_SCORE = Variables::P2_SCORE = 0;
+    Variables::CD = 0;
 }
 
 void MenuLayer::exit() {

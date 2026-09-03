@@ -2,7 +2,7 @@
 
 #include <tools/Json.hpp>
 #include <tools/Math.hpp>
-#include <tools/Constants.hpp>
+#include <tools/Variables.hpp>
 
 #include <print>
 
@@ -23,9 +23,9 @@ Neuron::Neuron() :
 
 
 void Neuron::refresh() {
-    this->error = this->errorPivot + Math::randi( 0, this->errorPivot * Constants::offsetPercent, true ); // needs to generate neg values
-    this->delay = this->delayPivot + Math::randi( 0, this->delayPivot * Constants::offsetPercent, true );
-    this->speed = std::min( this->speed+this->accel, this->speed*Constants::stretchPercent );
+    this->error = this->errorPivot + Math::randi( 0, this->errorPivot * Variables::offsetPercent, true ); // needs to generate neg values
+    this->delay = this->delayPivot + Math::randi( 0, this->delayPivot * Variables::offsetPercent, true );
+    this->speed = std::min( this->speed+this->accel, this->speed*Variables::stretchPercent );
 
     assert( (this->delay >= 0) );
 

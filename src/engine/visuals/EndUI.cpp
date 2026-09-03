@@ -3,6 +3,7 @@
 #include <cache/TextureCache.hpp>
 #include <cache/FontCache.hpp>
 #include <tools/Constants.hpp>
+#include <tools/Variables.hpp>
 #include <tools/Math.hpp>
 
 
@@ -28,7 +29,7 @@ void EndUI::configure() {
     );
 
     this->winner.setPosition( this->__normalize<float>( this->bg_rect, {
-        60.0f + 220 * ( Constants::P1_SCORE < Constants::P2_SCORE ),
+        60.0f + 220 * ( Variables::P1_SCORE < Variables::P2_SCORE ),
         175
     }) );
 }
@@ -52,8 +53,8 @@ void EndUI::update( const sf::Time& dt ) {
 
 std::array<sf::Text, 2> EndUI::__init_scores() {
     std::array<sf::Text, 2> arr({
-        sf::Text( FontCache::MineCraf, std::to_string(Constants::P1_SCORE) ),
-        sf::Text( FontCache::MineCraf, std::to_string(Constants::P2_SCORE) )
+        sf::Text( FontCache::MineCraf, std::to_string(Variables::P1_SCORE) ),
+        sf::Text( FontCache::MineCraf, std::to_string(Variables::P2_SCORE) )
     });
 
     for ( int i = 0; i < arr.size(); i++ ) {

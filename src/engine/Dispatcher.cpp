@@ -1,8 +1,8 @@
 #include <engine/Dispatcher.hpp>
 
-#include <engine/Layer.hpp>
-#include <tools/Constants.hpp>
 #include <tools/Flags.hpp>
+#include <engine/Layer.hpp>
+#include <tools/Variables.hpp>
 
 #include <cache/SFX.hpp>
 
@@ -42,30 +42,30 @@ void Dispatcher::handle( Manager& manager, const Action A ) {
 void Dispatcher::__process_settings( const Action A ) {
     switch ( A ) {
         case Action::incMaxScr:
-            ( Constants::maxScore < 9 )? Constants::maxScore++ : 1;
+            ( Variables::maxScore < 9 )? Variables::maxScore++ : 1;
             break;
 
         case Action::decMaxScr:
-            ( Constants::maxScore > 1 )? Constants::maxScore-- : 9;
+            ( Variables::maxScore > 1 )? Variables::maxScore-- : 9;
             break;
 
         case Action::incDiff:
-            switch ( Constants::MODE ) {
-                case Json::Type::EASY: Constants::MODE = Json::Type::MED; break;
-                case Json::Type::MED:  Constants::MODE = Json::Type::HARD; break;
-                case Json::Type::HARD: Constants::MODE = Json::Type::EASY; break;
+            switch ( Variables::MODE ) {
+                case Json::Type::EASY: Variables::MODE = Json::Type::MED; break;
+                case Json::Type::MED:  Variables::MODE = Json::Type::HARD; break;
+                case Json::Type::HARD: Variables::MODE = Json::Type::EASY; break;
 
-                default: throw std::runtime_error("Invalid [Constants::MODE]!");
+                default: throw std::runtime_error("Invalid [Variables::MODE]!");
             }
             break;
 
         case Action::decDiff:
-            switch ( Constants::MODE ) {
-                case Json::Type::EASY: Constants::MODE = Json::Type::HARD; break;
-                case Json::Type::MED:  Constants::MODE = Json::Type::EASY; break;
-                case Json::Type::HARD: Constants::MODE = Json::Type::MED; break;
+            switch ( Variables::MODE ) {
+                case Json::Type::EASY: Variables::MODE = Json::Type::HARD; break;
+                case Json::Type::MED:  Variables::MODE = Json::Type::EASY; break;
+                case Json::Type::HARD: Variables::MODE = Json::Type::MED; break;
 
-                default: throw std::runtime_error("Invalid [Constants::MODE]!");
+                default: throw std::runtime_error("Invalid [Variables::MODE]!");
             }
             break;
 

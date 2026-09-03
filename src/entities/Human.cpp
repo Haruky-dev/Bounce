@@ -2,6 +2,7 @@
 
 #include <entities/Ball.hpp>
 #include <tools/Constants.hpp>
+#include <tools/Variables.hpp>
 #include <tools/Math.hpp>
 #include <tools/Json.hpp>
 
@@ -43,5 +44,5 @@ void Human::update( const sf::Time& dt ) {
 }
 
 void Human::refresh() {
-    this->speed = std::min( this->speed+this->accel, this->speed*Constants::stretchPercent);
+    this->speed = std::min( this->speed+this->accel, this->speed*Variables::stretchPercent);
 }

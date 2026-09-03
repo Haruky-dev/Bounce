@@ -4,6 +4,7 @@
 #include <cache/SFX.hpp>
 #include <cache/FontCache.hpp>
 #include <tools/Constants.hpp>
+#include <tools/Variables.hpp>
 #include <tools/Flags.hpp>
 #include <tools/Json.hpp>
 #include <tools/Math.hpp>
@@ -19,8 +20,8 @@ PlayUI::PlayUI() :
     banner_anim(.5),
 
     countD(FontCache::RASTER, "3"),
-    score_1(FontCache::KA, std::to_string(Constants::P1_SCORE)),
-    score_2(score_1.getFont(), std::to_string(Constants::P2_SCORE)),
+    score_1(FontCache::KA, std::to_string(Variables::P1_SCORE)),
+    score_2(score_1.getFont(), std::to_string(Variables::P2_SCORE)),
     P1_ready(false), P2_ready(false) // false
     {}
 
@@ -54,33 +55,33 @@ void PlayUI::update( const sf::Time& dt ) {
     if ( Flags::goalScored ) {
         Flags::goalScored = false;
         this->_cdTime = sf::Time::Zero;
-        Constants::CD = 0;
+        Variables::CD = 0;
 
-        this->score_1.setString( std::to_string(Constants::P1_SCORE) );
-        this->score_2.setString( std::to_string(Constants::P2_SCORE) );
+        this->score_1.setString( std::to_string(Variables::P1_SCORE) );
+        this->score_2.setString( std::to_string(Variables::P2_SCORE) );
     }
 
-    if ( Constants::CD >= Constants::maxCD ) {
+    if ( Variables::CD >= Constants::maxCD ) {
         this->_cdTime = sf::Time::Zero;
-        Constants::CD = -1;
+        Variables::CD = -1;
 
         this->countD.setString( std::to_string( Constants::maxCD ) );
 
-    } else if ( Constants::CD != -1 ) {
+    } else if ( Variables::CD != -1 ) {
         if ( !P1_ready || !P2_ready ) {
             this->_update_banner(dt);
             return;
         }
 
-        Constants::CD = static_cast<int>( this->_cdTime.asSeconds() );
-        this->countD.setString( std::to_string( Constants::maxCD - Constants::CD ) );
+        Variables::CD = static_cast<int>( this->_cdTime.asSeconds() );
+        this->countD.setString( std::to_string( Constants::maxCD - Variables::CD ) );
         this->_cdTime += dt;
     }
 }
 
 void PlayUI::sync() {
-    this->score_1.setString( std::to_string( Constants::P1_SCORE) );
-    this->score_2.setString( std::to_string( Constants::P2_SCORE ));
+    this->score_1.setString( std::to_string( Variables::P1_SCORE) );
+    this->score_2.setString( std::to_string( Variables::P2_SCORE ));
 }
 
 void PlayUI::set_players_ready( const bool P1, const bool P2 ) {

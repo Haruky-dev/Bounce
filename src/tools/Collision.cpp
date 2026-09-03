@@ -1,6 +1,7 @@
 #include <tools/Collision.hpp>
 
 #include <tools/Flags.hpp>
+#include <tools/Variables.hpp>
 
 
 bool Collision::wall( const sf::Rect<float>& ballB, Constants::Sides& side ) {
@@ -19,11 +20,11 @@ bool Collision::wall( const sf::Rect<float>& ballB, Constants::Sides& side ) {
         Flags::goalScored = true;
         side = Constants::Sides::LEFT;
 
-        ( Constants::P2_SCORE < Constants::maxScore )?
-            Constants::P2_SCORE++
+        ( Variables::P2_SCORE < Variables::maxScore )?
+            Variables::P2_SCORE++
           : throw std::runtime_error("Game Over. Invalid Value Reached!");
 
-        Constants::ballOrient = '1';
+        Variables::ballOrient = '1';
 
         return true;
 
@@ -31,11 +32,11 @@ bool Collision::wall( const sf::Rect<float>& ballB, Constants::Sides& side ) {
         Flags::goalScored = true;
         side = Constants::Sides::RIGHT;
 
-        ( Constants::P1_SCORE < Constants::maxScore )?
-            Constants::P1_SCORE++
+        ( Variables::P1_SCORE < Variables::maxScore )?
+            Variables::P1_SCORE++
           : throw std::runtime_error("Game Over. Invalid Value Reached!");
           
-        Constants::ballOrient = '2';
+        Variables::ballOrient = '2';
 
         return true;
     }

@@ -1,6 +1,6 @@
 #include <engine/layers/EndLayer.hpp>
 
-#include <tools/Constants.hpp>
+#include <tools/Variables.hpp>
 
 
 EndLayer::EndLayer() : Layer(), UI() {
@@ -41,7 +41,7 @@ bool EndLayer::animated() const { return true; }
 bool EndLayer::popable() const { return this->UI.animation.finished(); }
 void EndLayer::enter() { SFX::inst().play(SFX::Type::WHOOSH); }
 void EndLayer::exit() {
-    Constants::P1_SCORE = Constants::P2_SCORE = 0;
+    Variables::P1_SCORE = Variables::P2_SCORE = 0;
 }
 
 Layer::Type EndLayer::type() const { return Layer::Type::GameOver; }

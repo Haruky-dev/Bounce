@@ -1,13 +1,15 @@
-#include <SFML/System/Angle.hpp>
-#include <cassert>
 #include <entities/Ball.hpp>
+
+#include <SFML/System/Angle.hpp>
 
 #include <entities/Player.hpp>
 
 #include <tools/Math.hpp>
 #include <tools/Json.hpp>
+#include <tools/Variables.hpp>
 
 #include <math.h>
+#include <cassert>
 
 
 Ball::Ball( const sf::Sprite& spr ) :
@@ -27,7 +29,7 @@ void Ball::launch() {
     sf::Vector2f targetPt;
 
         // tp.x
-    switch ( Constants::ballOrient ) {
+    switch ( Variables::ballOrient ) {
         case '1': targetPt.x = 0.0f; break;
         case '2': targetPt.x = Constants::WIDTH;        break;
 
@@ -127,7 +129,7 @@ void Ball::refresh( const int padDirec ) {
      || padDirec==-1 // opposite direction hit -> decrease
     );
 
-    this->speed = padDirec * std::min<int>( this->speed+this->accel, this->speed*Constants::stretchPercent );
+    this->speed = padDirec * std::min<int>( this->speed+this->accel, this->speed*Variables::stretchPercent );
 }
 
 sf::Rect<float> Ball::bounds() const { return this->spr.getGlobalBounds(); }

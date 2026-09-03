@@ -4,6 +4,7 @@
 #include <cache/SFX.hpp>
 #include <cache/FontCache.hpp>
 #include <tools/Constants.hpp>
+#include <tools/Variables.hpp>
 #include <tools/Math.hpp>
 
 
@@ -11,7 +12,7 @@ SetUI::SetUI() :
     animation(),
     modes_spr( __init_modes() ),
     marks_spr( __init_marks() ),
-    max_score(FontCache::MineCraf, std::to_string(Constants::maxScore)),
+    max_score(FontCache::MineCraf, std::to_string(Variables::maxScore)),
     bg(TextureCache::inst().get("set/bg")),
     shadow(TextureCache::inst().get("shad_1")),
     bg_rect(bg.getTextureRect()),
@@ -46,7 +47,7 @@ void SetUI::configure() {
 void SetUI::update( const sf::Time& dt ) {
     this->animation.update( dt );
 
-    this->max_score.setString(std::to_string(Constants::maxScore));
+    this->max_score.setString(std::to_string(Variables::maxScore));
 
     const double p = this->animation.progress();
 
@@ -102,10 +103,6 @@ void SetUI::__move_elements() {
     }
 
     this->max_score.setPosition({bg_pos.x - 117, bg_pos.y + 71});
-
-    // this->modes_spr.at(
-    //         this->modes_i.at(Constants::MODE.front())
-    //     ).setPosition({bg_pos.x - 143, bg_pos.y + 25});
 }
 
 const sf::Sprite& SetUI::get_modeSpr( const Json::Type T ) const {
@@ -115,6 +112,6 @@ const sf::Sprite& SetUI::get_modeSpr( const Json::Type T ) const {
         case Json::Type::HARD: return this->modes_spr.at(2);
 
         default:
-            throw std::runtime_error("Invalid 'Constants::MODE' given for 'SetUI::get_modeSpr'");
+            throw std::runtime_error("Invalid 'Variables::MODE' given for 'SetUI::get_modeSpr'");
     }
 }

@@ -14,7 +14,6 @@
 
 #include <entities/Ball.hpp>
 #include <tools/FrameRate.hpp>
-#include <tools/Constants.hpp>
 
 
 class PlayLayer : public Layer {

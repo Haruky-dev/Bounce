@@ -1,6 +1,6 @@
 #include <buffing/BuffOperator.hpp>
 
-#include <tools/Constants.hpp>
+#include <tools/Variables.hpp>
 #include <buffing/Generator.hpp>
 
 
@@ -11,7 +11,7 @@ BuffOperator& BuffOperator::inst() {
 }
 
 BuffOperator::BuffOperator() :
-    period(Constants::buffingPeriod),
+    period(Variables::buffingPeriod),
     elapsed(sf::Time::Zero),
     lastFire(sf::Time::Zero)
     {}

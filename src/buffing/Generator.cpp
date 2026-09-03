@@ -1,7 +1,7 @@
 #include <buffing/Generator.hpp>
 
 #include <tools/Math.hpp>
-#include <tools/Constants.hpp>
+#include <tools/Variables.hpp>
 
 
 std::unique_ptr<Buff> Generator::yield() {
@@ -12,7 +12,7 @@ std::unique_ptr<Buff> Generator::yield() {
         case Buff::Type::Freeze:
             return std::make_unique<Freeze>(
                 Generator::randTarget({Buff::Target::P1, Buff::Target::P2}),
-                Constants::freezeDuration + Math::randi( 0, Constants::freezeDuration*Constants::offsetPercent, true )
+                Variables::freezeDuration + Math::randi( 0, Variables::freezeDuration*Variables::offsetPercent, true )
             );
 
         default:

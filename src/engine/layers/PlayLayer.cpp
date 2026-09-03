@@ -5,6 +5,7 @@
 #include <tools/Flags.hpp>
 #include <tools/Math.hpp>
 #include <tools/Collision.hpp>
+#include <tools/Variables.hpp>
 #include <cache/SFX.hpp>
 #include <buffing/BuffOperator.hpp>
 
@@ -17,8 +18,7 @@ PlayLayer::PlayLayer() :
         this->UI.configure();
 
         char orients[2] = {'1', '2'};
-        // Constants::ballOrient = '1';
-        Constants::ballOrient = orients[ Math::randi(0, 1) ];
+        Variables::ballOrient = orients[ Math::randi(0, 1) ];
     }
 
 PlayLayer::~PlayLayer() = default;
@@ -51,7 +51,7 @@ void PlayLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->UI.bg );
     win.draw( this->FR );
 
-    if ( Constants::CD != -1 )
+    if ( Variables::CD != -1 )
         win.draw( this->UI.countD );
 
     win.draw( this->UI.score_1 ); // score 0
@@ -61,7 +61,7 @@ void PlayLayer::Render( sf::RenderWindow& win ) const {
     win.draw( this->P2 );
     win.draw( this->ball );
 
-    if ( (Constants::CD!=-1) && !this->P1.ready() )
+    if ( (Variables::CD!=-1) && !this->P1.ready() )
         win.draw( this->UI.banner );
 }
 
@@ -69,17 +69,17 @@ void PlayLayer::resume() { this->UI.sync(); }
 
 void PlayLayer::exit() {
     this->music.reset();
-    Constants::P1_SCORE = Constants::P2_SCORE = Constants::CD = 0;
+    Variables::P1_SCORE = Variables::P2_SCORE = Variables::CD = 0;
 }
 Layer::Type PlayLayer::type() const { return Layer::Type::Play; }
 
 
 Action PlayLayer::feature() const {
-    if ( Constants::P1_SCORE >= Constants::maxScore ) {
+    if ( Variables::P1_SCORE >= Variables::maxScore ) {
         SFX::inst().play(SFX::Type::LOSE);
         return Action::raiseGameOv;
 
-    } else if ( Constants::P2_SCORE >= Constants::maxScore ) {
+    } else if ( Variables::P2_SCORE >= Variables::maxScore ) {
         SFX::inst().play(SFX::Type::WIN);
         return Action::raiseGameOv;
     }
@@ -98,10 +98,10 @@ void PlayLayer::form_request() {
 
 void PlayLayer::moveBall( const sf::Time& dt ) {
     if ( !(this->ball.onMove) && this->ball.onStart ) {
-        if ( Constants::CD >= Constants::maxCD ) {
+        if ( Variables::CD >= Constants::maxCD ) {
             this->ball.launch();
             this->ball.onStart = false;
-        } else if ( Constants::CD == 0 )
+        } else if ( Variables::CD == 0 )
             this->UI.set_players_ready( this->P1.ready(), this->P2.ready() );
 
     } else if ( this->ball.onMove ) {
@@ -120,7 +120,7 @@ void PlayLayer::updateEntities( const sf::Time& dt ) {
                            || Collision::computer( this->P2.bounds(), this->ball.bounds(), this->norme );
 
     if ( Flags::goalScored ) {
-        assert( Constants::ballOrient == '1' || Constants::ballOrient == '2' );
+        assert( Variables::ballOrient == '1' || Variables::ballOrient == '2' );
 
         switch (this->norme) {
             

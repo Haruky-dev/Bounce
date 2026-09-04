@@ -9,9 +9,8 @@
 #include <tools/Constants.hpp>
 
 
-class Collision {
-    public:
-        static bool wall( const sf::Rect<float>&, Constants::Sides& );
-        static bool player( const sf::Rect<float>&, const sf::Rect<float>&, Constants::Sides& );
-        static bool computer( const sf::Rect<float>&, const sf::Rect<float>&, Constants::Sides& );
+namespace Collision {
+    bool wall( const sf::Rect<float>&, Constants::Sides& );
+    bool player( const sf::Rect<float>&, const sf::Rect<float>&, Constants::Sides& );
+    bool computer( const sf::Rect<float>&, const sf::Rect<float>&, Constants::Sides& );
 };

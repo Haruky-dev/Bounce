@@ -7,7 +7,7 @@ class Buff {
     public:
         enum class Target { P1, P2, Ball };
         enum class Status { ON, OFF };
-        enum class Type   { Freeze, _size };
+        enum class Type   { Freeze, Invert };
 
     public:
         // arg: context

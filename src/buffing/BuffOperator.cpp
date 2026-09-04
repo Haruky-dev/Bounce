@@ -3,7 +3,7 @@
 #include <tools/Variables.hpp>
 #include <buffing/Generator.hpp>
 
-#include <print>
+#include <iostream>
 
 
 BuffOperator& BuffOperator::inst() {

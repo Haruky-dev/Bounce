@@ -6,21 +6,20 @@
 #include <iostream>
 
 
-class Freeze : public Buff {
+class Invert : public Buff {
     public:
-        Freeze( Buff::Target T, int duration ) :
+        Invert( Buff::Target T, int duration ) :
             Buff(T), elapsed_(sf::Time::Zero), duration_(duration),
-            cache_(Flags::freeze.first, Flags::freeze.first)
+            cache_(Flags::invert.first, Flags::invert.second)
             {
-                std::cout << "  -- Freeze ";
+                std::cout << "  -- Invert ";
             }
 
         void update( const sf::Time& dt ) override {
             if ( this->elapsed_.asMilliseconds() >= this->duration_ ) {
                 this->elapsed_ = sf::Time::Zero;
-                this->status = Buff::Status::OFF;
-                return;
-        }
+                this->status   = Buff::Status::OFF;
+            }
 
             this->elapsed_ += dt;
         }
@@ -29,29 +28,31 @@ class Freeze : public Buff {
             // save && apply
             switch (this->target) {
                 case Buff::Target::P1:
-                    this->cache_.first = Flags::freeze.first;
-                    Flags::freeze.first = true;
+                    this->cache_.first = Flags::invert.first;
+                    Flags::invert.first = true;
                     break;
                 case Buff::Target::P2:
-                    this->cache_.second = Flags::freeze.second;
-                    Flags::freeze.second = true;
+                    this->cache_.second = Flags::invert.second;
+                    Flags::invert.second = true;
                     break;
 
-                default: throw std::runtime_error("Invalid 'Buff::Target' given to Buff::Freeze");
+                default: throw std::runtime_error("Invalid 'Buff::Target' given to 'Buff::Invert'");
             }
         }
+
         void revert() override {
             // restore
             switch (this->target) {
                 case Buff::Target::P1:
-                    Flags::freeze.first = this->cache_.first; break;
+                    Flags::invert.first  = this->cache_.first; break;
                 case Buff::Target::P2:
-                    Flags::freeze.second = this->cache_.second; break;
+                    Flags::invert.second = this->cache_.second; break;
 
-                default: throw std::runtime_error("Invalid 'Buff::Target' given to Buff::Freeze");
+                default: throw std::runtime_error("Invalid 'Buff::Target' given to 'Buff::Invert'");
             }
         }
 
+        
     private:
         sf::Time elapsed_;
         std::pair<bool, bool> cache_;

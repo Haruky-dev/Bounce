@@ -29,6 +29,9 @@
   "buff": {
     "freeze": {
       "durPivot": 1500
+    },
+    "invert": {
+      "durPivot": 3000
     }
   }
 }

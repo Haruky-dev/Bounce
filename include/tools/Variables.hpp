@@ -20,6 +20,7 @@ namespace Variables {
     inline char ballOrient = '?';
     inline int buffingPeriod = Json::Int("setting.buffingPeriod");
     inline int freezeDuration = Json::Int("buff.freeze.durPivot");
+    inline int invertDuration = Json::Int("buff.invert.durPivot");
     inline float offsetPercent = Json::Float("setting.offsetPercent");
     inline float stretchPercent = Json::Float("setting.stretchPercent");
 };

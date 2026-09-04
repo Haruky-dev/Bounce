@@ -2,6 +2,7 @@
 
 #include <buffing/Buff.hpp>
 #include <buffing/buffs/Freeze.hpp>
+#include <buffing/buffs/Invert.hpp>
 
 #include <SFML/System/Time.hpp>
 
@@ -15,4 +16,5 @@ class Generator {
 
     private:
         static Buff::Target randTarget( const std::initializer_list<Buff::Target> );
+        static Buff::Type   randType( const std::initializer_list<Buff::Type> );
 };

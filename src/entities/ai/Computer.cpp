@@ -45,13 +45,13 @@ void Computer::update( const sf::Time& dt, const Ball& ball ) {
 
     //---------------------- [Tracking]
     if ( onTracking ) {
-        const float step = std::clamp( diffrenceY, -mov, mov );
+        const float dy = std::clamp(diffrenceY, -mov, mov) * ( (Flags::invert.second)? -1 : 1 );
 
-        if ( step > 0 ) {
+        if ( dy > 0 ) {
             this->direction = -1;
-        } else if ( step < 0 ) this->direction = 1;
+        } else if ( dy < 0 ) this->direction = 1;
 
-        this->bar.move( {0.0f, step} );
+        this->bar.move( {0.0f, dy} );
 
     //---------------------- [Return-To-Center] logic
     } else if ( onCentering ) {

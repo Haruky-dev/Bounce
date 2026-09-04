@@ -21,26 +21,28 @@ Human::Human(const sf::Sprite &spr, bool id ) :
 void Human::update( const sf::Time& dt ) {
     assert( this->id == 0 );
 
-    double Y_pos = bar.getPosition().y;
-    double halfHeight = this->bounds().size.y / 2.0f;
-
     if ( Flags::freeze.first ) {
         this->direction = 0;
         return;
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
-        if (Y_pos - halfHeight > Constants::W_EDGE)
-            bar.move({0, -this->speed * dt.asSeconds()});
+    const double Y  = bar.getPosition().y;
+    const double H  = this->bounds().size.y / 2.0f;
+    const bool up   = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
+    const bool down = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down);
 
-        this->direction = 1;
+    int mvDirection = (up)? -1 : (down)? 1 : 0;
+    if ( Flags::invert.first ) mvDirection *= -1;
+
+    this->direction = -mvDirection;
+
+    const float dy = mvDirection * this->speed * dt.asSeconds();
+
+    if ( dy < 0 ) {
+        if ( Y - H > Constants::W_EDGE ) this->bar.move({ 0, dy });
+    } else if ( dy > 0 ) {
+        if ( Y + H < Constants::HEIGHT - Constants::W_EDGE ) this->bar.move({ 0, dy });
     }
-    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down)) {
-        if (Y_pos + halfHeight < Constants::HEIGHT - Constants::W_EDGE)
-            bar.move({0, this->speed * dt.asSeconds()});
-
-        this->direction = -1;
-    } else if ( this->direction ) { this->direction = 0; }
 }
 
 void Human::refresh() {

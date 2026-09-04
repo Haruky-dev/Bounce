@@ -55,12 +55,12 @@ void TextureCache::Load( Progressive& prog ) {
         )
     );
 
-    this->__cache.reserve( properties.size() );
+    this->cache_.reserve( properties.size() );
 
     for ( const Asset& that : properties ) {
-        this->__cache[ that.id ] = std::make_unique<sf::Texture>();
+        this->cache_[ that.id ] = std::make_unique<sf::Texture>();
 
-        if ( !(this->__cache.at( that.id )->loadFromFile( that.path )) )
+        if ( !(this->cache_.at( that.id )->loadFromFile( that.path )) )
             throw std::runtime_error(
                 "Cannot load [Texture] at path: '" + that.path + "' !"
             );
@@ -70,9 +70,9 @@ void TextureCache::Load( Progressive& prog ) {
 }
 
 const sf::Texture& TextureCache::get( const std::string& id ) const {
-    const auto it = this->__cache.find( id );
+    const auto it = this->cache_.find( id );
 
-    if ( it == this->__cache.end() )
+    if ( it == this->cache_.end() )
         throw std::runtime_error(
             "Invalid given [ID] (id==" + id + ") for 'Texture' look-up!"
         );

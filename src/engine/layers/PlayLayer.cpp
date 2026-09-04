@@ -89,10 +89,10 @@ Action PlayLayer::feature() const {
 
 void PlayLayer::form_request() {
     // Keyboard request
-    this->__requests.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
-    this->__requests.emplace_back( sf::Keyboard::Key::Space, Action::raisePause );
+    this->requests_.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
+    this->requests_.emplace_back( sf::Keyboard::Key::Space, Action::raisePause );
 
-    this->__requests.emplace_back( sf::Mouse::Button::Left, Action::raiseMain
+    this->requests_.emplace_back( sf::Mouse::Button::Left, Action::raiseMain
         ).require( Constraint::bounds( this->UI.bounds.at(PlayUI::BTNS::MENU) ) );
 }
 

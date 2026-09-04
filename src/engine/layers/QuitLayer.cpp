@@ -6,7 +6,7 @@ QuitLayer::QuitLayer() : Layer(), accTime(sf::Time::Zero), T(std::chrono::second
 }
 
 void QuitLayer::Load() {
-    this->__requests.emplace_back(
+    this->requests_.emplace_back(
         sf::Keyboard::Key::C, Action::dropOverlap
     );
 }

@@ -23,20 +23,20 @@ void SFX::Load( Progressive& prog ) {
     };
 
     for ( size_t i = 0; i < paths.size(); i++ ) {
-        this->__cache.insert(
+        this->cache_.insert(
             std::make_pair(static_cast<SFX::Type>(i), sf::SoundBuffer())
         );
 
-        if ( !(this->__cache.at( static_cast<SFX::Type>(i) ).loadFromFile(paths.at(i))) )
+        if ( !(this->cache_.at( static_cast<SFX::Type>(i) ).loadFromFile(paths.at(i))) )
             throw std::runtime_error("[SFX] Loading failure for path='" + paths.at(i) + "'!");
 
         prog.increment_by( 20 );
     }
 
-    // seed the __pool to the first buffer
-    this->__pool.reserve(this->POOL_SIZE);
-    for (int i = 0; i < this->POOL_SIZE; i++ )
-        this->__pool.emplace_back( this->__cache.begin()->second );
+    // seed the pool_ to the first buffer
+    this->pool_.reserve(this->POOL_SIZE_);
+    for (int i = 0; i < this->POOL_SIZE_; i++ )
+        this->pool_.emplace_back( this->cache_.begin()->second );
 }
 
 void SFX::play( const SFX::Type T ) {
@@ -44,20 +44,20 @@ void SFX::play( const SFX::Type T ) {
 
     // Search for free/available slot
     sf::Sound* slot = nullptr;
-    for ( auto& S : this->__pool )
+    for ( auto& S : this->pool_ )
         if ( S.getStatus() != sf::Sound::Status::Playing ) {
             slot = &S; break;
         }
 
     // Not found? then use the oldest one
     if ( !slot ) {
-        slot = &this->__pool[this->next_slot];
+        slot = &this->pool_[this->next_slot_];
 
-        // circle next slot index. 0 -> 1 -> .. -> POOL_SIZE-1 -> 0
-        this->next_slot = (this->next_slot+1) % this->POOL_SIZE; 
+        // circle next slot index. 0 -> 1 -> .. -> POOL_SIZE_-1 -> 0
+        this->next_slot_ = (this->next_slot_+1) % this->POOL_SIZE_; 
     }
 
-    slot->setBuffer( this->__cache.at(T) );
+    slot->setBuffer( this->cache_.at(T) );
     slot->setVolume(150);
     slot->play();
 }

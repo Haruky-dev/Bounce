@@ -13,16 +13,16 @@
 
 class Game {
     private:
-        std::unique_ptr<sf::RenderWindow> _window;
-        std::vector<sf::Event> _events;
-        sf::Clock _clock;
-        Manager _manager;
-        bool _onFocus;
+        std::unique_ptr<sf::RenderWindow> window_;
+        std::vector<sf::Event> events_;
+        sf::Clock clock_;
+        Manager manager_;
+        bool onFocus_;
 
     private:
-        void _update( const sf::Time& );
-        void _pollEvents();
-        void _render() const;
+        void update_( const sf::Time& );
+        void pollEvents_();
+        void render_() const;
 
     public:
         Game();

@@ -41,10 +41,10 @@ class SetUI : public BaseUI {
         float bg_init_y;
 
     private:
-        std::array<sf::Sprite, 3> __init_modes() const;
-        std::array<sf::Sprite, 2> __init_marks() const;
-        void __init_bounds();
-        void __move_elements();
+        std::array<sf::Sprite, 3> init_modes_() const;
+        std::array<sf::Sprite, 2> init_marks_() const;
+        void init_bounds_();
+        void move_elements_();
 
     private:
         SetUI();

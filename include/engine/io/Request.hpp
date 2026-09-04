@@ -15,24 +15,24 @@
 class Request {
     friend class Layer;
 
-    std::variant<sf::Keyboard::Key, sf::Mouse::Button> __trigger;
-    std::vector<std::unique_ptr<Constraint>> __constraints;
-    Action __act;
+    std::variant<sf::Keyboard::Key, sf::Mouse::Button> trigger_;
+    std::vector<std::unique_ptr<Constraint>> constraints_;
+    Action act_;
 
     public:
         Request( sf::Keyboard::Key K, Action A )
-            : __trigger(K), __act(A) , __constraints() {}
+            : trigger_(K), act_(A) , constraints_() {}
 
         Request( sf::Mouse::Button B, Action A )
-            : __trigger(B), __act(A), __constraints() {}
+            : trigger_(B), act_(A), constraints_() {}
 
         template <typename... Cs>
         void require( Cs&&... cs ) {
-            ( __constraints.emplace_back(std::forward<Cs>(cs)), ...);
+            ( constraints_.emplace_back(std::forward<Cs>(cs)), ...);
         }
 
         bool allowed( const Context& context ) const {
-            for ( auto& C : this->__constraints )
+            for ( auto& C : this->constraints_ )
                 if ( !(C->satisfied(context)) )
                     return false;
 
@@ -40,13 +40,13 @@ class Request {
         }
 
         bool matches( const Input& in ) const {
-            if ( this->__trigger.index() ) { // Mouse button __trigger
-                return in.mouse.clicked && ( in.mouse.btn == std::get<sf::Mouse::Button>(this->__trigger) );
-            } else { // Keyboard button __trigger
-                return in.keyb.clicked && ( in.keyb.key == std::get<sf::Keyboard::Key>(this->__trigger) );
+            if ( this->trigger_.index() ) { // Mouse button trigger_
+                return in.mouse.clicked && ( in.mouse.btn == std::get<sf::Mouse::Button>(this->trigger_) );
+            } else { // Keyboard button trigger_
+                return in.keyb.clicked && ( in.keyb.key == std::get<sf::Keyboard::Key>(this->trigger_) );
             }
         }
 
-        bool keyTriggered()    const { return !this->__trigger.index(); }
-        bool buttonTriggered() const { return this->__trigger.index(); }
+        bool keyTriggered()    const { return !this->trigger_.index(); }
+        bool buttonTriggered() const { return this->trigger_.index(); }
 };

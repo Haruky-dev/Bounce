@@ -4,11 +4,11 @@
 
 
 Motion::Motion() :
-    _duration(sf::seconds(1.0f)), _elapsed(sf::Time::Zero),
-    _direction(1), _active(false)
+    duration_(sf::seconds(1.0f)), elapsed_(sf::Time::Zero),
+    direction_(1), active_(false)
     {}
 
 void Motion::reset() {
-    this->_elapsed = sf::Time::Zero;
-    this->_active = false;
+    this->elapsed_ = sf::Time::Zero;
+    this->active_ = false;
 }

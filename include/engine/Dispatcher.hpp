@@ -14,6 +14,6 @@ class Dispatcher {
         void handle( Manager&, const Action );
 
     private:
-        void __process_settings( const Action );
-        void __process_layers( const Action, Manager& );
+        void process_settings_( const Action );
+        void process_layers_( const Action, Manager& );
 };

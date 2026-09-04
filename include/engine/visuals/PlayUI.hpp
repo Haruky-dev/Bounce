@@ -28,7 +28,7 @@ class PlayUI : public BaseUI {
         std::unordered_map<PlayUI::BTNS, sf::Rect<int>> bounds;
 
     protected:
-        sf::Time _cdTime;
+        sf::Time cdTime_;
         bool P1_ready, P2_ready;
 
     private:
@@ -39,5 +39,5 @@ class PlayUI : public BaseUI {
         void configure() override;
         void sync();
         void set_players_ready( const bool, const bool );
-        void _update_banner( const sf::Time& );
+        void update_banner( const sf::Time& );
 };

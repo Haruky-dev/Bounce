@@ -29,7 +29,7 @@ class EndUI : public BaseUI {
         Animation animation;
 
     private:
-         std::array<sf::Text, 2> __init_scores();
+         std::array<sf::Text, 2> init_scores_();
 
     public:
         EndUI();

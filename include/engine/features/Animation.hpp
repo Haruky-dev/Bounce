@@ -5,10 +5,10 @@
 
 class Animation {
     private:
-        Motion __motion;
+        Motion motion_;
 
-        void __forward();
-        void __backward();
+        void forward_();
+        void backward_();
 
     public:
         enum class Status { In, Out };

@@ -12,7 +12,7 @@ class LoadUI : BaseUI {
 
     private:
         sf::RectangleShape bg;
-        sf::Font __font;
+        sf::Font font;
         sf::Text progressText;
         float v;
 

@@ -38,19 +38,19 @@ void MenuLayer::Render( sf::RenderWindow& win ) const {
 }
 
 void MenuLayer::form_request() {
-    // Keyboard __requests
-    this->__requests.emplace_back( sf::Keyboard::Key::P, Action::raisePlay  );
-    this->__requests.emplace_back( sf::Keyboard::Key::M, Action::raiseSett );
-    this->__requests.emplace_back( sf::Keyboard::Key::Q, Action::raiseQuit );
+    // Keyboard requests_
+    this->requests_.emplace_back( sf::Keyboard::Key::P, Action::raisePlay  );
+    this->requests_.emplace_back( sf::Keyboard::Key::M, Action::raiseSett );
+    this->requests_.emplace_back( sf::Keyboard::Key::Q, Action::raiseQuit );
 
-    // Mouse __requests
-    this->__requests.emplace_back(
+    // Mouse requests_
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::raisePlay
         ).require( Constraint::bounds( this->UI.bounds.at(MenuUI::BTNS::PLAY) ) );
-    this->__requests.emplace_back(
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::raiseSett
         ).require( Constraint::bounds( this->UI.bounds.at(MenuUI::BTNS::MENU) ) );
-    this->__requests.emplace_back(
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::raiseQuit
         ).require( Constraint::bounds( this->UI.bounds.at(MenuUI::BTNS::QUIT) ) );
 }

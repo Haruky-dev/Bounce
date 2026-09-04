@@ -2,7 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <vector>
 #include <memory>
 #include <string>
 
@@ -11,7 +10,6 @@
 
 class TextureCache {
     private:
-
         TextureCache() = default;
         TextureCache( const TextureCache& ) = delete;
 
@@ -25,7 +23,7 @@ class TextureCache {
         };
 
     private:
-        std::unordered_map< std::string, std::unique_ptr<sf::Texture> > __cache;
+        std::unordered_map< std::string, std::unique_ptr<sf::Texture> > cache_;
 
     public:
         static TextureCache& inst();

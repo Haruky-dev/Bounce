@@ -15,7 +15,7 @@ class BaseUI {
 
     protected:
         template <typename T>
-        sf::Vector2<T> __normalize( const sf::Rect<int>& bounds, const sf::Vector2<T>& pos ) {
+        sf::Vector2<T> normalize_( const sf::Rect<int>& bounds, const sf::Vector2<T>& pos ) {
             const T X = Constants::W_CTR.x - bounds.size.x / 2.0f;
             const T Y = Constants::W_CTR.y - bounds.size.y / 2.0f;
 

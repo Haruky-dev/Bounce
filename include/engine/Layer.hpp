@@ -24,18 +24,18 @@ class Layer {
     private:
         virtual Action feature() const { return Action::NONE; }
         virtual void form_request() {}
-        void __build_input() const {
-            this->__keys.clear();
-            this->__buttons.clear();
+        void build_input_() const {
+            this->keys_.clear();
+            this->buttons_.clear();
 
-            this->__keys.reserve( this->__requests.size() );
-            this->__buttons.reserve( this->__requests.size() );
+            this->keys_.reserve( this->requests_.size() );
+            this->buttons_.reserve( this->requests_.size() );
             
-            for ( const Request& R : this->__requests ) {
-                if ( R.__trigger.index() )
-                    this->__buttons.push_back( std::get<sf::Mouse::Button>(R.__trigger) );
+            for ( const Request& R : this->requests_ ) {
+                if ( R.trigger_.index() )
+                    this->buttons_.push_back( std::get<sf::Mouse::Button>(R.trigger_) );
                 else
-                    this->__keys.push_back( std::get<sf::Keyboard::Key>(R.__trigger) );
+                    this->keys_.push_back( std::get<sf::Keyboard::Key>(R.trigger_) );
             }
         }
 
@@ -51,12 +51,12 @@ class Layer {
         };
 
     protected:
-        std::vector<Request> __requests;
-        mutable std::vector<sf::Keyboard::Key> __keys;
-        mutable std::vector<sf::Mouse::Button> __buttons;
+        std::vector<Request> requests_;
+        mutable std::vector<sf::Keyboard::Key> keys_;
+        mutable std::vector<sf::Mouse::Button> buttons_;
         mutable bool load_flag = false;
 
-        explicit Layer() : __requests() {}
+        explicit Layer() : requests_() {}
 
     public:
         virtual void   Load() = 0;
@@ -73,12 +73,12 @@ class Layer {
             if ( this->animated() && !this->popable() )
                 context_f.input.mouse.clicked = false; // white lie lol
 
-            for ( const Request& request : this->__requests )
+            for ( const Request& request : this->requests_ )
                 if ( request.matches(context_f.input) && request.allowed(context_f) ) {
                     if ( request.buttonTriggered() )
                         SFX::inst().play(SFX::Type::CLICK);
 
-                    return request.__act;
+                    return request.act_;
                 }
 
             return Action::NONE;
@@ -89,19 +89,19 @@ class Layer {
 
         std::span<sf::Keyboard::Key> keys() const {
             if ( !load_flag ) {
-                this->__build_input();
+                this->build_input_();
                 this->load_flag = true;
             }
 
-            return std::span( this->__keys.begin(), this->__keys.end() );
+            return std::span( this->keys_.begin(), this->keys_.end() );
         }
         std::span<sf::Mouse::Button> buttons() const {
             if ( !load_flag ) {
-                this->__build_input();
+                this->build_input_();
                 this->load_flag = true;
             }
 
-            return std::span( this->__buttons.begin(), this->__buttons.end() );
+            return std::span( this->buttons_.begin(), this->buttons_.end() );
         }
 
         // actions

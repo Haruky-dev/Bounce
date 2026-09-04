@@ -11,7 +11,7 @@
 
 
 PlayUI::PlayUI() :
-    _cdTime(sf::Time::Zero),
+    cdTime_(sf::Time::Zero),
 
     bg(TextureCache::inst().get("play/bg")),
     pad(TextureCache::inst().get("play/pad")),
@@ -54,7 +54,7 @@ void PlayUI::configure() {
 void PlayUI::update( const sf::Time& dt ) {
     if ( Flags::goalScored ) {
         Flags::goalScored = false;
-        this->_cdTime = sf::Time::Zero;
+        this->cdTime_ = sf::Time::Zero;
         Variables::CD = 0;
 
         this->score_1.setString( std::to_string(Variables::P1_SCORE) );
@@ -62,20 +62,20 @@ void PlayUI::update( const sf::Time& dt ) {
     }
 
     if ( Variables::CD >= Constants::maxCD ) {
-        this->_cdTime = sf::Time::Zero;
+        this->cdTime_ = sf::Time::Zero;
         Variables::CD = -1;
 
         this->countD.setString( std::to_string( Constants::maxCD ) );
 
     } else if ( Variables::CD != -1 ) {
         if ( !P1_ready || !P2_ready ) {
-            this->_update_banner(dt);
+            this->update_banner(dt);
             return;
         }
 
-        Variables::CD = static_cast<int>( this->_cdTime.asSeconds() );
+        Variables::CD = static_cast<int>( this->cdTime_.asSeconds() );
         this->countD.setString( std::to_string( Constants::maxCD - Variables::CD ) );
-        this->_cdTime += dt;
+        this->cdTime_ += dt;
     }
 }
 
@@ -88,7 +88,7 @@ void PlayUI::set_players_ready( const bool P1, const bool P2 ) {
     this->P1_ready = P1; this->P2_ready = P2;
 }
 
-void PlayUI::_update_banner( const sf::Time& dt ) {
+void PlayUI::update_banner( const sf::Time& dt ) {
     this->banner_anim.update(dt);
 
     sf::Color b_clr = this->banner.getColor();

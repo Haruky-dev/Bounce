@@ -9,31 +9,31 @@
 class Freeze : public Buff {
     public:
         Freeze( Buff::Target T, int duration ) :
-            Buff(T), _elapsed(sf::Time::Zero), _duration(duration),
-            _org_flags(Flags::PlayerFrozen, Flags::PlayerFrozen)
+            Buff(T), elapsed_(sf::Time::Zero), duration_(duration),
+            flags_cache_(Flags::PlayerFrozen, Flags::PlayerFrozen)
             {
                 std::cout << "  -- Freeze ";
             }
 
         void update( const sf::Time& dt ) override {
-            if ( this->_elapsed.asMilliseconds() >= this->_duration ) {
-                this->_elapsed = sf::Time::Zero;
+            if ( this->elapsed_.asMilliseconds() >= this->duration_ ) {
+                this->elapsed_ = sf::Time::Zero;
                 this->status = Buff::Status::OFF;
                 return;
         }
 
-            this->_elapsed += dt;
+            this->elapsed_ += dt;
         }
 
         void apply() override {
             // save && apply
             switch (this->target) {
                 case Buff::Target::P1:
-                    this->_org_flags.first = Flags::PlayerFrozen;
+                    this->flags_cache_.first = Flags::PlayerFrozen;
                     Flags::PlayerFrozen = true;
                     break;
                 case Buff::Target::P2:
-                    this->_org_flags.second = Flags::computFrozen;
+                    this->flags_cache_.second = Flags::computFrozen;
                     Flags::computFrozen = true;
                     break;
 
@@ -44,16 +44,16 @@ class Freeze : public Buff {
             // restore
             switch (this->target) {
                 case Buff::Target::P1:
-                    Flags::PlayerFrozen = this->_org_flags.first; break;
+                    Flags::PlayerFrozen = this->flags_cache_.first; break;
                 case Buff::Target::P2:
-                    Flags::computFrozen = this->_org_flags.second; break;
+                    Flags::computFrozen = this->flags_cache_.second; break;
 
                 default: throw std::runtime_error("Invalid 'Buff::Target' given to Buff::Freeze");
             }
         }
 
     public:
-        sf::Time _elapsed;
-        std::pair<bool, bool> _org_flags;
-        int _duration;
+        sf::Time elapsed_;
+        std::pair<bool, bool> flags_cache_;
+        int duration_;
 };

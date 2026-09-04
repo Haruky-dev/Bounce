@@ -19,7 +19,7 @@ void QuitUI::configure() {
     this->bg.setScale({1.5f, 1.5f});
 
     this->bounds[QuitUI::BTNS::CANCEL] = sf::Rect<int>(
-        this->__normalize<int>( this->bg.getTextureRect(), {165, 125} ),
+        this->normalize_<int>( this->bg.getTextureRect(), {165, 125} ),
         {47, 13}
     );
 }

@@ -25,15 +25,15 @@ void PauseLayer::Render( sf::RenderWindow& win ) const {
 }
 
 void PauseLayer::form_request() {
-    // Keyboard __requests
-    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
-    this->__requests.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
+    // Keyboard requests_
+    this->requests_.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
+    this->requests_.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
 
-    // Mouse __requests
-    this->__requests.emplace_back(
+    // Mouse requests_
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::dropOverlap
         ).require( Constraint::bounds( this->UI.bounds.at(PauseUI::BTNS::RESUME) ) );
-    this->__requests.emplace_back(
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::raiseMain
         ).require( Constraint::bounds( this->UI.bounds.at(PauseUI::BTNS::QUIT) ) );
 }

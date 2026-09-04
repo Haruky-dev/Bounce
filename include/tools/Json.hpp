@@ -28,18 +28,18 @@ class Json {
 
 
     private:
-        static inline json __settings;
-        static inline json __modes[3];
+        static inline json settings_;
+        static inline json modes_[3];
 
     private:
-        static void _init();
-        static void _load( const Json::Type );
-        static json _value_at( const Json::Type, const str& );
-        static bool _invalid() {
-            if ( Json::__settings.is_null() || Json::__settings.empty() ) return true;
+        static void init_();
+        static void load_( const Json::Type );
+        static json value_at_( const Json::Type, const str& );
+        static bool invalid_() {
+            if ( Json::settings_.is_null() || Json::settings_.empty() ) return true;
 
             for ( int i = 0; i < 3; i++ )
-                if ( Json::__modes[i].is_null() || Json::__modes[i].empty() ) return true;
+                if ( Json::modes_[i].is_null() || Json::modes_[i].empty() ) return true;
 
             return false;
         }

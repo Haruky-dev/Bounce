@@ -5,23 +5,23 @@
 
 int Math::randi( int min, int max, bool rand_sign ) {
     std::uniform_int_distribution<int> dist( min, max );
-    int val = dist(Math::__rengine);
+    int val = dist(Math::rengine_);
 
     if ( !rand_sign ) return val;
 
     std::uniform_int_distribution<int> sign_dist( 0, 1 );
 
-    return val * ( sign_dist(Math::__rengine)? 1 : -1  );
+    return val * ( sign_dist(Math::rengine_)? 1 : -1  );
 }
 float Math::randf( float min, float max, bool rand_sign ) {
     std::uniform_real_distribution<float> dist( min, max );
-    float val = dist(Math::__rengine);
+    float val = dist(Math::rengine_);
 
     if ( !rand_sign ) return val;
 
     std::uniform_real_distribution<float> sign_dist( 0, 1 );
 
-    return val * ( sign_dist(Math::__rengine)? 1 : -1  );
+    return val * ( sign_dist(Math::rengine_)? 1 : -1  );
 }
 
 sf::Vector2f Math::Normalize( const sf::Vector2f& A ) {

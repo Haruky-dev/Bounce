@@ -11,7 +11,7 @@ class Motion {
 
     void reset();
 
-    sf::Time _duration, _elapsed;
-    int _direction; // 1==forward, -1==backward
-    bool _active;
+    sf::Time duration_, elapsed_;
+    int direction_; // 1==forward, -1==backward
+    bool active_;
 };

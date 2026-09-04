@@ -33,34 +33,34 @@ void SetLayer::Render( sf::RenderWindow& win ) const {
 }
 
 void SetLayer::form_request() {
-    // Keyboard __requests
-    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
+    // Keyboard requests_
+    this->requests_.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
 
-    // Mouse __requests
-    this->__requests.emplace_back(
+    // Mouse requests_
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::dropOverlap
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::EXIT) ) );
-    this->__requests.emplace_back(
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::incMaxScr
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_INC)),
                 Constraint::cooldown(Constants::DELAY_t) );
-    this->__requests.emplace_back(
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::decMaxScr
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::SCR_ARW_DEC) ),
                 Constraint::cooldown(Constants::DELAY_t) );
-    this->__requests.emplace_back(
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::incDiff
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_INC)),
                 Constraint::cooldown(Constants::DELAY_t) );
-    this->__requests.emplace_back(
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::decDiff
         ).require( Constraint::bounds( this->UI.bounds.at(SetUI::BTNS::DIF_ARW_DEC)),
                 Constraint::cooldown(Constants::DELAY_t) );
-    this->__requests.emplace_back(
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::toggleMusic
         ).require( Constraint::bounds(this->UI.bounds.at(SetUI::BTNS::MUSIC_MARK)),
                 Constraint::cooldown(Constants::DELAY_t) );
-    this->__requests.emplace_back(
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::toggleSFX
         ).require( Constraint::bounds(this->UI.bounds.at(SetUI::BTNS::SFX_MARK)),
                 Constraint::cooldown(Constants::DELAY_t) );

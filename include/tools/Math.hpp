@@ -18,5 +18,5 @@ namespace Math {
     double easeInOut( double x );
     double easeElastic( double x );
 
-    inline std::mt19937 __rengine(std::random_device{}());
+    inline std::mt19937 rengine_(std::random_device{}());
 };

@@ -24,7 +24,7 @@ class BuffOperator {
         void update( const sf::Time& );
 
     private:
-        int period;
-        sf::Time elapsed, lastFire;
-        std::forward_list<std::unique_ptr<Buff>> __list;
+        int period_;
+        sf::Time elapsed_, lastFire_;
+        std::forward_list<std::unique_ptr<Buff>> list_;
 };

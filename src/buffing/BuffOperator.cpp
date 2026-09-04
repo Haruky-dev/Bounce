@@ -11,31 +11,31 @@ BuffOperator& BuffOperator::inst() {
 }
 
 BuffOperator::BuffOperator() :
-    period(Variables::buffingPeriod),
-    elapsed(sf::Time::Zero),
-    lastFire(sf::Time::Zero)
+    period_(Variables::buffingPeriod),
+    elapsed_(sf::Time::Zero),
+    lastFire_(sf::Time::Zero)
     {}
 
 void BuffOperator::update( const sf::Time& dt ) {
-    if ( this->elapsed.asSeconds() >= this->period ) {
-        this->elapsed = sf::Time::Zero;
-        this->__list.push_front( Generator::yield() );
-        this->__list.front()->apply();
+    if ( this->elapsed_.asSeconds() >= this->period_ ) {
+        this->elapsed_ = sf::Time::Zero;
+        this->list_.push_front( Generator::yield() );
+        this->list_.front()->apply();
         std::cout << "buff [pushed]\n";
 
-    } else this->elapsed+=dt;
+    } else this->elapsed_+=dt;
 
-    if ( this->__list.empty() ) return;
+    if ( this->list_.empty() ) return;
 
-    std::forward_list<std::unique_ptr<Buff>>::iterator curr = this->__list.begin();
-    std::forward_list<std::unique_ptr<Buff>>::iterator prev = this->__list.before_begin();
+    std::forward_list<std::unique_ptr<Buff>>::iterator curr = this->list_.begin();
+    std::forward_list<std::unique_ptr<Buff>>::iterator prev = this->list_.before_begin();
 
-    while ( curr != this->__list.end() ) {
+    while ( curr != this->list_.end() ) {
         (*curr)->update( dt );
 
         if ( (*curr)->status == Buff::Status::OFF ) {
             (*curr)->revert();
-            curr = this->__list.erase_after(prev);
+            curr = this->list_.erase_after(prev);
             std::cout << "buff [removed]\n";
 
         } else {

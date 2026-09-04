@@ -6,7 +6,7 @@
 
 
 PauseUI::PauseUI() :
-    animation(), buttons( __make_btns() ),
+    animation(), buttons( make_btns_() ),
     bg(TextureCache::inst().get("pause/bg")),
     shadow(TextureCache::inst().get("shad_1")),
     bg_rect(bg.getTextureRect())
@@ -19,13 +19,13 @@ void PauseUI::configure() {
 
     // init buttons bounds to their final position
     this->bounds[PauseUI::BTNS::QUIT] = sf::Rect<int>(
-        this->__normalize<int>( this->bg_rect, {20, 190} ), {190, 70}
+        this->normalize_<int>( this->bg_rect, {20, 190} ), {190, 70}
     );
     this->bounds[PauseUI::BTNS::RESUME] = sf::Rect<int>(
-        this->__normalize<int>( this->bg_rect, {240, 190} ), {190, 70}
+        this->normalize_<int>( this->bg_rect, {240, 190} ), {190, 70}
     );
 
-    this->__move_btns();
+    this->move_btns_();
 }
 
 void PauseUI::update( const sf::Time& dt ) {
@@ -50,14 +50,14 @@ void PauseUI::update( const sf::Time& dt ) {
     this->buttons.at(0).setColor( btn_c );
     this->buttons.at(1).setColor( btn_c );
 
-    this->__move_btns();
+    this->move_btns_();
 }
 
 void PauseUI::exit_animation() {
     this->animation.exit();
 }
 
-void PauseUI::__move_btns() {
+void PauseUI::move_btns_() {
     for ( int i = 0; i < this->BTN_COUNT; i++ ) {
         static const int width = this->buttons.at(i).getTexture().getSize().x;
 

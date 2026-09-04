@@ -24,15 +24,15 @@ void EndLayer::Render( sf::RenderWindow& win ) const {
 }
 
 void EndLayer::form_request() {
-    // Keyboard __requests
-    this->__requests.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
-    this->__requests.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
+    // Keyboard requests_
+    this->requests_.emplace_back( sf::Keyboard::Key::Enter, Action::dropOverlap );
+    this->requests_.emplace_back( sf::Keyboard::Key::Escape, Action::raiseMain );
 
-    // Mouse __requests
-    this->__requests.emplace_back(
+    // Mouse requests_
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::dropOverlap
         ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::QUIT) ) );
-    this->__requests.emplace_back(
+    this->requests_.emplace_back(
             sf::Mouse::Button::Left, Action::raiseMain
         ).require( Constraint::bounds( this->UI.bounds.at(EndUI::BTNS::RESTART) ) );
 }

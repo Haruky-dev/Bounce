@@ -7,45 +7,45 @@
 
 
 Game::Game() {
-    this->_window = std::make_unique<sf::RenderWindow>(
+    this->window_ = std::make_unique<sf::RenderWindow>(
         sf::VideoMode( sf::Vector2u(Constants::WIDTH, Constants::HEIGHT) ),
         Json::String("win.title", Json::Type::SET ),
         sf::Style::Default & ~sf::Style::Resize
     );
-    _window->setPosition(
+    window_->setPosition(
         ( sf::Vector2i(sf::VideoMode::getDesktopMode().size) -
           sf::Vector2i(Constants::WIDTH, Constants::HEIGHT) )
         / 2 );
 }
 
 void Game::run() {
-    while ( this->_window->isOpen() ) {
-        this->_pollEvents();
+    while ( this->window_->isOpen() ) {
+        this->pollEvents_();
 
-        if ( this->_onFocus )
-            this->_manager.Update(
-                this->_clock.restart(), std::span<sf::Event>(this->_events)
+        if ( this->onFocus_ )
+            this->manager_.Update(
+                this->clock_.restart(), std::span<sf::Event>(this->events_)
             );
 
-        if ( this->_manager.quit_flag ) this->_window->close();
+        if ( this->manager_.quit_flag ) this->window_->close();
 
-        this->_window->clear();
+        this->window_->clear();
 
-        this->_manager.Render( *this->_window );
+        this->manager_.Render( *this->window_ );
 
-        this->_window->display();
+        this->window_->display();
     }
 
 }
 
-void Game::_pollEvents() {
-    this->_events.clear();
+void Game::pollEvents_() {
+    this->events_.clear();
 
-    while ( const std::optional<sf::Event> ev = this->_window->pollEvent() ) {
-        if ( ev->is<sf::Event::FocusGained>() ) this->_onFocus = true;
-        else if ( ev->is<sf::Event::FocusLost>() ) this->_onFocus = false;
+    while ( const std::optional<sf::Event> ev = this->window_->pollEvent() ) {
+        if ( ev->is<sf::Event::FocusGained>() ) this->onFocus_ = true;
+        else if ( ev->is<sf::Event::FocusLost>() ) this->onFocus_ = false;
 
-        if ( this->_onFocus )
-            this->_events.push_back( *ev );
+        if ( this->onFocus_ )
+            this->events_.push_back( *ev );
     }
 }

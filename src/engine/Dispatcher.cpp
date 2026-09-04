@@ -20,7 +20,7 @@ void Dispatcher::handle( Manager& manager, const Action A ) {
         case Action::raiseQuit:
         case Action::raiseGameOv:
         case Action::dropOverlap:
-            this->__process_layers( A,  manager );
+            this->process_layers_( A,  manager );
             break;
 
         case Action::incMaxScr:
@@ -29,7 +29,7 @@ void Dispatcher::handle( Manager& manager, const Action A ) {
         case Action::decDiff:
         case Action::toggleMusic:
         case Action::toggleSFX:
-            __process_settings( A );
+            process_settings_( A );
             break;
 
         default: return;
@@ -39,7 +39,7 @@ void Dispatcher::handle( Manager& manager, const Action A ) {
 }
 
 
-void Dispatcher::__process_settings( const Action A ) {
+void Dispatcher::process_settings_( const Action A ) {
     switch ( A ) {
         case Action::incMaxScr:
             ( Variables::maxScore < 9 )? Variables::maxScore++ : 1;
@@ -81,48 +81,48 @@ void Dispatcher::__process_settings( const Action A ) {
     }
 }
 
-void Dispatcher::__process_layers( const Action A, Manager& M ) {
-    Layer* lastLayer = M.__stack.back().layer.get();
+void Dispatcher::process_layers_( const Action A, Manager& M ) {
+    Layer* lastLayer = M.stack_.back().layer.get();
 
     switch ( A ) {
         case Action::raiseMain:
-            M.__stack.clear();
-            M._pushLayer( Layer::Type::MainMenu );
+            M.stack_.clear();
+            M.pushLayer_( Layer::Type::MainMenu );
             break;
 
         case Action::raisePause:
             lastLayer->pause();
-            M._pushLayer( Layer::Type::Pause, true, true );
+            M.pushLayer_( Layer::Type::Pause, true, true );
             break;
 
         case Action::raisePlay:
             lastLayer->exit();
-            M._pushLayer( Layer::Type::Play );
+            M.pushLayer_( Layer::Type::Play );
             break;
 
         case Action::raiseSett:
             lastLayer->pause();
-            M._pushLayer( Layer::Type::Setting, true );
+            M.pushLayer_( Layer::Type::Setting, true );
             break;
 
         case Action::raiseQuit:
             lastLayer->pause();
-            M._pushLayer( Layer::Type::Quit, true );
+            M.pushLayer_( Layer::Type::Quit, true );
             break;
 
         case Action::raiseGameOv:
             lastLayer->pause();
-            M._pushLayer( Layer::Type::GameOver, true, true );
+            M.pushLayer_( Layer::Type::GameOver, true, true );
             break;
 
         case Action::dropOverlap: // dropOverLayer
             assert(
-                M.__stack.back().onOverlap
-                && (M.__stack.size() > 1)
+                M.stack_.back().onOverlap
+                && (M.stack_.size() > 1)
             );
 
             lastLayer->exit();
-            M.__stack.back().onExit = true;
+            M.stack_.back().onExit = true;
             break;
 
         default: return;

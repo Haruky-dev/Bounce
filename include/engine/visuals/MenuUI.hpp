@@ -36,7 +36,7 @@ class MenuUI : public BaseUI {
 
     protected:
         // helper initializer for 'btns' (std::array<sf::Sprite>)
-        static std::array< sf::Sprite, BTN_COUNT > __make_btns() {
+        static std::array< sf::Sprite, BTN_COUNT > make_btns_() {
             TextureCache& inst = TextureCache::inst();
 
             return {
@@ -46,5 +46,5 @@ class MenuUI : public BaseUI {
             };
         }
 
-        void __init_bounds();
+        void init_bounds_();
 };

@@ -5,8 +5,8 @@
 
 
 LoadUI::LoadUI() :
-    BaseUI(), __font("assets/fonts/RasterForge.ttf"),
-    progressText(__font, "")
+    BaseUI(), font("assets/fonts/RasterForge.ttf"),
+    progressText(font, "")
     {}
 
 void LoadUI::configure() {

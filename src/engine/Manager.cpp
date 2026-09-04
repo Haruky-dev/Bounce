@@ -23,35 +23,35 @@
 
 
 // -- CONSTRUCTOR/DEST SECTION
-Manager::Manager() : __stack() {
+Manager::Manager() : stack_() {
     // register all states
-    this->__register[Layer::Type::Loading]  = []() { return std::make_unique<LoadLayer>(); };
-    this->__register[Layer::Type::MainMenu] = []() { return std::make_unique<MenuLayer>(); };
-    this->__register[Layer::Type::Setting]  = []() { return std::make_unique<SetLayer>(); };
-    this->__register[Layer::Type::Play]     = []() { return std::make_unique<PlayLayer>(); };
-    this->__register[Layer::Type::Pause]    = []() { return std::make_unique<PauseLayer>(); };
-    this->__register[Layer::Type::GameOver] = []() { return std::make_unique<EndLayer>(); };
-    this->__register[Layer::Type::Quit]     = []() { return std::make_unique<QuitLayer>(); };
+    this->register_[Layer::Type::Loading]  = []() { return std::make_unique<LoadLayer>(); };
+    this->register_[Layer::Type::MainMenu] = []() { return std::make_unique<MenuLayer>(); };
+    this->register_[Layer::Type::Setting]  = []() { return std::make_unique<SetLayer>(); };
+    this->register_[Layer::Type::Play]     = []() { return std::make_unique<PlayLayer>(); };
+    this->register_[Layer::Type::Pause]    = []() { return std::make_unique<PauseLayer>(); };
+    this->register_[Layer::Type::GameOver] = []() { return std::make_unique<EndLayer>(); };
+    this->register_[Layer::Type::Quit]     = []() { return std::make_unique<QuitLayer>(); };
 
-    __stack.push_back( {this->__register[Layer::Type::Loading]()} );
-    __stack.back().layer->Load();
-    this->__stack.back().Loaded = true;
+    stack_.push_back( {this->register_[Layer::Type::Loading]()} );
+    stack_.back().layer->Load();
+    this->stack_.back().Loaded = true;
 
     this->quit_flag = false;
 }
 
 // -- PUBLIC FUNCs SECTION
 void Manager::Update( const sf::Time& dt, std::span<const sf::Event> events ) {
-    if ( this->__stack.empty() )
+    if ( this->stack_.empty() )
         return;
 
-    this->_updateLayers( dt );
+    this->updateLayers_( dt );
 
-    Layer& curr = *(this->__stack.back().layer);
+    Layer& curr = *(this->stack_.back().layer);
 
-    this->_controlExit( events );
+    this->controlExit_( events );
 
-    this->_controlAction(
+    this->controlAction_(
         curr.Read({
             std::chrono::steady_clock::now(),
             Input(
@@ -62,63 +62,63 @@ void Manager::Update( const sf::Time& dt, std::span<const sf::Event> events ) {
 }
 
 void Manager::Render( sf::RenderWindow& win ) const {
-    if ( !(this->__stack.empty()) )
-        this->_renderLayers( win );
+    if ( !(this->stack_.empty()) )
+        this->renderLayers_( win );
 }
 
 
 // -- PRIVATE Func Section
-void Manager::_pushLayer( Layer::Type T, bool overlapping, bool freezeLast ) {
-    if ( !(this->__stack.empty()) )
-        if ( this->__stack.back().layer->type() == T )
+void Manager::pushLayer_( Layer::Type T, bool overlapping, bool freezeLast ) {
+    if ( !(this->stack_.empty()) )
+        if ( this->stack_.back().layer->type() == T )
             return;
 
     if ( freezeLast )
-        this->__stack.back().onFreeze = true;
+        this->stack_.back().onFreeze = true;
 
-    this->__stack.push_back( {this->__register[T](), overlapping} );
+    this->stack_.push_back( {this->register_[T](), overlapping} );
 
-    if ( !(this->__stack.back().Loaded) ) {
-        this->__stack.back().layer->Load();
-        this->__stack.back().Loaded = true;
+    if ( !(this->stack_.back().Loaded) ) {
+        this->stack_.back().layer->Load();
+        this->stack_.back().Loaded = true;
     }
 
-    this->__stack.back().layer->enter();
+    this->stack_.back().layer->enter();
 }
 
-void Manager::_controlAction( const Action A ) {
+void Manager::controlAction_( const Action A ) {
     if ( A == Action::Quit )
         this->quit_flag = true;
     else
         Dispatcher::inst().handle( *this, A );
 }
 
-void Manager::_controlExit( std::span<const sf::Event> events ) {
+void Manager::controlExit_( std::span<const sf::Event> events ) {
     const bool exit_requested = std::ranges::find_if(
         events.begin(), events.end(),
         [] ( const sf::Event& E ) { return E.is<sf::Event::Closed>(); }
     ) != events.end();
 
     if ( exit_requested ) {
-        if ( this->__stack.back().layer->type() != Layer::Type::MainMenu )
+        if ( this->stack_.back().layer->type() != Layer::Type::MainMenu )
             this->quit_flag = true;
 
-        this->__stack.back().layer->pause();
-        this->_pushLayer(Layer::Type::Quit, true);
+        this->stack_.back().layer->pause();
+        this->pushLayer_(Layer::Type::Quit, true);
     }
 }
 
-void Manager::_updateLayers( const sf::Time& dt ) {
-    int I = static_cast<int>(this->__stack.size()) - 1;
+void Manager::updateLayers_( const sf::Time& dt ) {
+    int I = static_cast<int>(this->stack_.size()) - 1;
 
     for ( ; I >= 0; I-- ) {
-        if ( !(this->__stack.at( I ).onFreeze) )
-            this->__stack.at( I ).layer->Update( dt );
+        if ( !(this->stack_.at( I ).onFreeze) )
+            this->stack_.at( I ).layer->Update( dt );
 
-        if ( !(this->__stack.at( I ).onOverlap) ) break;
+        if ( !(this->stack_.at( I ).onOverlap) ) break;
     }
 
-    State& state = this->__stack.back();
+    State& state = this->stack_.back();
 
     // An on-exit + animated, layer has finished its exit animation
     const bool flag = state.layer                // non-nullptr
@@ -127,24 +127,24 @@ void Manager::_updateLayers( const sf::Time& dt ) {
                    && state.layer->popable(); // animation done
 
     if ( flag ) {
-        this->__stack.pop_back();
-        assert( !(this->__stack.empty()) );
+        this->stack_.pop_back();
+        assert( !(this->stack_.empty()) );
 
-        this->__stack.back().onFreeze = false;
-        this->__stack.back().layer->resume(); // optional, might delete later on
+        this->stack_.back().onFreeze = false;
+        this->stack_.back().layer->resume(); // optional, might delete later on
     }
 }
 
-void Manager::_renderLayers( sf::RenderWindow& win ) const {
-    // render all (top + overlapping) states in __stack starting from the first
-    int currIndex = static_cast<int>(this->__stack.size()) - 1;
+void Manager::renderLayers_( sf::RenderWindow& win ) const {
+    // render all (top + overlapping) states in stack_ starting from the first
+    int currIndex = static_cast<int>(this->stack_.size()) - 1;
 
     // find index of last state that isn't overlaping
         // AKA a main state, that takes up the whole window
-    while ( (currIndex > 0) && __stack.at( currIndex).onOverlap ) {
+    while ( (currIndex > 0) && stack_.at( currIndex).onOverlap ) {
         currIndex--;
     }
 
-    for (int i = currIndex; i < __stack.size(); i++)
-        __stack.at( i ).layer->Render( win );
+    for (int i = currIndex; i < stack_.size(); i++)
+        stack_.at( i ).layer->Render( win );
 }

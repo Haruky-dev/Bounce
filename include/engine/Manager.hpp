@@ -25,16 +25,16 @@ class Manager {
         // A storing unit that holds factory functions of layers
         std::unordered_map<
             Layer::Type, std::function<std::unique_ptr<Layer>()>
-            > __register;
+            > register_;
 
-        std::vector<State> __stack;
+        std::vector<State> stack_;
 
     private:
-        void _pushLayer( Layer::Type, bool overlapping=false, bool freezeLast=false );
-        void _updateLayers( const sf::Time& );
-        void _controlAction( const Action );
-        void _controlExit( std::span<const sf::Event> );
-        void _renderLayers( sf::RenderWindow&  ) const;
+        void pushLayer_( Layer::Type, bool overlapping=false, bool freezeLast=false );
+        void updateLayers_( const sf::Time& );
+        void controlAction_( const Action );
+        void controlExit_( std::span<const sf::Event> );
+        void renderLayers_( sf::RenderWindow&  ) const;
 
     public:
         bool quit_flag;

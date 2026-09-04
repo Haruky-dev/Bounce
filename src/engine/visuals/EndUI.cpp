@@ -9,7 +9,7 @@
 
 EndUI::EndUI() :
     animation(.4f),
-    scores( __init_scores() ),
+    scores( init_scores_() ),
     bg(TextureCache::inst().get("end/bg")),
     shadow(TextureCache::inst().get("shad_2")),
     winner(TextureCache::inst().get("end/winner")),
@@ -22,13 +22,13 @@ void EndUI::configure() {
 
     // init buttons bounds to their final position
     this->bounds[EndUI::BTNS::QUIT] = sf::Rect<int>(
-        this->__normalize<int>( this->bg_rect, {25, 210} ), {185, 60}
+        this->normalize_<int>( this->bg_rect, {25, 210} ), {185, 60}
     );
     this->bounds[EndUI::BTNS::RESTART] = sf::Rect<int>(
-        this->__normalize<int>( this->bg_rect, {240, 210} ), {185, 60}
+        this->normalize_<int>( this->bg_rect, {240, 210} ), {185, 60}
     );
 
-    this->winner.setPosition( this->__normalize<float>( this->bg_rect, {
+    this->winner.setPosition( this->normalize_<float>( this->bg_rect, {
         60.0f + 220 * ( Variables::P1_SCORE < Variables::P2_SCORE ),
         175
     }) );
@@ -51,7 +51,7 @@ void EndUI::update( const sf::Time& dt ) {
     this->winner.setScale( {s, s} );
 }
 
-std::array<sf::Text, 2> EndUI::__init_scores() {
+std::array<sf::Text, 2> EndUI::init_scores_() {
     std::array<sf::Text, 2> arr({
         sf::Text( FontCache::MineCraf, std::to_string(Variables::P1_SCORE) ),
         sf::Text( FontCache::MineCraf, std::to_string(Variables::P2_SCORE) )
@@ -59,7 +59,7 @@ std::array<sf::Text, 2> EndUI::__init_scores() {
 
     for ( int i = 0; i < arr.size(); i++ ) {
         arr.at( i ).setFillColor( sf::Color( 26, 26, 46, 255) );
-        arr.at( i ).setPosition( this->__normalize<float>( this->bg_rect,
+        arr.at( i ).setPosition( this->normalize_<float>( this->bg_rect,
             { (float) 175 + i*80, 140 }
         ) );
         arr.at( i ).setScale({ 0.8f, 0.8f });

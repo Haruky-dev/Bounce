@@ -14,7 +14,7 @@ MenuUI::MenuUI() :
     credit(TextureCache::inst().get("mm/c")),
     version(TextureCache::inst().get("mm/v")),
     bg_rect(bg.getTextureRect()),
-    btns( this->__make_btns() )
+    btns( this->make_btns_() )
     {}
 
 
@@ -25,7 +25,7 @@ void MenuUI::configure() {
         this->btns.at( i ).setScale( {2.f, 2.f} );
     }
 
-    this->__init_bounds();
+    this->init_bounds_();
 
     this->credit.setOrigin( sf::Vector2f(this->credit.getTexture().getSize()) / 2.0f );
     this->credit.setPosition( {Constants::WIDTH - this->credit.getTexture().getSize().x/2.0f , Constants::HEIGHT - 20.0f} );
@@ -33,11 +33,11 @@ void MenuUI::configure() {
     this->version.setPosition( {5.0f, 5.0f} );
 }
 
-void MenuUI::__init_bounds() {
-    this->bounds[MenuUI::BTNS::PLAY] = sf::Rect<int>( this->__normalize<int>(this->bg_rect,
+void MenuUI::init_bounds_() {
+    this->bounds[MenuUI::BTNS::PLAY] = sf::Rect<int>( this->normalize_<int>(this->bg_rect,
         {(int)Constants::W_CTR.x-50, (int)Constants::W_CTR.y-110}), {100, 40} );
-    this->bounds[MenuUI::BTNS::MENU] = sf::Rect<int>( this->__normalize<int>(this->bg_rect,
+    this->bounds[MenuUI::BTNS::MENU] = sf::Rect<int>( this->normalize_<int>(this->bg_rect,
         {(int)Constants::W_CTR.x-50, (int)Constants::W_CTR.y-20}), {100, 40} );
-    this->bounds[MenuUI::BTNS::QUIT] = sf::Rect<int>( this->__normalize<int>(this->bg_rect,
+    this->bounds[MenuUI::BTNS::QUIT] = sf::Rect<int>( this->normalize_<int>(this->bg_rect,
         {(int)Constants::W_CTR.x-50, (int)Constants::W_CTR.y+70}), {100, 40} );
 }

@@ -41,7 +41,7 @@ class PauseUI : public BaseUI {
         void exit_animation();
 
     protected:
-        static std::array<sf::Sprite, BTN_COUNT> __make_btns() {
+        static std::array<sf::Sprite, BTN_COUNT> make_btns_() {
             const TextureCache& inst = TextureCache::inst();
 
             return {
@@ -50,5 +50,5 @@ class PauseUI : public BaseUI {
             };
         }
 
-        void __move_btns();
+        void move_btns_();
 };

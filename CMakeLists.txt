@@ -21,7 +21,6 @@ add_executable( ${PROJECT_NAME}
 
     src/tools/Math.cpp
     src/tools/Json.cpp
-    src/tools/Flags.cpp
     src/tools/FrameRate.cpp
     src/tools/Collision.cpp
 

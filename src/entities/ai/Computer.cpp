@@ -41,7 +41,7 @@ void Computer::update( const sf::Time& dt, const Ball& ball ) {
 
     
     //---------------------- [onFreeze]
-    if ( Flags::computFrozen && !onCentering ) return;
+    if ( Flags::freeze.second && !onCentering ) return;
 
     //---------------------- [Tracking]
     if ( onTracking ) {

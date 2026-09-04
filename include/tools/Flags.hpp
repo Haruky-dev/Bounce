@@ -1,11 +1,11 @@
 #pragma once
 
+#include <utility>
 
-class Flags {
-    public:
-        static bool sfxON;
-        static bool musicON;
-        static bool goalScored;
-        static bool computFrozen;
-        static bool PlayerFrozen;
+
+namespace Flags {
+    inline bool sfxON = true;
+    inline bool musicON = true;
+    inline bool goalScored = false;
+    inline std::pair<bool, bool> freeze({ false, false });
 };

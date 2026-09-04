@@ -24,7 +24,7 @@ void Human::update( const sf::Time& dt ) {
     double Y_pos = bar.getPosition().y;
     double halfHeight = this->bounds().size.y / 2.0f;
 
-    if ( Flags::PlayerFrozen ) {
+    if ( Flags::freeze.first ) {
         this->direction = 0;
         return;
     }

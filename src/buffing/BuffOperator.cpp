@@ -3,6 +3,8 @@
 #include <tools/Variables.hpp>
 #include <buffing/Generator.hpp>
 
+#include <print>
+
 
 BuffOperator& BuffOperator::inst() {
     static BuffOperator inst;
@@ -21,7 +23,13 @@ void BuffOperator::update( const sf::Time& dt ) {
         this->elapsed_ = sf::Time::Zero;
         this->list_.push_front( Generator::yield() );
         this->list_.front()->apply();
-        std::cout << "buff [pushed]\n";
+
+        // DEBUG INFOS
+        const Buff* head = this->list_.front().get();
+        std::cout << "buff [pushed]; ";
+        std::cout << "Target=";
+        std::cout << ( (head->target==Buff::Target::P1)? "[Human]" : (head->target==Buff::Target::P2)? "[Computer]" : "[Ball]" );
+        std::cout << '\n';
 
     } else this->elapsed_+=dt;
 
@@ -44,3 +52,5 @@ void BuffOperator::update( const sf::Time& dt ) {
         }
     }
 }
+
+void BuffOperator::reset() { this->list_.clear(); }

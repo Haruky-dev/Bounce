@@ -22,6 +22,7 @@ class BuffOperator {
 
     public:
         void update( const sf::Time& );
+        void reset();
 
     private:
         int period_;

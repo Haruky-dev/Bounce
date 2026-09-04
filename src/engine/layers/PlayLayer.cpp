@@ -37,7 +37,7 @@ void PlayLayer::Update( const sf::Time& dt ) {
     if ( this->music->getStatus() != sf::Music::Status::Playing || !(Flags::musicON) )
         this->music->play();
 
-    if ( this->ball.onMove )
+    if ( !this->ball.onStart )
         BuffOperator::inst().update( dt );
 
     this->updateEntities( dt );
@@ -136,6 +136,7 @@ void PlayLayer::updateEntities( const sf::Time& dt ) {
         }
 
         this->ball.reset();
+        BuffOperator::inst().reset();
         return;
     }
 

@@ -20,8 +20,8 @@ class PlayLayer : public Layer {
     private:
         PlayUI UI;
 
-        Human P1;
-        Computer P2;
+        mutable Human P1;
+        mutable Computer P2;
         Ball ball;
 
         FrameRate FR;

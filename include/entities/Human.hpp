@@ -12,4 +12,5 @@ class Human : public Player {
 
         void update( const sf::Time& dt );
         void refresh() override;
+        void reset()   override;
 };

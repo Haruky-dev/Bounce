@@ -90,3 +90,7 @@ float Computer::correct_estimation( float y ) const {
 }
 
 void Computer::refresh() { this->neuron.refresh(); }
+
+void Computer::reset() {
+    this->neuron.speed = Json::Float("computer.speed");
+}

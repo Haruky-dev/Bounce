@@ -46,3 +46,7 @@ void Human::update( const sf::Time& dt ) {
 void Human::refresh() {
     this->speed = std::min( this->speed+this->accel, this->speed*Variables::stretchPercent);
 }
+
+void Human::reset() {
+    this->speed = Json::Float("player.speed");
+}

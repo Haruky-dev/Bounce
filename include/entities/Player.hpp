@@ -28,6 +28,7 @@ class Player : public sf::Drawable {
 
     public:
         virtual void refresh() = 0;
+        virtual void reset() = 0;
         virtual sf::Vector2<float> position() { return this->bounds().position; }
 
         const bool ready() const {

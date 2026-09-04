@@ -20,5 +20,6 @@ class Computer : public Player {
         Computer( const sf::Sprite& spr, const bool );
 
         void refresh() override;
+        void reset()   override;
         void update( const sf::Time& dt, const Ball& );
 };

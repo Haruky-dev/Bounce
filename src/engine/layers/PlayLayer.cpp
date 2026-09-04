@@ -77,10 +77,14 @@ Layer::Type PlayLayer::type() const { return Layer::Type::Play; }
 Action PlayLayer::feature() const {
     if ( Variables::P1_SCORE >= Variables::maxScore ) {
         SFX::inst().play(SFX::Type::LOSE);
+        this->P1.reset();
+        this->P2.reset();
         return Action::raiseGameOv;
 
     } else if ( Variables::P2_SCORE >= Variables::maxScore ) {
         SFX::inst().play(SFX::Type::WIN);
+        this->P1.reset();
+        this->P2.reset();
         return Action::raiseGameOv;
     }
 

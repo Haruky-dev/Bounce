@@ -7,6 +7,8 @@
 #include <tools/Variables.hpp>
 #include <tools/Math.hpp>
 
+#include <print>
+
 
 SetUI::SetUI() :
     animation(),
@@ -99,7 +101,7 @@ void SetUI::move_elements_() {
 
     for ( int i = 0; i < 3; i++ ) {
         this->modes_spr.at(i).setPosition({bg_pos.x - 143, bg_pos.y + 25});
-        if (i<3) this->marks_spr.at(i).setPosition({bg_pos.x + 103, bg_pos.y + 23 + 44*i});
+        if (i<2) this->marks_spr.at(i).setPosition({bg_pos.x + 103, bg_pos.y + 23 + 44*i});
     }
 
     this->max_score.setPosition({bg_pos.x - 117, bg_pos.y + 71});
